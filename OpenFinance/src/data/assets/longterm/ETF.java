@@ -68,6 +68,10 @@ public class ETF extends LongTermAsset{
 		this.cap = cap;
 	}
 	
+	/**
+	 * Overrides the LongTerm Assets string array adding the country and capacity 
+	 * to the string array being passed
+	 */
 	@Override
 	public String[] stringArray() {
 		String[] array = new String[10];
@@ -84,6 +88,10 @@ public class ETF extends LongTermAsset{
 		return array;
 	}
 
+	/**
+	 * Returns the country string to the string array
+	 * @return string of Country Type
+	 */
 	private String getCountryString() {
 		if(country == CountryType.DOMESTIC) {
 			return "Domestic";
@@ -92,6 +100,10 @@ public class ETF extends LongTermAsset{
 		}
 	}
 
+	/**
+	 * Returns the cap string
+	 * @return Cap Type in string form
+	 */
 	private String getCapString() {
 		if(cap == CapType.LARGE_CAP_GROWTH) {
 			return "Large Cap Growth";

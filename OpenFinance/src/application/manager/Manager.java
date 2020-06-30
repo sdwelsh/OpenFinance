@@ -35,13 +35,17 @@ public class Manager {
 	private static final String HASH_ALGORITHM = "SHA-256";
 	
 	/**
-	 * Constructs a single instance of the manager class to check for user logins
+	 * Constructs a single instance of the manager class on initialization of the program
 	 */
 	private Manager() {
 		users = readUsers();
 		currentUser = getCurrentUser();
 	}
 	
+	/**
+	 * Returns the current instance of the Manager allowing for effective singleton pattern
+	 * @return Current instance of Manager
+	 */
 	public static Manager getInstance() {
 		if(instance==null) {
 			instance = new Manager();
@@ -64,6 +68,15 @@ public class Manager {
 		}
 	}
 	
+	
+	/**
+	 * Attempts to log a user into the system checking if the account is in the system. Once the account is found the
+	 * password is used to check if the user signing in is the intended user.
+	 * @param id user id as stored in the system
+	 * @param password the password the user is attempting to use to enter the system.
+	 * @return true		if the user is in the system and the password match
+	 * 		   false	if the user doesnt exist of the passwords dont match
+	 */
 	public boolean login(String id, String password) {
 		if(currentUser ==  null) {
 			for(int i = 0; i < users.size(); i++) {
@@ -89,10 +102,19 @@ public class Manager {
 		return currentUser;
 	}
 	
+	/**
+	 * Sets the current user to a user passed as parameter
+	 * @param user The user being set to current user
+	 */
 	public void setCurrentUser(User user) {
 		currentUser = user;
 	}
 	
+	/**
+	 * Creates a new user account and adds it to the current user list. User password is also hashed here 
+	 * for secure password storage.
+	 * @param user A user object that will be stored in the system
+	 */
 	public void createNewUser(User user) {
 		User hashedUser = new User(user.getFirstName(), user.getLastName(), user.getId(), hashPW(user.getPassword()));
 		
@@ -101,6 +123,10 @@ public class Manager {
 		writeUsers();
 	}
 	
+	/**
+	 * Reads the current user list upon starting up the program.
+	 * @return an array list of user objects
+	 */
 	public ArrayList<User> readUsers() {
 		try {
 			return UserIO.readUsersFromFile();
@@ -109,10 +135,17 @@ public class Manager {
 		}
 	}
 	
+	/**
+	 * Writes Users to the user file when a new user is added to the system
+	 */
 	public void writeUsers() {
 		UserIO.writeUsersToFile(users);
 	}
 	
+	/**
+	 * Private helper method for writing passwords and reading them
+	 * @param pw the password being written
+	 */
 	private void writePW(String pw) {
 		try {
 			PrintStream p = new PrintStream(new File("test-files/password.txt"));
@@ -124,6 +157,10 @@ public class Manager {
 		}
 	}
 	
+	/**
+	 * Private helper method that reads passwords from the written file and deletes the file
+	 * @return the password sting read from the file
+	 */
 	private String readPW() {
 		try {
 			File password = new File("test-files/password.txt");

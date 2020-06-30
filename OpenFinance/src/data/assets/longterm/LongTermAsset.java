@@ -236,17 +236,4 @@ public class LongTermAsset {
 		return null;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
 }

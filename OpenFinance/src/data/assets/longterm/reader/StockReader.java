@@ -13,11 +13,18 @@ import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 /**
+ * Reads Stock data from the Yahoo API
  * @author Stephen Welsh
  *
  */
 public class StockReader {
 
+	/**
+	 * Static method takes in a list of stocks. The method then creates a list of stock tickers and pings the 
+	 * Yahoo API for the stocks current prices.
+	 * @param stockList the list of stocks being updated
+	 * @throws IOException if the API is unable to read the stock data
+	 */
 	public static void getSockData(ArrayList<LongTermAsset> stockList) throws IOException {
 		String[] stocks;
 		

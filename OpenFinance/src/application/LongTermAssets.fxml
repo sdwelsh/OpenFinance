@@ -42,7 +42,7 @@
       </GridPane>
    </top>
    <center>
-      <ScrollPane fx:id="pane" prefHeight="200.0" prefWidth="200.0" stylesheets="@application.css" BorderPane.alignment="CENTER" />
+      <ScrollPane fx:id="pane" prefHeight="806.0" prefWidth="1051.0" stylesheets="@application.css" BorderPane.alignment="CENTER" />
    </center>
    <right>
       <GridPane prefHeight="806.0" prefWidth="118.0" BorderPane.alignment="CENTER">

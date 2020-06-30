@@ -20,12 +20,12 @@ public class MutualFunds extends LongTermAsset {
 
 	/**
 	 * Constructor of mutualFunds excluding the initial price of the fund
-	 * @param ticker
-	 * @param price
-	 * @param quantity
-	 * @param years
-	 * @param bank
-	 * @param type
+	 * @param ticker the Stock Ticker
+	 * @param price the total price of the mutual fund
+	 * @param quantity the total amount of stocks owned
+	 * @param years the years till maturity
+	 * @param bank bank the stock is at
+	 * @param type Cap Type of the stock
 	 */
 	public MutualFunds(String ticker, double price, double quantity, int years, Bank bank, AccountType type, CountryType country, CapType cap) {
 		super(ticker, price, quantity, years, bank, type);
@@ -35,13 +35,13 @@ public class MutualFunds extends LongTermAsset {
 
 	/**
 	 * Constructor of mutual find with initial price
-	 * @param ticker
-	 * @param price
-	 * @param initPrice
-	 * @param quantity
-	 * @param years
-	 * @param bank
-	 * @param type
+	 * @param ticker the Stock Ticker
+	 * @param price the total price of the mutual fund
+	 * @param intiPrice the initial price of the stock
+	 * @param quantity the total amount of stocks owned
+	 * @param years the years till maturity
+	 * @param bank bank the stock is at
+	 * @param type Cap Type of the stock
 	 */
 	public MutualFunds(String ticker, double price, double initPrice, double quantity, int years, Bank bank,
 			AccountType type, CountryType country, CapType cap) {
@@ -78,6 +78,9 @@ public class MutualFunds extends LongTermAsset {
 		this.cap = cap;
 	}
 
+	/**
+	 * Overrides the stringArray of the Long Term Assets
+	 */
 	@Override
 	public String[] stringArray() {
 		String[] array = new String[10];
@@ -94,6 +97,10 @@ public class MutualFunds extends LongTermAsset {
 		return array;
 	}
 
+	/**
+	 * Returns the string of the country type of stock
+	 * @return the country type 
+	 */
 	private String getCountryString() {
 		if(country == CountryType.DOMESTIC) {
 			return "Domestic";
@@ -102,6 +109,10 @@ public class MutualFunds extends LongTermAsset {
 		}
 	}
 
+	/**
+	 * Returns the capacity String of the stocks cap type
+	 * @return the cap type string
+	 */
 	private String getCapString() {
 		if(cap == CapType.LARGE_CAP_GROWTH) {
 			return "Large Cap Growth";

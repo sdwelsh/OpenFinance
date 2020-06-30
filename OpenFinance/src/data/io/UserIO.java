@@ -19,11 +19,18 @@ import java.util.Scanner;
 import application.users.User;
 
 /**
+ * Creates the IO for reading and writing the user data to the current system file
  * @author Stephen Welsh
  *
  */
 public class UserIO {
 		
+	/**
+	 * Reads user data from the user file and creates an ArrayList of user
+	 * objects to be passed to the manager on start up.
+	 * @return an array list of user objects form previous users
+	 * @throws IOException if the file is unreadable
+	 */
 	public static ArrayList<User> readUsersFromFile() throws IOException{
 		try {
 			BufferedReader scan = new BufferedReader(new FileReader("test-files/users.txt"));
@@ -60,6 +67,10 @@ public class UserIO {
 		}
 	}
 	
+	/**
+	 * Writes the Users to the current user file.
+	 * @param users an Array List of user objects passed to the user
+	 */
 	public static void writeUsersToFile(ArrayList<User> users){
 		try {
 			OutputStreamWriter p = new OutputStreamWriter(new FileOutputStream(new File("test-files/users.txt")));
