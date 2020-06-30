@@ -44,9 +44,9 @@
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="417.0" style="-fx-background-color: #ec6c34;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="400.0" fitWidth="417.0">
+            <ImageView fitHeight="400.0" fitWidth="420.0" layoutX="-3.0">
                <image>
-                  <Image url="file:@../../bin/logo.png" />
+                  <Image url="file:@../../resources/logo.png" />
                </image>
             </ImageView>
          </children>
