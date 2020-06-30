@@ -140,7 +140,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="88.0" prefWidth="144.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Long Term Assets" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#longTermAssets" prefHeight="88.0" prefWidth="144.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Long Term Assets" GridPane.columnIndex="1" />
             <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="130.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Current Assets" GridPane.columnIndex="2" />
             <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="130.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Long Term Liabilities" GridPane.columnIndex="3" />
             <Button mnemonicParsing="false" prefHeight="82.0" prefWidth="126.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Current Liabilities" GridPane.columnIndex="4" />

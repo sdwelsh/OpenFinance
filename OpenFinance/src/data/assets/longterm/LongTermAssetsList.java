@@ -1,16 +1,19 @@
 package data.assets.longterm;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Stocks{
+import data.assets.longterm.reader.StockReader;
+
+public class LongTermAssetsList{
 	
 	private ArrayList<LongTermAsset> stocks;
 	
-	public Stocks() {
+	public LongTermAssetsList() {
 		stocks = new ArrayList<LongTermAsset>();
 	}
 	
-	public void addStock(LongTermAsset stock) {
+	public void addAsset(LongTermAsset stock) {
 		stocks.add(stock);
 	}
 	
@@ -33,5 +36,13 @@ public class Stocks{
 	
 	public ArrayList<LongTermAsset> returnStocks(){
 		return stocks;
+	}
+	
+	public void update(){
+		try {
+			StockReader.getSockData(stocks);
+		} catch (IOException e) {
+			throw new RuntimeException();
+		}
 	}
 }

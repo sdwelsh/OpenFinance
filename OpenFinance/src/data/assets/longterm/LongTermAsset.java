@@ -49,6 +49,7 @@ public class LongTermAsset {
 	public LongTermAsset(String ticker, double price, double quantity, int years, Bank bank, AccountType type) {
 		this.ticker = ticker;
 		this.price = price;
+		this.initPrice = 0;
 		this.quantity = quantity;
 		this.years = years;
 		this.bank = bank;
@@ -172,6 +173,70 @@ public class LongTermAsset {
 	public void setType(AccountType type) {
 		this.type = type;
 	}
+
+	/**
+	 * Returns a string array of the Long Term asset class
+	 * @return string array of assets values
+	 */
+	public String[] stringArray() {
+		String[] asset = new String[10];
+		asset[0] = ticker;
+		asset[1] = "$" + price;
+		if(initPrice == 0) {
+			asset[2] = "-";
+		} else {
+			asset[2] = "$" + initPrice;
+		}
+		asset[3] = quantity + ""; 
+		asset[4] = years + "";
+		asset[5] = getBankName();
+		asset[6] = getAccountName();
+		return asset;
+	}
+
+	/**
+	 * Returns a string name of the account names
+	 * @return account name string
+	 */
+	private String getAccountName() {
+		if(type == AccountType._401K) {
+			return "401K";
+		} else if(type == AccountType.BROKERAGE){
+			return "Brokerage";
+		} else if(type == AccountType.IRA) {
+			return "IRA";
+		} else if(type == AccountType.ROTH401K) {
+			return "Roth 401k";
+		} else if(type == AccountType.ROTH_IRA) {
+			return "Roth IRA";
+		} else if(type == AccountType.TAXABLE_ACCOUNT) {
+			return "Taxable Account";
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the string name of the bank 
+	 * @return the bank name
+	 */
+	private String getBankName() {
+		if(bank == Bank.BANK) {
+			return "Bank";
+		} else if(bank == Bank.FIDELITY){
+			return "Fidelity";
+		} else if(bank == Bank.MERRIL_LYNCH) {
+			return "Merril Lynch";
+		} else if(bank == Bank.ROBINHOOD) {
+			return "Robinhood";
+		} else if(bank == Bank.TD) {
+			return "TD Ameritrade";
+		} else if(bank == Bank.VANGUARD) {
+			return "Vanguard";
+		}
+		return null;
+	}
+	
+	
 	
 	
 	

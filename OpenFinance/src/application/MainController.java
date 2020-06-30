@@ -42,6 +42,11 @@ public class MainController extends BorderPane{
 	}
 	
 	@FXML
+	public void longTermAssets() {
+		Main.setView(new LongTermAssetsController());
+	}
+	
+	@FXML
 	public void logout() {
 		Manager manager = Manager.getInstance();
 		manager.logout();

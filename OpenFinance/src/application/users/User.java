@@ -3,6 +3,11 @@
  */
 package application.users;
 
+import java.util.ArrayList;
+
+import data.assets.longterm.LongTermAsset;
+import data.assets.longterm.LongTermAssetsList;
+
 /**
  * User class Creates a new User that is able to create a list of assets and liabilities for themselves to be viewed by them 
  * on opening of the app.
@@ -22,6 +27,9 @@ public class User {
 	
 	/** The users password*/
 	private String password;
+	
+	/** List of User Longterm Assets*/
+	private LongTermAssetsList longTermAssets;
 
 	/**
 	 * Constructs the User class giving the user a name, unique id, and password.
@@ -79,6 +87,91 @@ public class User {
 			throw new IllegalArgumentException();
 		}
 		this.password = password;
+	}
+	
+	public void addLongTermAsset(LongTermAsset asset) {
+		longTermAssets.addAsset(asset);
+	}
+	
+	/**
+	 * Returns a string array of stocks that will be shown to the user
+	 * @return string array of stocks
+	 */
+	public String[][] getStocks() {
+		
+		ArrayList<LongTermAsset> assets = longTermAssets.returnStocks();
+		String[][] assetsString = new String[assets.size()][10];
+		
+		int size = 0;
+		
+		for(int i = 0; i < assets.size(); i++) {
+			if(assets.get(i).stringArray()[10] == null) {
+				assetsString[i] = assets.get(i).stringArray();
+				size++;
+			}
+		}
+		
+		String[][] stocks = new String[size][10];
+		
+		for(int i = 0; i < stocks.length; i++) {
+			stocks[i] = assetsString[i];
+		}
+		
+		return stocks;
+		
+		
+	}
+	
+	/**
+	 * Returns a string array of ETF's that the user has
+	 * @return string array of etfs
+	 */
+	public String[][] getETF() {
+		ArrayList<LongTermAsset> assets = longTermAssets.returnStocks();
+		String[][] assetsString = new String[assets.size()][10];
+		
+		int size = 0;
+		
+		for(int i = 0; i < assets.size(); i++) {
+			if(assets.get(i).stringArray()[10].equals("etf")) {
+				assetsString[i] = assets.get(i).stringArray();
+				size++;
+			}
+		}
+		
+		String[][] etfs = new String[size][10];
+		
+		for(int i = 0; i < etfs.length; i++) {
+			etfs[i] = assetsString[i];
+		}
+		
+		return etfs;
+	} 
+	
+	/** 
+	 * Returns a string array of the mutual funds the user has
+	 * @return string array of mutual funds
+	 */
+	public String[][] getMutualFunds() {
+		ArrayList<LongTermAsset> assets = longTermAssets.returnStocks();
+		String[][] assetsString = new String[assets.size()][10];
+		
+		int size = 0;
+		
+		for(int i = 0; i < assets.size(); i++) {
+			if(assets.get(i).stringArray()[10].equals("mutual funds")) {
+				assetsString[i] = assets.get(i).stringArray();
+				size++;
+			}
+		}
+		
+		String[][] mutualFunds = new String[size][10];
+		
+		for(int i = 0; i < mutualFunds.length; i++) {
+			mutualFunds[i] = assetsString[i];
+		}
+		
+		return mutualFunds;
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import data.assets.longterm.LongTermAsset;
-import data.assets.longterm.Stocks;
+import data.assets.longterm.LongTermAssetsList;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import data.assets.longterm.LongTermAsset.AccountType;
@@ -18,11 +18,11 @@ public class StockReaderTest {
 
 	@Test
 	public void test() {
-		Stocks stocks = new Stocks();
+		LongTermAssetsList stocks = new LongTermAssetsList();
 		
 		LongTermAsset stock = new LongTermAsset("AMD", 20.2, 10, 5, Bank.SCHWAB, AccountType.BROKERAGE);
 		
-		stocks.addStock(stock);
+		stocks.addAsset(stock);
 		
 		ArrayList<LongTermAsset> newStocks = stocks.returnStocks();
 		
@@ -37,13 +37,6 @@ public class StockReaderTest {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		try {
-			StockReader.getSockData(stocks);
-		} catch (IOException e) {
-			fail();
-		}
-		
 		newStocks = stocks.returnStocks();
 		
 		assertTrue(newStocks.size()==1);

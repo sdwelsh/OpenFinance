@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import data.assets.longterm.LongTermAsset;
-import data.assets.longterm.Stocks;
+import data.assets.longterm.LongTermAssetsList;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
@@ -18,10 +18,8 @@ import yahoofinance.YahooFinance;
  */
 public class StockReader {
 
-	public static void getSockData(Stocks stocksList) throws IOException {
+	public static void getSockData(ArrayList<LongTermAsset> stockList) throws IOException {
 		String[] stocks;
-		
-		ArrayList<LongTermAsset> stockList = stocksList.returnStocks(); 
 		
 		stocks = new String[stockList.size()];
 		
