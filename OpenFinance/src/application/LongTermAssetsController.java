@@ -76,7 +76,7 @@ public class LongTermAssetsController extends BorderPane {
 		stockTable.getColumns().add(accountType);
 		
 		stockTable.setPrefHeight(600);
-		stockTable.setPrefWidth(1200);
+		stockTable.setPrefWidth(1200); 
 		
 		ticker.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.05));
         price.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.2));
