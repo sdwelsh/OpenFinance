@@ -43,6 +43,7 @@ public class User {
 		setLastName(lastName);
 		setId(id);
 		setPassword(password);
+		longTermAssets = new LongTermAssetsList();
 	}
 
 	public String getFirstName() {
@@ -93,6 +94,10 @@ public class User {
 		longTermAssets.addAsset(asset);
 	}
 	
+	public LongTermAssetsList getLongTermAssets() {
+		return longTermAssets;
+	}
+	
 	/**
 	 * Returns a string array of stocks that will be shown to the user
 	 * @return string array of stocks
@@ -105,7 +110,7 @@ public class User {
 		int size = 0;
 		
 		for(int i = 0; i < assets.size(); i++) {
-			if(assets.get(i).stringArray()[10] == null) {
+			if(assets.get(i).stringArray()[9] == null) {
 				assetsString[i] = assets.get(i).stringArray();
 				size++;
 			}

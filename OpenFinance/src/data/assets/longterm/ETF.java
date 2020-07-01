@@ -34,8 +34,8 @@ public class ETF extends LongTermAsset{
 	 * @param bank
 	 * @param type
 	 */
-	public ETF(String ticker, double price, double initPrice, double quantity, int years, Bank bank, AccountType type, CountryType country, CapType cap) {
-		super(ticker, price, initPrice, quantity, years, bank, type);
+	public ETF(String ticker, double initPrice, double quantity, Bank bank, AccountType type, CountryType country, CapType cap) {
+		super(ticker, initPrice, quantity, bank, type);
 		this.country = country;
 		this.cap = cap;
 	}

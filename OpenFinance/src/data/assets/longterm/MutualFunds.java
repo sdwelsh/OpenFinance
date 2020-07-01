@@ -27,8 +27,8 @@ public class MutualFunds extends LongTermAsset {
 	 * @param bank bank the stock is at
 	 * @param type Cap Type of the stock
 	 */
-	public MutualFunds(String ticker, double price, double quantity, int years, Bank bank, AccountType type, CountryType country, CapType cap) {
-		super(ticker, price, quantity, years, bank, type);
+	public MutualFunds(String ticker, double quantity, int years, Bank bank, AccountType type, CountryType country, CapType cap) {
+		super(ticker, quantity, years, bank, type);
 		this.cap = cap;
 		this.country = country;
 	}
@@ -43,9 +43,9 @@ public class MutualFunds extends LongTermAsset {
 	 * @param bank bank the stock is at
 	 * @param type Cap Type of the stock
 	 */
-	public MutualFunds(String ticker, double price, double initPrice, double quantity, int years, Bank bank,
+	public MutualFunds(String ticker, double initPrice, double quantity, Bank bank,
 			AccountType type, CountryType country, CapType cap) {
-		super(ticker, price, initPrice, quantity, years, bank, type);
+		super(ticker, initPrice, quantity, bank, type);
 		this.cap = cap;
 		this.country = country;
 	}

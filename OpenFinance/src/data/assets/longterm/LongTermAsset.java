@@ -3,6 +3,11 @@
  */
 package data.assets.longterm;
 
+import java.io.IOException;
+
+import data.assets.longterm.reader.StockReader;
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  * Parent class to ETF's, Mutual Funds, Bond Stocks, and Preferred Stocks
  * @author Stephen Welsh
@@ -11,7 +16,7 @@ package data.assets.longterm;
 public class LongTermAsset {
 	
 	/** The bank Associated with the stock */
-	public enum Bank { SCHWAB, MERRIL_LYNCH, VANGUARD, TD, FIDELITY, BANK, ROBINHOOD};
+	public enum Bank { SCHWAB, MERRIL_LYNCH, VANGUARD, TD, FIDELITY, BANK, ROBINHOOD, ETRADE};
 	
 	/** The account types */
 	public enum AccountType {BROKERAGE, ROTH401K, _401K, ROTH_IRA, IRA, TAXABLE_ACCOUNT};
@@ -28,14 +33,18 @@ public class LongTermAsset {
 	/** The Quantity of the Stock owned */
 	private double quantity;
 	
-	/**  The Years to matrutiry for the stock */
-	private int years;
-	
 	/** This is the stocks bank */
 	private Bank bank;
 	
 	/** This is the stocks Account type */
 	private AccountType type;
+	
+	SimpleStringProperty tickerString;
+	SimpleStringProperty totalPriceString;
+	SimpleStringProperty quantityString;
+	SimpleStringProperty pricePerShareString;
+	SimpleStringProperty bankString;
+	SimpleStringProperty accountString;
 
 	/**
 	 * Constructs the stock class using all the fields needed to make a stock
@@ -46,14 +55,20 @@ public class LongTermAsset {
 	 * @param bank the bank the stock is at
 	 * @param type the type of account the stock is in
 	 */
-	public LongTermAsset(String ticker, double price, double quantity, int years, Bank bank, AccountType type) {
+	public LongTermAsset(String ticker, double quantity, Bank bank, AccountType type) {
 		this.ticker = ticker;
-		this.price = price;
 		this.initPrice = 0;
+		this.price = refreshPrice();
 		this.quantity = quantity;
-		this.years = years;
 		this.bank = bank;
 		this.type = type;
+		
+		tickerString = new SimpleStringProperty(ticker);
+		totalPriceString = new SimpleStringProperty("$" + (price * quantity));
+		quantityString = new SimpleStringProperty(""+ quantity);
+		pricePerShareString = new SimpleStringProperty("$" + price);
+		bankString = new SimpleStringProperty(getBankName());
+		accountString = new SimpleStringProperty(getAccountName());
 	}
 	
 	/**
@@ -66,14 +81,20 @@ public class LongTermAsset {
 	 * @param bank the bank the stock is at
 	 * @param type the type of account the stock is in
 	 */
-	public LongTermAsset(String ticker, double price, double initPrice, double quantity, int years, Bank bank, AccountType type) {
+	public LongTermAsset(String ticker, double initPrice, double quantity, Bank bank, AccountType type) {
 		this.ticker = ticker;
-		this.price = price;
 		this.initPrice = initPrice;
+		this.price = refreshPrice();
 		this.quantity = quantity;
-		this.years = years;
 		this.bank = bank;
 		this.type = type;
+		
+		tickerString = new SimpleStringProperty(ticker);
+		totalPriceString = new SimpleStringProperty("$" + (price * quantity));
+		quantityString = new SimpleStringProperty(""+ quantity);
+		pricePerShareString = new SimpleStringProperty("$" + price);
+		bankString = new SimpleStringProperty(getBankName());
+		accountString = new SimpleStringProperty(getAccountName());
 	}
 
 	/**
@@ -105,13 +126,6 @@ public class LongTermAsset {
 	}
 
 	/**
-	 * @return the years
-	 */
-	public int getYears() {
-		return years;
-	}
-
-	/**
 	 * @return the bank
 	 */
 	public Bank getBank() {
@@ -138,6 +152,14 @@ public class LongTermAsset {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	
+	public double refreshPrice() {
+		try {
+			return price = StockReader.getStockPrice(this.ticker);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 
 	/**
 	 * @param initPrice the initPrice to set
@@ -151,13 +173,6 @@ public class LongTermAsset {
 	 */
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
-	}
-
-	/**
-	 * @param years the years to set
-	 */
-	public void setYears(int years) {
-		this.years = years;
 	}
 
 	/**
@@ -188,10 +203,14 @@ public class LongTermAsset {
 			asset[2] = "$" + initPrice;
 		}
 		asset[3] = quantity + ""; 
-		asset[4] = years + "";
+		asset[4] = "$" + getTotalPrice();
 		asset[5] = getBankName();
 		asset[6] = getAccountName();
 		return asset;
+	}
+
+	public double getTotalPrice() {
+		return price * quantity;
 	}
 
 	/**
@@ -232,8 +251,94 @@ public class LongTermAsset {
 			return "TD Ameritrade";
 		} else if(bank == Bank.VANGUARD) {
 			return "Vanguard";
+		} else if(bank == Bank.ETRADE) {
+			return "E-TRADE";
 		}
 		return null;
+	}
+	
+	/**
+	 * @return the tickerString
+	 */
+	public String getTickerString() {
+		return tickerString.get();
+	}
+
+	/**
+	 * @return the totalPriceString
+	 */
+	public String getTotalPriceString() {
+		return totalPriceString.get();
+	}
+
+	/**
+	 * @return the quantityString
+	 */
+	public String getQuantityString() {
+		return quantityString.get();
+	}
+
+	/**
+	 * @return the pricePerShareString
+	 */
+	public String getPricePerShareString() {
+		return pricePerShareString.get();
+	}
+
+	/**
+	 * @return the bankString
+	 */
+	public String getBankString() {
+		return bankString.get();
+	}
+
+	/**
+	 * @return the accountString
+	 */
+	public String getAccountString() {
+		return accountString.get();
+	}
+
+	/**
+	 * @param tickerString the tickerString to set
+	 */
+	public void setTickerString(SimpleStringProperty tickerString) {
+		this.tickerString = tickerString;
+	}
+
+	/**
+	 * @param totalPriceString the totalPriceString to set
+	 */
+	public void setTotalPriceString(SimpleStringProperty totalPriceString) {
+		this.totalPriceString = totalPriceString;
+	}
+
+	/**
+	 * @param quantityString the quantityString to set
+	 */
+	public void setQuantityString(SimpleStringProperty quantityString) {
+		this.quantityString = quantityString;
+	}
+
+	/**
+	 * @param pricePerShareString the pricePerShareString to set
+	 */
+	public void setPricePerShareString(SimpleStringProperty pricePerShareString) {
+		this.pricePerShareString = pricePerShareString;
+	}
+
+	/**
+	 * @param bankString the bankString to set
+	 */
+	public void setBankString(SimpleStringProperty bankString) {
+		this.bankString = bankString;
+	}
+
+	/**
+	 * @param accountString the accountString to set
+	 */
+	public void setAccountString(SimpleStringProperty accountString) {
+		this.accountString = accountString;
 	}
 	
 }

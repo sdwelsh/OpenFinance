@@ -43,4 +43,22 @@ public class StockReader {
 		
 		
 	}
+	
+	public static boolean checkStock(String ticker) {
+		try {
+			Stock check = YahooFinance.get(ticker);
+			if(check==null) {
+				return false;
+			}
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+	}
+	
+	public static double getStockPrice(String ticker) throws IOException {
+		System.out.println(4);
+		return YahooFinance.get(ticker).getQuote().getPrice().doubleValue();
+	}
 }
