@@ -5,10 +5,9 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gluonhq.charm.glisten.control.TextField;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.Parent;
@@ -31,6 +30,8 @@ public class Main extends Application{
 	
 	private static Stage primaryStage;
 	
+	private static Scene scene;
+	
 	
 	 /**
 	  * Starts the login screen allowing the user to enter their username and password.
@@ -40,12 +41,13 @@ public class Main extends Application{
 		try {
 			
 			primaryStage = new Stage();
+			primaryStage.initModality(Modality.APPLICATION_MODAL);
 			
 			root = new LoginController();
-			Scene scene = new Scene(root);
+			scene = new Scene(root);
 			
 			
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			//primaryStage.initStyle(StageStyle.DECORATED);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -60,8 +62,12 @@ public class Main extends Application{
 	}
 	
 	public static void setView(BorderPane view) {
-		primaryStage.setScene(new Scene(view, primaryStage.getWidth(), primaryStage.getHeight()));
+		
+		
+		primaryStage.getScene().setRoot(view);
+		primaryStage.setFullScreen(true);
 		primaryStage.show();
+		
 	}
 	
 	public static void login(BorderPane view) {

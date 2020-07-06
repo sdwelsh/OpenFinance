@@ -22,6 +22,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -42,6 +44,9 @@ public class LongTermAssetsController extends BorderPane {
 	private ScrollPane pane;
 	
 	@FXML
+	private ImageView logoMain;
+	
+	@FXML
 	private VBox size;
 	
 	private VBox vbox;
@@ -58,6 +63,11 @@ public class LongTermAssetsController extends BorderPane {
 
         try {
             fxmlLoader.load();
+            
+            Image thumb = new Image("/application/resources/linkedin_banner_image_1.png");
+            
+            logoMain.setImage(thumb);
+            
             pane = new ScrollPane();
             pane.setFitToHeight(true);
             pane.setFitToWidth(true);
@@ -181,5 +191,10 @@ public class LongTermAssetsController extends BorderPane {
         }
         
         stockTable.setItems(assetList);
+	}
+	
+	@FXML
+	public void openMain() {
+		Main.setView(new MainController());
 	}
 }

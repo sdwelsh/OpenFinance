@@ -3,6 +3,7 @@
  */
 package application;
 
+import java.io.File;
 import java.io.IOException;
 
 import application.manager.Manager;
@@ -13,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -28,6 +31,10 @@ public class LoginController extends BorderPane {
 	
 	@FXML private Label error;
 	
+	@FXML private ImageView imageView;
+	
+	@FXML private ImageView image;
+	
 	
 
     public LoginController() {
@@ -39,6 +46,11 @@ public class LoginController extends BorderPane {
 
         try {
             fxmlLoader.load();
+            
+            Image thumb = new Image("/application/resources/logo.png");
+            
+            image.setImage(thumb);
+            
             
             
         } catch (IOException exception) {
@@ -52,7 +64,7 @@ public class LoginController extends BorderPane {
     	
     	if(manager.login(username.getText(), password.getText())) {
     		BorderPane view = new MainController();
-    	    Main.login(view);
+    	    Main.setView(view);
     	} else {
     		error.setText("Username or Password doesn't match");
     	}

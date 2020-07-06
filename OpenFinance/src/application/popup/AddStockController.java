@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -75,7 +76,13 @@ public class AddStockController extends BorderPane{
     		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
     		//primaryStage.initStyle(StageStyle.DECORATED);
     		primaryStage.setScene(scene);
+    		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
+    		
+    		primaryStage.setFullScreen(false);
+    		
+    		
+    		
             
             investmentBank = new ChoiceBox<String>();
             accountType = new ChoiceBox<String>();

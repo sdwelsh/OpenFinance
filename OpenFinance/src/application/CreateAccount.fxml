@@ -16,7 +16,7 @@
       <AnchorPane prefHeight="47.0" prefWidth="600.0" style="-fx-background-color: #ec6c34;" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane style="-fx-background-color: white;" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="128.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="425.0" minWidth="10.0" prefWidth="360.0" />
@@ -38,11 +38,11 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="firstName" promptText="First Name" style="-fx-background-insets: 0;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="lastName" promptText="Last Name" style="-fx-background-insets: 0;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="username" promptText="Username" style="-fx-background-insets: 0;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <PasswordField fx:id="password" promptText="Password" style="-fx-background-insets: 0;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <PasswordField fx:id="rePassword" promptText="Re-Enter Password" style="-fx-background-insets: 0;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="firstName" promptText="First Name" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="lastName" promptText="Last Name" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="username" promptText="Username" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <PasswordField fx:id="password" promptText="Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="rePassword" promptText="Re-Enter Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button mnemonicParsing="false" onAction="#createAccount" prefHeight="24.0" prefWidth="123.0" style="-fx-background-color: red;" text="Create Account" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label fx:id="error" textFill="#bc0000" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>

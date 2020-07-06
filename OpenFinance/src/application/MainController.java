@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -25,6 +27,9 @@ public class MainController extends BorderPane{
 	@FXML
 	private Label name;
 	
+	@FXML 
+	private ImageView logoMain;
+	
 	public MainController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
 		fxmlLoader.setRoot(this);
@@ -35,6 +40,10 @@ public class MainController extends BorderPane{
         try {
             fxmlLoader.load();
             name.setText("Welcome " + manager.getCurrentUser().getFirstName() + " " + manager.getCurrentUser().getLastName());
+            
+            Image thumb = new Image("/application/resources/linkedin_banner_image_1.png");
+            
+            logoMain.setImage(thumb);
             
         } catch (IOException exception) {
             throw new RuntimeException(exception);
