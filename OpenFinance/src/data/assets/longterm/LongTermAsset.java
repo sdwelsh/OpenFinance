@@ -225,11 +225,11 @@ public class LongTermAsset {
 		} else if(type == AccountType.IRA) {
 			return "IRA";
 		} else if(type == AccountType.ROTH401K) {
-			return "Roth 401k";
+			return "Roth_401K";
 		} else if(type == AccountType.ROTH_IRA) {
-			return "Roth IRA";
+			return "Roth_IRA";
 		} else if(type == AccountType.TAXABLE_ACCOUNT) {
-			return "Taxable Account";
+			return "Taxable_Account";
 		}
 		return null;
 	}
@@ -244,15 +244,15 @@ public class LongTermAsset {
 		} else if(bank == Bank.FIDELITY){
 			return "Fidelity";
 		} else if(bank == Bank.MERRIL_LYNCH) {
-			return "Merril Lynch";
+			return "Merril_Lynch";
 		} else if(bank == Bank.ROBINHOOD) {
 			return "Robinhood";
 		} else if(bank == Bank.TD) {
-			return "TD Ameritrade";
+			return "TD_Ameritrade";
 		} else if(bank == Bank.VANGUARD) {
 			return "Vanguard";
 		} else if(bank == Bank.ETRADE) {
-			return "E-TRADE";
+			return "E-Trade";
 		}
 		return null;
 	}
@@ -268,7 +268,7 @@ public class LongTermAsset {
 	 * @return the totalPriceString
 	 */
 	public String getTotalPriceString() {
-		return totalPriceString.get();
+		return "$" + (Math.round(getTotalPrice() * 100.00) / 100.00);
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class LongTermAsset {
 	 * @return the pricePerShareString
 	 */
 	public String getPricePerShareString() {
-		return pricePerShareString.get();
+		return "$" + (Math.round(getPrice() * 100.00) / 100.00);
 	}
 
 	/**
@@ -339,6 +339,10 @@ public class LongTermAsset {
 	 */
 	public void setAccountString(SimpleStringProperty accountString) {
 		this.accountString = accountString;
+	}
+	
+	public String getAssetType() {
+		return "Stock";
 	}
 	
 }

@@ -56,11 +56,54 @@ public class LongTermAssetsList{
 	}
 	
 	/**
-	 * Returns a list of LongTerm Assets 
+	 * Returns a list of LongTerm Assets Stocks
 	 * @return ArrayList of LongTermAssets
 	 */
 	public ArrayList<LongTermAsset> returnStocks(){
-		return stocks;
+		ArrayList<LongTermAsset> stocksList = new ArrayList<LongTermAsset>();
+		
+		for(int i = 0; i < stocks.size(); i++) {
+			LongTermAsset stock = stocks.get(i);
+			if(stock.getAssetType().equals("Stock")) {
+				stocksList.add(stock);
+			}
+		}
+		
+		return stocksList;
+	}
+	
+	/**
+	 * Returns a list of LongTerm ETFs
+	 * @return ArrayList of LongTermAssets
+	 */
+	public ArrayList<LongTermAsset> returnETFs(){
+		ArrayList<LongTermAsset> stocksList = new ArrayList<LongTermAsset>();
+		
+		for(int i = 0; i < stocks.size(); i++) {
+			LongTermAsset stock = stocks.get(i);
+			if(stock.getAssetType().equals("ETF")) {
+				stocksList.add(stock);
+			}
+		}
+		
+		return stocksList;
+	}
+	
+	/**
+	 * Returns a list of LongTerm Assets MutualFunds
+	 * @return ArrayList of LongTermAssets
+	 */
+	public ArrayList<LongTermAsset> returnMutualFunds(){
+		ArrayList<LongTermAsset> stocksList = new ArrayList<LongTermAsset>();
+		
+		for(int i = 0; i < stocks.size(); i++) {
+			LongTermAsset stock = stocks.get(i);
+			if(stock.getAssetType().equals("Mutual Fund")) {
+				stocksList.add(stock);
+			}
+		}
+		
+		return stocksList;
 	}
 	
 	/**

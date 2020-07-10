@@ -5,6 +5,7 @@ package data.assets.longterm;
 
 import data.assets.longterm.ETF.CapType;
 import data.assets.longterm.ETF.CountryType;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * @author Stephen Welsh
@@ -16,13 +17,21 @@ public class ETF extends LongTermAsset{
 	public enum CountryType {DOMESTIC, FOREIGN};
 	
 	/** The capacity of the ETF */
-	public enum CapType {SMALL_CAP, MID_CAP, LARGE_CAP_GROWTH, LARGE_CAP_VALUE};
+	public enum CapType {SMALL_CAP, MID_CAP, LARGE_CAP };
+	
+	public enum InvestmentType {NA, GROWTH, VALUE};
 	
 	/** The type of country market of the ETF*/
 	private CountryType country;
 	
 	/** The cap of the ETF */
 	private CapType cap;
+	
+	private InvestmentType investmentType;
+	
+	SimpleStringProperty countryString;
+	SimpleStringProperty capString;
+	SimpleStringProperty investmentTypeString;
 
 	/**
 	 * Constructs the ETF class passing superclass variables to the LongTermAsset super class
@@ -34,10 +43,16 @@ public class ETF extends LongTermAsset{
 	 * @param bank
 	 * @param type
 	 */
-	public ETF(String ticker, double initPrice, double quantity, Bank bank, AccountType type, CountryType country, CapType cap) {
+	public ETF(String ticker, double initPrice, double quantity, 
+			Bank bank, AccountType type, CountryType country, CapType cap, InvestmentType investmentType) {
 		super(ticker, initPrice, quantity, bank, type);
 		this.country = country;
 		this.cap = cap;
+		this.investmentType = investmentType;
+		
+		countryString = new SimpleStringProperty(getCountryString());
+		capString = new SimpleStringProperty(getCapString());
+		investmentTypeString = new SimpleStringProperty(getInvestmentTypeString());
 	}
 
 	/**
@@ -52,6 +67,14 @@ public class ETF extends LongTermAsset{
 	 */
 	public CapType getCap() {
 		return cap;
+	}
+
+	public InvestmentType getInvestmentType() {
+		return investmentType;
+	}
+
+	public void setInvestmentType(InvestmentType investmentType) {
+		this.investmentType = investmentType;
 	}
 
 	/**
@@ -92,7 +115,7 @@ public class ETF extends LongTermAsset{
 	 * Returns the country string to the string array
 	 * @return string of Country Type
 	 */
-	private String getCountryString() {
+	public String getCountryString() {
 		if(country == CountryType.DOMESTIC) {
 			return "Domestic";
 		} else {
@@ -104,19 +127,48 @@ public class ETF extends LongTermAsset{
 	 * Returns the cap string
 	 * @return Cap Type in string form
 	 */
-	private String getCapString() {
-		if(cap == CapType.LARGE_CAP_GROWTH) {
-			return "Large Cap Growth";
-		} else if(cap == CapType.LARGE_CAP_VALUE) {
-			return "Large Cap Value";
+	public String getCapString() {
+		if(cap == CapType.LARGE_CAP) {
+			return "Large_Cap";
 		} else if(cap == CapType.MID_CAP) {
-			return "Mid Cap";
+			return "Mid_Cap";
 		} else if (cap == CapType.SMALL_CAP) {
-			return "Small Cap";
+			return "Small_Cap";
 		} else {
 			return null;
 		}
 	}
+	
+	public String getInvestmentTypeString(){
+		if(investmentType == InvestmentType.NA) {
+			return "NA";
+		} else if(investmentType == InvestmentType.GROWTH) {
+			return "Growth";
+		} else if (investmentType == InvestmentType.VALUE) {
+			return "Value";
+		} else {
+			return null;
+		}
+	}
+	
+	@Override
+	public String getAssetType() {
+		return "ETF";
+	}
+
+	public void setCountryString(SimpleStringProperty countryString) {
+		this.countryString = countryString;
+	}
+
+	public void setCapString(SimpleStringProperty capString) {
+		this.capString = capString;
+	}
+
+	public void setInvestmentTypeString(SimpleStringProperty investmentTypeString) {
+		this.investmentTypeString = investmentTypeString;
+	}
+	
+	
 	
 	
 }

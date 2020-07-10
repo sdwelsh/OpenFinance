@@ -58,7 +58,6 @@ public class StockReader {
 	}
 	
 	public static double getStockPrice(String ticker) throws IOException {
-		System.out.println(4);
 		return YahooFinance.get(ticker).getQuote().getPrice().doubleValue();
 	}
 }

@@ -7,13 +7,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 import application.users.User;
+import data.io.UserDataIO;
 import data.io.UserIO;
 
 /**
@@ -34,12 +39,18 @@ public class Manager {
 	
 	private static final String HASH_ALGORITHM = "SHA-256";
 	
+	private String key;
+	
+	private String transformation;
+	
 	/**
 	 * Constructs a single instance of the manager class on initialization of the program
 	 */
 	private Manager() {
 		users = readUsers();
 		currentUser = getCurrentUser();
+		transformation = "AES/CBC/PKCS5Padding";
+		
 	}
 	
 	/**
@@ -88,6 +99,8 @@ public class Manager {
 					String userPW = readPW();
 					if(pw.equals(userPW)) {
 						currentUser = users.get(i);
+						key = hash;
+						UserDataIO.readUserData(currentUser, key, transformation);
 						return true;
 					}
 				} 
@@ -178,6 +191,12 @@ public class Manager {
 	 * Logs the current user out of the system
 	 */
 	public void logout() {
+		try {
+			UserDataIO.writeUserData(this.currentUser, key, transformation);
+		} catch (FileNotFoundException e) {
+			throw new IllegalArgumentException();
+		}
+		currentUser.reset();
 		currentUser = null;
 	}
 }

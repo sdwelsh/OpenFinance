@@ -114,10 +114,8 @@ public class MutualFunds extends LongTermAsset {
 	 * @return the cap type string
 	 */
 	private String getCapString() {
-		if(cap == CapType.LARGE_CAP_GROWTH) {
+		if(cap == CapType.LARGE_CAP) {
 			return "Large Cap Growth";
-		} else if(cap == CapType.LARGE_CAP_VALUE) {
-			return "Large Cap Value";
 		} else if(cap == CapType.MID_CAP) {
 			return "Mid Cap";
 		} else if (cap == CapType.SMALL_CAP) {
@@ -126,6 +124,12 @@ public class MutualFunds extends LongTermAsset {
 			return null;
 		}
 	}
+
+	@Override
+	public String getAssetType() {
+		return "Mutual Fund";
+	}
+	
 	
 	
 
