@@ -45,7 +45,7 @@
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
             </Label>
-            <Label text="Current Assets" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label text="Short Term Assets" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font name="Times New Roman" size="18.0" />
                </font>
@@ -60,7 +60,7 @@
                   <Font name="Times New Roman" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="currentAssets" text="\$20,000" textFill="#13ab1b" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label fx:id="shortTermAssets" text="\$20,000" textFill="#13ab1b" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <font>
                   <Font name="Times New Roman" size="18.0" />
                </font>
@@ -117,7 +117,7 @@
             </Label>
             <Label fx:id="name" prefHeight="29.0" prefWidth="420.0" text="Name" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.valignment="CENTER">
                <font>
-                  <Font name="Times New Roman" size="25.0" />
+                  <Font name="Times New Roman" size="40.0" />
                </font>
             </Label>
          </children>
@@ -141,8 +141,8 @@
         </rowConstraints>
          <children>
             <Button mnemonicParsing="false" onAction="#longTermAssets" prefHeight="88.0" prefWidth="144.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Long Term Assets" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="130.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Current Assets" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="144.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Long Term Liabilities" GridPane.columnIndex="3" />
+            <Button mnemonicParsing="false" onAction="#shortTermAssets" prefHeight="87.0" prefWidth="130.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Short Term Assets" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" onAction="#longTermLiabilities" prefHeight="87.0" prefWidth="144.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Long Term Liabilities" GridPane.columnIndex="3" />
             <Button mnemonicParsing="false" prefHeight="82.0" prefWidth="126.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Current Liabilities" GridPane.columnIndex="4" />
             <Button mnemonicParsing="false" prefHeight="84.0" prefWidth="128.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Retirement" GridPane.columnIndex="5" />
             <Button mnemonicParsing="false" onAction="#logout" prefHeight="82.0" prefWidth="138.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white;" text="Logout" GridPane.columnIndex="8" />

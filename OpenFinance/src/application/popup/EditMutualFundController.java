@@ -9,12 +9,13 @@ import application.LongTermAssetsController;
 import application.manager.Manager;
 import application.users.User;
 import data.assets.longterm.ETF;
+import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.ETF.CapType;
 import data.assets.longterm.ETF.CountryType;
 import data.assets.longterm.ETF.InvestmentType;
-import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.LongTermAsset.AccountType;
 import data.assets.longterm.LongTermAsset.Bank;
+import data.assets.longterm.MutualFunds;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -30,8 +31,8 @@ import javafx.stage.Stage;
  * @author Stephen Welsh
  *
  */
-public class AddETFController extends BorderPane{
-	
+public class EditMutualFundController extends BorderPane{
+
 	private User user;
 	
 	@FXML
@@ -61,19 +62,21 @@ public class AddETFController extends BorderPane{
 	@FXML
 	private Label error;
 	
+	private MutualFunds asset;
 	
-	public AddETFController() {
+	
+	public EditMutualFundController(MutualFunds asset) {
 		
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddETF.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditMutualFund.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
         user = Manager.getInstance().getCurrentUser();
         
-       
+        this.asset = asset;
 
         try {
             BorderPane pane = fxmlLoader.load();
@@ -88,7 +91,9 @@ public class AddETFController extends BorderPane{
     		
     		primaryStage.setFullScreen(false);
     		
-    		
+    		ticker.setText(asset.getTicker());
+    		initPrice.setText(asset.getInitPrice() + "");
+    		number.setText(asset.getQuantity() + "");
     		
             
             investmentBank = new ChoiceBox<String>();
@@ -97,11 +102,16 @@ public class AddETFController extends BorderPane{
             capType = new ChoiceBox<String>();
             investmentType = new ChoiceBox<String>();
             
-            investmentBank.getItems().addAll("Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
-            accountType.getItems().addAll("Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
+            investmentBank.getItems().addAll("Schwab", "Merril_Lynch", "Vanguard", "TD_Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
+            accountType.getItems().addAll("Brokerage", "Roth_401K", "Roth_IRA", "IRA", "401K", "Taxable_Account");
             countryType.getItems().addAll("Domestic", "Foreign");
-            capType.getItems().addAll("Small Cap", "Mid Cap", "Large Cap");
+            capType.getItems().addAll("Small_Cap", "Mid_Cap", "Large_Cap");
             investmentType.getItems().addAll("NA", "Value", "Growth");
+            investmentBank.getSelectionModel().select(asset.getBankString());
+            accountType.getSelectionModel().select(asset.getAccountString());
+            countryType.getSelectionModel().select(asset.getCountryString());
+            capType.getSelectionModel().select(asset.getCapString());
+            investmentType.getSelectionModel().select(asset.getInvestmentTypeString());
             
             
             grid.add(investmentBank, 1, 4);
@@ -121,8 +131,10 @@ public class AddETFController extends BorderPane{
 			LongTermAsset stock = new ETF(ticker.getText(), Double.parseDouble(initPrice.getText()), 
 					Double.parseDouble(number.getText()), getBank(), getAccount(), getCounty(), getCap(), getInvType());
 			
+			user.deleteLongTermAsset(asset);
+			
 			user.addLongTermAsset(stock);
-			LongTermAssetsController.addETFToTable(stock);;
+			LongTermAssetsController.removeMutualFundfromTable(asset, stock);
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
@@ -154,11 +166,11 @@ public class AddETFController extends BorderPane{
 	}
 
 	private CapType getCap() {
-		if(capType.getValue().equals("Small Cap")) {
+		if(capType.getValue().equals("Small_Cap")) {
 			return CapType.SMALL_CAP;
-		} else if(capType.getValue().equals("Mid Cap")) {
+		} else if(capType.getValue().equals("Mid_Cap")) {
 			return CapType.MID_CAP;
-		}  else if(capType.getValue().equals("Large Cap")) {
+		}  else if(capType.getValue().equals("Large_Cap")) {
 			return CapType.LARGE_CAP;
 		}  else {
 			return null;
@@ -168,15 +180,15 @@ public class AddETFController extends BorderPane{
 	private AccountType getAccount() {
 		if(accountType.getValue().equals("Brokerage")) {
 			return AccountType.BROKERAGE;
-		} else if(accountType.getValue().equals("Roth 401K")) {
+		} else if(accountType.getValue().equals("Roth_401K")) {
 			return AccountType.ROTH401K;
-		} else if(accountType.getValue().equals("Roth IRA")) {
+		} else if(accountType.getValue().equals("Roth_IRA")) {
 			return AccountType.ROTH_IRA;
 		} else if(accountType.getValue().equals("IRA")) {
 			return AccountType.IRA;
 		} else if(accountType.getValue().equals("401K")) {
 			return AccountType._401K;
-		} else if(accountType.getValue().equals("Taxable Account")) {
+		} else if(accountType.getValue().equals("Taxable_Account")) {
 			return AccountType.TAXABLE_ACCOUNT;
 		} else {
 			throw new IllegalArgumentException();
@@ -186,11 +198,11 @@ public class AddETFController extends BorderPane{
 	private Bank getBank() {
 		if(investmentBank.getValue().equals("Schwab")) {
 			return Bank.SCHWAB;
-		} else if(investmentBank.getValue().equals("Merril Lynch")) {
+		} else if(investmentBank.getValue().equals("Merril_Lynch")) {
 			return Bank.MERRIL_LYNCH;
 		} else if(investmentBank.getValue().equals("Vanguard")) {
 			return Bank.VANGUARD;
-		} else if(investmentBank.getValue().equals("TD Ameritrade")) {
+		} else if(investmentBank.getValue().equals("TD_Ameritrade")) {
 			return Bank.TD;
 		} else if(investmentBank.getValue().equals("Fidelity")) {
 			return Bank.FIDELITY;
@@ -204,5 +216,4 @@ public class AddETFController extends BorderPane{
 			return null;
 		}
 	}
-	
 }

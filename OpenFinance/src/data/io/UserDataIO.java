@@ -16,6 +16,8 @@ import data.assets.longterm.ETF.InvestmentType;
 import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.LongTermAssetsList;
 import data.assets.longterm.MutualFunds;
+import data.assets.shortTerm.ShortTermAsset;
+import data.liabilities.Liability;
 import data.assets.longterm.LongTermAsset.AccountType;
 import data.assets.longterm.LongTermAsset.Bank;
 
@@ -65,21 +67,40 @@ public class UserDataIO {
 							getBank(bank), getAccount(account), getCountry(country), getCap(cap), getInvestmentType(invType));
 					
 					user.addLongTermAsset(asset);
-				} else {
+				} else if(type.equals("Mutual Fund")){
 					String ticker = line.next();
 					String quantity = line.next();
 					String initPrice = line.next();
 					String bank = line.next();
 					String account = line.next();
-					String country = line.next();
 					String cap = line.next();
+					String invType = line.next();
+					String country = line.next();
+					
+					
 					
 					LongTermAsset asset = new MutualFunds(ticker, Double.parseDouble(initPrice), Double.parseDouble(quantity), 
-							getBank(bank), getAccount(account), getCountry(country), getCap(cap));
+							getBank(bank), getAccount(account), getCountry(country), getCap(cap), getInvestmentType(invType));
 					
 					user.addLongTermAsset(asset);
+				} else {
+					String bank = line.next();
+					String accountName = line.next();
+					String totalAmount = line.next();
+					String accountType = line.next();
+					
+					ShortTermAsset asset = new ShortTermAsset(bank, accountName, getAccountType(accountType), Double.parseDouble(totalAmount));
+					user.returnShortTermAssets().addShortTermAsset(asset);
 				}
 				
+			} else if(lineStart.equals("-")){
+				String name = line.next();
+				double totalAmount = Double.parseDouble(line.next());
+				int yearsToMaturity = Integer.parseInt(line.next());
+				int creationYear = Integer.parseInt(line.next());
+				
+				Liability liability = new Liability(name, totalAmount, yearsToMaturity, creationYear);
+				user.returnLiabilities().addLiability(liability);
 			}
 			
 			line.close();
@@ -87,10 +108,9 @@ public class UserDataIO {
 		}
 		s.close();
 		
-		File file = new File("test-files/" + user.getId() + ".enc");
-		file.delete();
-		
 	}
+
+	
 
 	public static void writeUserData(User user, String key, String transformation) throws FileNotFoundException {
 		
@@ -131,6 +151,48 @@ public class UserDataIO {
 					asset.getInvestmentTypeString() + "," +
 					asset.getCountryString()
 					+ " | ";		
+		}
+		
+		ArrayList<LongTermAsset> mutualFunds = list.returnMutualFunds();
+		
+		for(int i = 0; i < mutualFunds.size(); i++) {
+			MutualFunds asset = (MutualFunds) mutualFunds.get(i);
+			
+			content += "+," +
+					asset.getAssetType() + "," +
+					asset.getTicker() + "," +
+					asset.getQuantity() + "," +
+					asset.getInitPrice() + "," +
+					asset.getBankString() + "," +
+					asset.getAccountString() + "," +
+					asset.getCapString() + "," +
+					asset.getInvestmentTypeString() + "," +
+					asset.getCountryString()
+					+ " | ";		
+		}
+		
+		ArrayList<ShortTermAsset> shortTermAssets = user.returnShortTermAssets().returnShortTermAssets();
+		
+		for(int i = 0; i < shortTermAssets.size(); i++) {
+			ShortTermAsset asset = shortTermAssets.get(i);
+			
+			content += "+," + "short," +
+					asset.getBank() + "," +
+					asset.getAccountName() + "," +
+					asset.getAmount() + "," +
+					asset.getAccountTypeString() + "," +
+					" | ";		
+		}
+		
+		ArrayList<Liability> liabilities = user.returnLiabilities().getLiabilities();
+		
+		for(Liability l : liabilities) {
+			content += "-," +
+					l.getName() + "," +
+					l.getTotalAmount() + "," +
+					l.getYearsToMaturity() + "," +
+					l.getCreationYear() + "," +
+					" | ";
 		}
 		
 		fileEncrypt.encrypt(content, "test-files/" + user.getId() + ".enc");
@@ -207,6 +269,24 @@ public class UserDataIO {
 		}  else if(invType.equals("Value")) {
 			return InvestmentType.GROWTH;
 		}  else {
+			return null;
+		}
+	}
+	
+	private static data.assets.shortTerm.ShortTermAsset.AccountType getAccountType(String accountType) {
+		if(accountType.equals("cash")) {
+			return data.assets.shortTerm.ShortTermAsset.AccountType.Cash;
+		} else if(accountType.equals("cds")) {
+			return data.assets.shortTerm.ShortTermAsset.AccountType.Cds;
+		} else if(accountType.equals("checking")) {
+			return data.assets.shortTerm.ShortTermAsset.AccountType.Checking;
+		} else if(accountType.equals("high")) {
+			return data.assets.shortTerm.ShortTermAsset.AccountType.High_Yield_Savings;
+		} else if(accountType.equals("money")) {
+			return data.assets.shortTerm.ShortTermAsset.AccountType.Money_Market;
+		} else if(accountType.equals("savings")) {
+			return data.assets.shortTerm.ShortTermAsset.AccountType.Savings;
+		} else {
 			return null;
 		}
 	}

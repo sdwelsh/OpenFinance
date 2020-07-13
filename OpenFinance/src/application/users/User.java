@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.LongTermAssetsList;
+import data.assets.shortTerm.ShortTermAsset;
+import data.assets.shortTerm.ShortTermAssetsList;
+import data.liabilities.LiabilitiesList;
+import data.liabilities.Liability;
 
 /**
  * User class Creates a new User that is able to create a list of assets and liabilities for themselves to be viewed by them 
@@ -30,6 +34,10 @@ public class User {
 	
 	/** List of User Longterm Assets*/
 	private LongTermAssetsList longTermAssets;
+	
+	private ShortTermAssetsList shortTermAssets;
+	
+	private LiabilitiesList liabilities;
 
 	/**
 	 * Constructs the User class giving the user a name, unique id, and password.
@@ -44,6 +52,8 @@ public class User {
 		setId(id);
 		setPassword(password);
 		longTermAssets = new LongTermAssetsList();
+		shortTermAssets = new ShortTermAssetsList();
+		liabilities = new LiabilitiesList();
 	}
 
 	public String getFirstName() {
@@ -97,6 +107,10 @@ public class User {
 	public LongTermAssetsList getLongTermAssets() {
 		return longTermAssets;
 	}
+	
+	public double getLongTermAssetsTotal() {
+		return longTermAssets.getLongTermAssetsTotal();
+	}
 
 	@Override
 	public String toString() {
@@ -148,6 +162,46 @@ public class User {
 
 	public void reset() {
 		longTermAssets = new LongTermAssetsList(); 
+		shortTermAssets = new ShortTermAssetsList();
+		liabilities = new LiabilitiesList();
+	}
+
+	public void deleteLongTermAsset(LongTermAsset asset) {
+		longTermAssets.removeStocks(asset);
+	}
+	
+	public ShortTermAssetsList returnShortTermAssets() {
+		return shortTermAssets;
+	}
+	
+	public LiabilitiesList returnLiabilities() {
+		return liabilities;
+	}
+
+	public double getShortTermAssetsTotal() {
+		ArrayList<ShortTermAsset> assets = shortTermAssets.returnShortTermAssets();
+		
+		double total = 0;
+		
+		for(ShortTermAsset asset : assets) {
+			total += asset.getAmount();
+		}
+		
+		return total;
+	}
+
+	public double getTotalLongTermLiabilities() {
+		ArrayList<Liability> liability = liabilities.getLiabilities();
+		
+		double total = 0;
+		
+		for(Liability l : liability) {
+			if(l.getYearsToMaturity() > 1) {
+				total += l.getTotalAmount();
+			}
+		}
+		
+		return total;
 	}
 	
 	

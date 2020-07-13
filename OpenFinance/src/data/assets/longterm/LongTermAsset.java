@@ -4,6 +4,7 @@
 package data.assets.longterm;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import data.assets.longterm.reader.StockReader;
 import javafx.beans.property.SimpleStringProperty;
@@ -253,6 +254,8 @@ public class LongTermAsset {
 			return "Vanguard";
 		} else if(bank == Bank.ETRADE) {
 			return "E-Trade";
+		} else if(bank == Bank.SCHWAB) {
+			return "Schwab";
 		}
 		return null;
 	}
@@ -268,7 +271,10 @@ public class LongTermAsset {
 	 * @return the totalPriceString
 	 */
 	public String getTotalPriceString() {
-		return "$" + (Math.round(getTotalPrice() * 100.00) / 100.00);
+		 DecimalFormat decimalFormat = new DecimalFormat("#.##");
+	        decimalFormat.setGroupingUsed(true);
+	        decimalFormat.setGroupingSize(3);
+		return "$" + (decimalFormat.format(getTotalPrice()));
 	}
 
 	/**
@@ -282,7 +288,10 @@ public class LongTermAsset {
 	 * @return the pricePerShareString
 	 */
 	public String getPricePerShareString() {
-		return "$" + (Math.round(getPrice() * 100.00) / 100.00);
+		 DecimalFormat decimalFormat = new DecimalFormat("#.##");
+	        decimalFormat.setGroupingUsed(true);
+	        decimalFormat.setGroupingSize(3);
+		return "$" + (decimalFormat.format(getPrice()));
 	}
 
 	/**
@@ -344,5 +353,51 @@ public class LongTermAsset {
 	public String getAssetType() {
 		return "Stock";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bank == null) ? 0 : bank.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(initPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(quantity);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((ticker == null) ? 0 : ticker.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LongTermAsset other = (LongTermAsset) obj;
+		if (bank != other.bank)
+			return false;
+		if (Double.doubleToLongBits(initPrice) != Double.doubleToLongBits(other.initPrice))
+			return false;
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+			return false;
+		if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
+			return false;
+		if (ticker == null) {
+			if (other.ticker != null)
+				return false;
+		} else if (!ticker.equals(other.ticker))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+	
+	
 	
 }

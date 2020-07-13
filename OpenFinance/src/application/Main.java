@@ -5,7 +5,10 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.manager.Manager;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -73,5 +76,21 @@ public class Main extends Application{
 	public static void login(BorderPane view) {
 		primaryStage.setScene(new Scene(view));
 		primaryStage.show();
+	}
+	
+	public static Scene getScene() {
+		return scene;
+	}
+	
+	@FXML
+	public void exitApplication(ActionEvent event) {
+	   Platform.exit();
+	}
+	
+	@Override
+	public void stop(){
+	    if(Manager.getInstance().getCurrentUser() != null) {
+	    	Manager.getInstance().logout();
+	    }
 	}
 }

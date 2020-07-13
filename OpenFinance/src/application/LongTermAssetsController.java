@@ -4,21 +4,32 @@
 package application;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import application.manager.Manager;
 import application.popup.AddETFController;
+import application.popup.AddMutualFundController;
 import application.popup.AddStockController;
+import application.popup.EditETFController;
+import application.popup.EditMutualFundController;
+import application.popup.EditStockController;
 import application.users.User;
+import data.assets.longterm.ETF;
 import data.assets.longterm.LongTermAsset;
+import data.assets.longterm.MutualFunds;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
@@ -28,6 +39,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -60,6 +72,25 @@ public class LongTermAssetsController extends BorderPane {
 	
 	private VBox vbox;
 	
+	private Button addStock;
+	private Button stockEdit;
+	private Button stockDelete;
+	private Button stockRefresh;
+	
+	private Button addEtf;
+	private Button etfEdit;
+	private Button etfDelete;
+	private Button etfRefresh;
+	
+	private Button addMutualFund;
+	private Button mutualEdit;
+	private Button mutualDelete;
+	private Button mutualRefresh;
+
+	private Label stockTotal;
+	private Label mutualTotal;
+	private Label etfTotal;
+	
 	
 	public LongTermAssetsController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LongTermAssets.fxml"));
@@ -76,7 +107,7 @@ public class LongTermAssetsController extends BorderPane {
             logoMain.setImage(thumb);
             
             pane = new ScrollPane();
-            pane.setFitToHeight(true);
+           
             pane.setFitToWidth(true);
             size.getChildren().add(pane);
             vbox = new VBox();
@@ -86,9 +117,25 @@ public class LongTermAssetsController extends BorderPane {
             addETFTable();
             
             
+            
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+	}
+	
+	@FXML
+	public void openMain() {
+		Main.setView(new MainController());
+	}
+	
+	@FXML
+	public void shortTermAssets() {
+		Main.setView(new ShortTermAssetsController());
+	}
+	
+	@FXML
+	public void longTermLiabilities() {
+		Main.setView(new LongTermLiabilitiesController());
 	}
 	
 	@FXML
@@ -119,8 +166,13 @@ public class LongTermAssetsController extends BorderPane {
         
         ArrayList<LongTermAsset> array = user.getLongTermAssets().returnStocks();
         
+        double total = 0;
+        
         for(int i = 0; i < array.size(); i++) {
+        	LongTermAsset asset = array.get(i);
+        	total += asset.getTotalPrice();
         	assetList.add(array.get(i));
+        	
         }
         
         stockTable.setItems(assetList);
@@ -135,7 +187,7 @@ public class LongTermAssetsController extends BorderPane {
 		stockTable.getColumns().add(bank);
 		stockTable.getColumns().add(accountType);
 		
-		stockTable.setPrefHeight(array.size() * 50);
+		stockTable.setPrefHeight(array.size() * 50 + 50);
 		stockTable.setPrefWidth(pane.getWidth());
 		
 		ticker.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.05));
@@ -155,14 +207,71 @@ public class LongTermAssetsController extends BorderPane {
         
         stockTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         
-        Label label = new Label("Stocks");
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
         
-        label.setStyle("-fx-font-size:44px;-fx-font-weight: bold;");
-        label.setPadding(new Insets(20));
+        Label stockLabel = new Label("Stocks - " );
         
-        vbox.getChildren().add(label);
+        stockTotal = new Label("$" + (decimalFormat.format(total)));
+        stockTotal.setStyle("-fx-font-size:40px;");
+        stockLabel.setPadding(new Insets(20));
+        
+        stockLabel.setStyle("-fx-font-size:44px;-fx-font-weight: bold;");
+        stockLabel.setPadding(new Insets(20));
+        
+        GridPane pane = new GridPane();
+        pane.add(stockLabel, 0, 0);
+        pane.add(stockTotal, 1, 0);
+        
+        vbox.getChildren().add(pane);
         
         vbox.getChildren().add(stockTable);
+        
+        addStock = new Button("Add Stock");
+        addStock.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                addStock();
+            }
+        });
+        stockEdit = new Button("Edit");
+        stockEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	if(stockTable.getSelectionModel().getSelectedItem() != null) {
+            		new EditStockController(stockTable.getSelectionModel().getSelectedItem());
+            	}
+            }
+        });
+        stockDelete = new Button("Delete");
+        stockDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	if(stockTable.getSelectionModel().getSelectedItem() != null) {
+            		LongTermAsset asset = stockTable.getSelectionModel().getSelectedItem();
+                    user.deleteLongTermAsset(asset);
+                    stockTable.getItems().remove(stockTable.getSelectionModel().getSelectedIndex());
+            	}
+            }
+        });
+        stockRefresh = new Button("Refresh");
+        stockRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                //edit();
+            }
+        });
+        
+       
+        
+        GridPane buttons = new GridPane();
+        
+        buttons.add(addStock, 0, 0);
+        buttons.add(stockEdit, 2, 0);
+        buttons.add(stockDelete, 4, 0);
+        buttons.add(stockRefresh, 6, 0);
+        
+        buttons.setPadding(new Insets(10));
+        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        
+        vbox.getChildren().add(buttons);
 		
 	}
 	
@@ -182,13 +291,23 @@ public class LongTermAssetsController extends BorderPane {
 		bank.setCellValueFactory(new PropertyValueFactory<>("bankString"));
 		TableColumn<LongTermAsset,String> accountType = new TableColumn<LongTermAsset,String>("Account Type");
 		accountType.setCellValueFactory(new PropertyValueFactory<>("accountString"));
+		TableColumn<LongTermAsset,String> capType = new TableColumn<LongTermAsset,String>("Cap Type");
+		capType.setCellValueFactory(new PropertyValueFactory<>("capString"));
+		TableColumn<LongTermAsset,String> investmentType = new TableColumn<LongTermAsset,String>("Investment Type");
+		investmentType.setCellValueFactory(new PropertyValueFactory<>("investmentTypeString"));
+		TableColumn<LongTermAsset,String> countryType = new TableColumn<LongTermAsset,String>("Country Type");
+		countryType.setCellValueFactory(new PropertyValueFactory<>("countryString"));
 		
 		ObservableList<LongTermAsset> assetList = FXCollections.observableArrayList();
         
         ArrayList<LongTermAsset> array = user.getLongTermAssets().returnMutualFunds();
         
+        double total = 0;
+        
         for(int i = 0; i < array.size(); i++) {
-        	assetList.add(array.get(i));
+        	LongTermAsset asset = array.get(i);
+        	total += asset.getTotalPrice();
+        	assetList.add(asset);
         }
         
         mutualFundTable.setItems(assetList);
@@ -202,8 +321,11 @@ public class LongTermAssetsController extends BorderPane {
 		mutualFundTable.getColumns().add(pricePerShare);
 		mutualFundTable.getColumns().add(bank);
 		mutualFundTable.getColumns().add(accountType);
+		mutualFundTable.getColumns().add(capType);
+		mutualFundTable.getColumns().add(investmentType);
+		mutualFundTable.getColumns().add(countryType);
 		
-		mutualFundTable.setPrefHeight(array.size() * 50);
+		mutualFundTable.setPrefHeight(array.size() * 50 + 50);
 		mutualFundTable.setPrefWidth(pane.getWidth());
 		
 		ticker.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.05));
@@ -212,7 +334,10 @@ public class LongTermAssetsController extends BorderPane {
         quantity.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
         pricePerShare.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
         bank.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
-        accountType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.2));
+        accountType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
+        capType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
+        investmentType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
+        countryType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
 
         ticker.setResizable(false);
         price.setResizable(false);
@@ -220,17 +345,78 @@ public class LongTermAssetsController extends BorderPane {
         pricePerShare.setResizable(false);
         bank.setResizable(false);
         accountType.setResizable(false);
+        capType.setResizable(false);
+        investmentType.setResizable(false);
+        countryType.setResizable(false);
         
         mutualFundTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         
-        Label label = new Label("Mutual Funds");
+        Label label = new Label("Mutual Funds - ");
         
         label.setStyle("-fx-font-size:44px;-fx-font-weight: bold;");
         label.setPadding(new Insets(20));
         
-        vbox.getChildren().add(label);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+        
+        mutualTotal = new Label("$" + decimalFormat.format(total));
+        mutualTotal.setStyle("-fx-font-size:40px;;");
+        mutualTotal.setPadding(new Insets(20));
+        
+        GridPane pane = new GridPane();
+        pane.add(label, 0, 0);
+        pane.add(mutualTotal, 1, 0);
+        
+        
+        vbox.getChildren().add(pane);
         
         vbox.getChildren().add(mutualFundTable);
+        
+        addMutualFund = new Button("Add Mutual Fund");
+        addMutualFund.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                addMutual();
+            }
+        });
+        mutualEdit = new Button("Edit");
+        mutualEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+               if(mutualFundTable.getSelectionModel().getSelectedItem() != null) {
+            	   new EditMutualFundController((MutualFunds) mutualFundTable.getSelectionModel().getSelectedItem() );
+               }
+            }
+        });
+        mutualDelete = new Button("Delete");
+        mutualDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	if(mutualFundTable.getSelectionModel().getSelectedItem() != null) {
+            		LongTermAsset asset = mutualFundTable.getSelectionModel().getSelectedItem();
+                    user.deleteLongTermAsset(asset);
+                    mutualFundTable.getItems().remove(mutualFundTable.getSelectionModel().getSelectedIndex());
+            	}
+            }
+        });
+        mutualRefresh = new Button("Refresh");
+        mutualRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                //edit();
+            }
+        });
+        
+       
+        
+        GridPane buttons = new GridPane();
+        
+        buttons.add(addMutualFund, 0, 0);
+        buttons.add(mutualEdit, 2, 0);
+        buttons.add(mutualDelete, 4, 0);
+        buttons.add(mutualRefresh, 6, 0);
+        
+        buttons.setPadding(new Insets(10));
+        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        
+        vbox.getChildren().add(buttons);
 		
 	}
 	
@@ -261,7 +447,11 @@ public class LongTermAssetsController extends BorderPane {
         
         ArrayList<LongTermAsset> array = user.getLongTermAssets().returnETFs();
         
+        double total = 0;
+        
         for(int i = 0; i < array.size(); i++) {
+        	LongTermAsset asset = array.get(i);
+        	total += asset.getTotalPrice();
         	assetList.add(array.get(i));
         }
         
@@ -280,7 +470,7 @@ public class LongTermAssetsController extends BorderPane {
 		etfTable.getColumns().add(investmentType);
 		etfTable.getColumns().add(countryType);
 		
-		etfTable.setPrefHeight(array.size() * 50);
+		etfTable.setPrefHeight(array.size() * 50 + 50);
 		etfTable.setPrefWidth(pane.getWidth());
 		
 		ticker.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.05));
@@ -311,15 +501,70 @@ public class LongTermAssetsController extends BorderPane {
         label.setStyle("-fx-font-size:44px;-fx-font-weight: bold;");
         label.setPadding(new Insets(20));
         
-        vbox.getChildren().add(label);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+        
+        etfTotal = new Label("$" + decimalFormat.format(total));
+        etfTotal.setStyle("-fx-font-size:40px;;");
+        etfTotal.setPadding(new Insets(20));
+        
+        GridPane pane = new GridPane();
+        pane.add(label, 0, 0);
+        pane.add(etfTotal, 1, 0);
+        
+        vbox.getChildren().add(pane);
         
         vbox.getChildren().add(etfTable);
+        
+        addEtf = new Button("Add ETF");
+        addEtf.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                addEtf();
+            }
+        });
+        
+        etfEdit = new Button("Edit");
+        etfEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	if(etfTable.getSelectionModel().getSelectedItem() != null) {
+            		new EditETFController((ETF) etfTable.getSelectionModel().getSelectedItem());
+            	}
+            }
+        });
+        etfDelete = new Button("Delete");
+        etfDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	if(etfTable.getSelectionModel().getSelectedItem() != null) {
+            		LongTermAsset asset = etfTable.getSelectionModel().getSelectedItem();
+                    user.deleteLongTermAsset(asset);
+                    etfTable.getItems().remove(etfTable.getSelectionModel().getSelectedIndex());
+            	}
+            }
+        });
+        etfRefresh = new Button("Refresh");
+        etfRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                //edit();
+            }
+        });
+        
+       
+        
+        GridPane buttons = new GridPane();
+        
+        buttons.add(addEtf, 0, 0);
+        buttons.add(etfEdit, 2, 0);
+        buttons.add(etfDelete, 4, 0);
+        buttons.add(etfRefresh, 6, 0);
+        
+        buttons.setPadding(new Insets(10));
+        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        
+        vbox.getChildren().add(buttons);
 		
 	}
 	
-	
-	
-	@FXML 
 	public void addStock() {
 		new AddStockController();
 	}
@@ -331,17 +576,7 @@ public class LongTermAssetsController extends BorderPane {
 	
 	@FXML
 	public void addMutual() {
-		
-	}
-	
-	@FXML
-	public void edit() {
-		
-	}
-	
-	@FXML 
-	public void delete() {
-		
+		new AddMutualFundController();
 	}
 	
 	@FXML
@@ -384,9 +619,24 @@ public class LongTermAssetsController extends BorderPane {
 		etfTable.getItems().add(stock);
 		etfTable.setPrefHeight(etfTable.getHeight() + 50);
 	}
+
+	public static void addMutualFundToTable(LongTermAsset stock) {
+		mutualFundTable.getItems().add(stock);
+		mutualFundTable.setPrefHeight(etfTable.getHeight() + 50);
+	}
+
+	public static void removeStockFromTable(LongTermAsset before, LongTermAsset after) {
+		stockTable.getItems().remove(before);
+		stockTable.getItems().add(after);
+	}
+
+	public static void removeETFfromTable(LongTermAsset before, LongTermAsset after) {
+		etfTable.getItems().remove(before);
+		etfTable.getItems().add(after);
+	}
 	
-	@FXML
-	public void openMain() {
-		Main.setView(new MainController());
+	public static void removeMutualFundfromTable(LongTermAsset before, LongTermAsset after) {
+		mutualFundTable.getItems().remove(before);
+		mutualFundTable.getItems().add(after);
 	}
 }

@@ -116,4 +116,12 @@ public class LongTermAssetsList{
 			throw new RuntimeException();
 		}
 	}
+
+	public double getLongTermAssetsTotal() {
+		double total = 0;
+		for(int i = 0; i < stocks.size(); i++) {
+			total += stocks.get(i).getTotalPrice();
+		}
+		return total;
+	}
 }

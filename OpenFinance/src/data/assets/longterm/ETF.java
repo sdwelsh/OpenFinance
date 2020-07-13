@@ -167,6 +167,36 @@ public class ETF extends LongTermAsset{
 	public void setInvestmentTypeString(SimpleStringProperty investmentTypeString) {
 		this.investmentTypeString = investmentTypeString;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((cap == null) ? 0 : cap.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result + ((investmentType == null) ? 0 : investmentType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ETF other = (ETF) obj;
+		if (cap != other.cap)
+			return false;
+		if (country != other.country)
+			return false;
+		if (investmentType != other.investmentType)
+			return false;
+		return true;
+	}
+	
+	
 	
 	
 	

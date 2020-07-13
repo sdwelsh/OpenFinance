@@ -18,6 +18,10 @@
   -fx-alignment: CENTER;
 }
 
+.table-row-cell {
+    -fx-cell-size: 50px;
+}
+
 .button,.menu-button,.toggle-button,.split-menu-button {
 	-fx-font-size: 14;
 	-fx-background-radius: 4;
@@ -943,3 +947,32 @@ VBox > .split-menu-button.last > .arrow-button {
 .slider:vertical .track {
 	-fx-pref-width: 5;
 }
+
+chart-pie{
+	-fx-effect: null;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: black;
+    -fx-fill: black;
+    -fx-effect: null;
+}
+ 
+.chart-pie-label {
+    -fx-fill: #8b4513;
+    -fx-font-size: 1em;
+    -fx-effect: null;
+} 
+.chart-legend {
+   -fx-background-color:  white;
+   -fx-stroke: white;
+   -fx-effect: null;
+}
+
+.default-color0.chart-pie { -fx-pie-color: #FFA500; }
+.default-color1.chart-pie { -fx-pie-color: #FFBB40; }
+.default-color2.chart-pie { -fx-pie-color: #FFD280; }
+.default-color3.chart-pie { -fx-pie-color: #DF9000; }
+.default-color4.chart-pie { -fx-pie-color: #9F6700; }
+.default-color5.chart-pie { -fx-pie-color: #E66932; }
+.default-color6.chart-pie { -fx-pie-color: #805300; }

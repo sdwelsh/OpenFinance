@@ -4,7 +4,6 @@
 package application.popup;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import application.LongTermAssetsController;
 import application.manager.Manager;
@@ -12,8 +11,6 @@ import application.users.User;
 import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.LongTermAsset.AccountType;
 import data.assets.longterm.LongTermAsset.Bank;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,8 +26,7 @@ import javafx.stage.Stage;
  * @author Stephen Welsh
  *
  */
-public class AddStockController extends BorderPane{
-	
+public class EditStockController extends BorderPane{
 	private User user;
 	
 	@FXML
@@ -54,13 +50,17 @@ public class AddStockController extends BorderPane{
 	@FXML
 	private Label error;
 	
+	private LongTermAsset editedAsset;
 	
-	public AddStockController() {
+	
+	public EditStockController(LongTermAsset asset) {
 		
 		primaryStage = new Stage();
 		
+		editedAsset = asset;
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddStock.fxml"));
+		
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditStock.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -81,15 +81,19 @@ public class AddStockController extends BorderPane{
     		
     		primaryStage.setFullScreen(false);
     		
-    		
+    		ticker.setText(asset.getTicker());
+    		initPrice.setText(asset.getInitPrice() + "");
+    		number.setText(asset.getQuantity() + "");
     		
             
             investmentBank = new ChoiceBox<String>();
             accountType = new ChoiceBox<String>();
             
-            investmentBank.getItems().addAll("Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
+            investmentBank.getItems().addAll("Schwab", "Merril_Lynch", "Vanguard", "TD_Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
+            investmentBank.getSelectionModel().select(asset.getBankString());
             
-            accountType.getItems().addAll("Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
+            accountType.getItems().addAll("Brokerage", "Roth_401K", "Roth_IRA", "IRA", "401K", "Taxable_Account");
+            accountType.getSelectionModel().select(asset.getAccountString());
             
             grid.add(investmentBank, 1, 4);
             grid.add(accountType, 1, 5);
@@ -98,15 +102,19 @@ public class AddStockController extends BorderPane{
             throw new RuntimeException(exception);
         }
 	}
-	
+
 	@FXML
 	public void submit() {
 		try {
+
 			LongTermAsset stock = new LongTermAsset(ticker.getText(), Double.parseDouble(initPrice.getText()), 
 					Double.parseDouble(number.getText()), getBank(), getAccount());
 			
+			user.deleteLongTermAsset(editedAsset);
+			LongTermAssetsController.removeStockFromTable(editedAsset, stock);
+			
 			user.addLongTermAsset(stock);
-			LongTermAssetsController.addStockToTable(stock);;
+			
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
@@ -118,15 +126,15 @@ public class AddStockController extends BorderPane{
 	private AccountType getAccount() {
 		if(accountType.getValue().equals("Brokerage")) {
 			return AccountType.BROKERAGE;
-		} else if(accountType.getValue().equals("Roth 401K")) {
+		} else if(accountType.getValue().equals("Roth_401K")) {
 			return AccountType.ROTH401K;
-		} else if(accountType.getValue().equals("Roth IRA")) {
+		} else if(accountType.getValue().equals("Roth_IRA")) {
 			return AccountType.ROTH_IRA;
 		} else if(accountType.getValue().equals("IRA")) {
 			return AccountType.IRA;
 		} else if(accountType.getValue().equals("401K")) {
 			return AccountType._401K;
-		} else if(accountType.getValue().equals("Taxable Account")) {
+		} else if(accountType.getValue().equals("Taxable_Account")) {
 			return AccountType.TAXABLE_ACCOUNT;
 		} else {
 			return null;
@@ -136,11 +144,11 @@ public class AddStockController extends BorderPane{
 	private Bank getBank() {
 		if(investmentBank.getValue().equals("Schwab")) {
 			return Bank.SCHWAB;
-		} else if(investmentBank.getValue().equals("Merril Lynch")) {
+		} else if(investmentBank.getValue().equals("Merril_Lynch")) {
 			return Bank.MERRIL_LYNCH;
 		} else if(investmentBank.getValue().equals("Vanguard")) {
 			return Bank.VANGUARD;
-		} else if(investmentBank.getValue().equals("TD Ameritrade")) {
+		} else if(investmentBank.getValue().equals("TD_Ameritrade")) {
 			return Bank.TD;
 		} else if(investmentBank.getValue().equals("Fidelity")) {
 			return Bank.FIDELITY;
