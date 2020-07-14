@@ -4,7 +4,6 @@
 package data.io;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,7 +18,6 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -34,8 +32,8 @@ public class FileEncrypterDecrypter {
 	Key secretKey;
 	
 	
-	FileEncrypterDecrypter(String secretKey, String transformation) {
-	    this.secretKey = new SecretKeySpec(secretKey.getBytes(), "AES");
+	FileEncrypterDecrypter(byte[] secretKey, String transformation) {
+	    this.secretKey = new SecretKeySpec(secretKey, "AES");
 	    try {
 			this.cipher = Cipher.getInstance(transformation);
 		} catch (NoSuchAlgorithmException e) {

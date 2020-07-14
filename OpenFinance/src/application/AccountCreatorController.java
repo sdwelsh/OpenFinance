@@ -46,8 +46,6 @@ public class AccountCreatorController extends BorderPane{
 		String username = getUserName();
 		String password = getPassword();
 		
-		System.out.println(password);
-		
 		
 		
 		if(firstName==null || lastName == null || username==null || password==null) {

@@ -39,7 +39,7 @@ public class Manager {
 	
 	private static final String HASH_ALGORITHM = "SHA-256";
 	
-	private String key;
+	private byte[] key;
 	
 	private String transformation;
 	
@@ -50,7 +50,7 @@ public class Manager {
 		users = readUsers();
 		currentUser = getCurrentUser();
 		transformation = "AES/CBC/PKCS5Padding";
-		
+		key = new byte[32];
 	}
 	
 	/**
@@ -99,7 +99,11 @@ public class Manager {
 					String userPW = readPW();
 					if(pw.equals(userPW)) {
 						currentUser = users.get(i);
-						key = hash;
+						byte[] hashed = hash.getBytes();
+						for(int j = 0; i < 32; i++) {
+							key[j] = hashed[j];
+						}
+						
 						UserDataIO.readUserData(currentUser, key, transformation);
 						return true;
 					}
@@ -129,11 +133,17 @@ public class Manager {
 	 * @param user A user object that will be stored in the system
 	 */
 	public void createNewUser(User user) {
+		byte[] hashBytes = hashPW(user.getPassword()).getBytes();
+		for(int i = 0; i < 32; i++) {
+			key[i] = hashBytes[i];
+		}
+		
 		User hashedUser = new User(user.getFirstName(), user.getLastName(), user.getId(), hashPW(user.getPassword()));
 		
 		users.add(hashedUser);
 		setCurrentUser(hashedUser);
 		writeUsers();
+		
 	}
 	
 	/**

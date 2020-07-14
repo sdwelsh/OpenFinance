@@ -24,7 +24,7 @@ import data.assets.longterm.LongTermAsset.Bank;
 public class UserDataIO {
 	
 	
-	public static void readUserData(User user, String key, String transformation) {
+	public static void readUserData(User user, byte[] key, String transformation) {
 		FileEncrypterDecrypter decrypt = new FileEncrypterDecrypter(key, transformation);
 		
 		Scanner s = new Scanner(decrypt.decrypt("test-files/" + user.getId() + ".enc"));
@@ -112,7 +112,7 @@ public class UserDataIO {
 
 	
 
-	public static void writeUserData(User user, String key, String transformation) throws FileNotFoundException {
+	public static void writeUserData(User user, byte[] key, String transformation) throws FileNotFoundException {
 		
 		String content = "";
 		
