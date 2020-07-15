@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 	<project name="OpenFinance" default="do-deploy" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	
 	<target name="init-fx-tasks">
 		<path id="fxant">
 			<filelist>
@@ -20,18 +21,18 @@
 		<mkdir dir="externalLibs" />
 	
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Stephen Welsh\Downloads">
-				<filename name="charm-glisten-6.0.5.jar"/>
+			<fileset dir="C:\Users\Stephen Welsh\.p2\pool\plugins">
+				<filename name="org.junit_4.13.0.v20200204-1500.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.base.jar"/>
+			<fileset dir="C:\Users\Stephen Welsh\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.9.8">
+				<filename name="jackson-core-2.9.8.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.controls.jar"/>
+			<fileset dir="C:\Users\Stephen Welsh\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.9.0">
+				<filename name="jackson-annotations-2.9.0.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
@@ -45,8 +46,8 @@
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.swing.jar"/>
+			<fileset dir="C:\Users\Stephen Welsh\.m2\repository\org\slf4j\slf4j-api\1.7.25">
+				<filename name="slf4j-api-1.7.25.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
@@ -61,14 +62,54 @@
 		</copy>
 		<copy todir="externalLibs">
 			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
+				<filename name="javafx.base.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
+				<filename name="javafx.controls.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\Stephen Welsh\.m2\repository\com\yahoofinance-api\YahooFinanceAPI\3.15.0">
+				<filename name="YahooFinanceAPI-3.15.0.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\Stephen Welsh\.p2\pool\plugins">
+				<filename name="org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
+				<filename name="javafx.swing.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\Stephen Welsh\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.9.8">
+				<filename name="jackson-databind-2.9.8.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\javafx-sdk-11.0.2\lib">
 				<filename name="javafx.media.jar"/>
 			</fileset>
 		</copy>
 	
 		<mkdir dir="project" />
 		<copy todir="project">
-			<fileset dir="C:\Users\Stephen Welsh\Documents\FinanceApp\OpenFinance">
+			<fileset dir="C:\Users\Stephen Welsh\git\OpenFinance4\OpenFinance">
 				<include name="src/**" />
+			</fileset>
+		</copy>
+		<copy todir="project">
+			<fileset dir="C:\Users\Stephen Welsh\git\OpenFinance4\OpenFinance">
+				<include name="resources/**" />
+			</fileset>
+		</copy>
+		<copy todir="project">
+			<fileset dir="C:\Users\Stephen Welsh\git\OpenFinance4\OpenFinance">
+				<include name="test/**" />
 			</fileset>
 		</copy>
 	
@@ -85,13 +126,19 @@
 			<fileset dir="externalLibs">
 				<include name="javafx-swt.jar"/>
 				<include name="javafx.fxml.jar"/>
-				<include name="javafx.swing.jar"/>
-				<include name="javafx.graphics.jar"/>
-				<include name="charm-glisten-6.0.5.jar"/>
-				<include name="javafx.base.jar"/>
+				<include name="jackson-core-2.9.8.jar"/>
+				<include name="org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+				<include name="slf4j-api-1.7.25.jar"/>
 				<include name="javafx.web.jar"/>
-				<include name="javafx.media.jar"/>
+				<include name="org.junit_4.13.0.v20200204-1500.jar"/>
 				<include name="javafx.controls.jar"/>
+				<include name="javafx.media.jar"/>
+				<include name="YahooFinanceAPI-3.15.0.jar"/>
+				<include name="jackson-annotations-2.9.0.jar"/>
+				<include name="javafx.swing.jar"/>
+				<include name="jackson-databind-2.9.8.jar"/>
+				<include name="javafx.graphics.jar"/>
+				<include name="javafx.base.jar"/>
 			</fileset>
 		</copy>
 	
@@ -99,7 +146,17 @@
 	
 		<!-- Copy project sources itself -->
 		<copy todir="build/src">
+			<fileset dir="project/test">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<copy todir="build/src">
 			<fileset dir="project/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<copy todir="build/src">
+			<fileset dir="project/resources">
 				<include name="**/*"/>
 			</fileset>
 		</copy>
@@ -114,7 +171,13 @@
 	
 		<!-- Copy over none Java-Files -->
 		<copy todir="build/classes">
+		<fileset dir="project/test">
+			<exclude name="**/*.java"/>
+		</fileset>
 		<fileset dir="project/src">
+			<exclude name="**/*.java"/>
+		</fileset>
+		<fileset dir="project/resources">
 			<exclude name="**/*.java"/>
 		</fileset>
 		</copy>
