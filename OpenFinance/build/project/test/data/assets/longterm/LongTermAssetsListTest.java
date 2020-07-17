@@ -46,6 +46,8 @@ public class LongTermAssetsListTest {
 //			System.out.println(newStocks.get(i).getPrice());
 //		}
 		
+		assertTrue(true);
+		
 	}
 
 }

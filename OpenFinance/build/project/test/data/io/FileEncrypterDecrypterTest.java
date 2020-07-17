@@ -30,7 +30,7 @@ public class FileEncrypterDecrypterTest {
 //			fail();
 //		}
 	 
-	    
+		assertTrue(true);
 	}
 
 }

@@ -43,6 +43,7 @@ public class StockReaderTest {
 //		assertEquals(newStocks.get(0).getTicker(), "AMD");
 //		System.out.println(newStocks.get(0).getPrice());
 		
+		assertTrue(true);
 		
 	}
 
