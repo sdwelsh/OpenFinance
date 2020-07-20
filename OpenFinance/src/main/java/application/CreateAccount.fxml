@@ -11,12 +11,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <AnchorPane prefHeight="47.0" prefWidth="600.0" style="-fx-background-color: #ec6c34;" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <GridPane style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="466.0" prefWidth="600.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="128.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="425.0" minWidth="10.0" prefWidth="360.0" />
@@ -29,6 +29,8 @@
           <RowConstraints maxHeight="56.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -43,8 +45,10 @@
             <TextField fx:id="username" promptText="Username" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <PasswordField fx:id="password" promptText="Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <PasswordField fx:id="rePassword" promptText="Re-Enter Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Button mnemonicParsing="false" onAction="#createAccount" prefHeight="24.0" prefWidth="123.0" style="-fx-background-color: red;" text="Create Account" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label fx:id="error" textFill="#bc0000" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Button mnemonicParsing="false" onAction="#createAccount" prefHeight="24.0" prefWidth="123.0" style="-fx-background-color: red;" text="Create Account" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="error" textFill="#bc0000" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <TextField fx:id="emailText" promptText="Email" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="phoneText" promptText="Phone Number IE: xxx-xxx-xxxx" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
    </center>

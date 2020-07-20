@@ -85,8 +85,27 @@ public class EditLongTermLiabilityController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
-			Liability liabilityNew = new Liability(name.getText(), Double.parseDouble(totalAmount.getText()), 
-					Integer.parseInt(yearsToMaturity.getText()));
+			
+			double total = 0;
+			try {
+				total = Double.parseDouble(totalAmount.getText());
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a Valid Total");
+			}
+			
+			int years;
+			
+			try {
+				years = Integer.parseInt(yearsToMaturity.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid amount of years");
+			}
+			
+			if(years <= 1) {
+				throw new IllegalArgumentException("Long Term Liabilities must be greater than 1 Year");
+			}
+			Liability liabilityNew = new Liability(name.getText(), total, 
+					years);
 			
 			user.returnLiabilities().deleteLiability(liability);
 			user.returnLiabilities().addLiability(liabilityNew);
@@ -95,8 +114,7 @@ public class EditLongTermLiabilityController extends BorderPane{
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

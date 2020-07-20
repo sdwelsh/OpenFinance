@@ -101,8 +101,16 @@ public class EditShortTermAssetsController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
+			
+			double total = 0;
+			try {
+				total =  Double.parseDouble(totalAmount.getText());
+			}catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid total");
+			}
+			
 			ShortTermAsset newAsset = new ShortTermAsset(bank.getText(), 
-					accountName.getText(), accountType.getValue(), Double.parseDouble(totalAmount.getText()));
+					accountName.getText(), accountType.getValue(), total);
 			
 			user.returnShortTermAssets().removeShortTermAsset(asset);
 			user.returnShortTermAssets().addShortTermAsset(newAsset);
@@ -111,8 +119,7 @@ public class EditShortTermAssetsController extends BorderPane{
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 

@@ -7,11 +7,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 import java.util.Scanner;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import application.users.User;
 import data.io.UserDataIO;
@@ -35,11 +39,9 @@ public class Manager {
 	
 	private static final String HASH_ALGORITHM = "SHA-256";
 	
-	private static final String ENCRYPTION_KEY = "3]rV#m6^9'N.NHwB";
+	private byte[] key;
 	
-	private String key;
-	
-	private static final String transformation = "AES/CBC/PKCS5Padding";
+	private String transformation;
 	
 	/**
 	 * Constructs a single instance of the manager class on initialization of the program
@@ -47,6 +49,8 @@ public class Manager {
 	private Manager() {
 		users = readUsers();
 		currentUser = getCurrentUser();
+		transformation = "AES/CBC/PKCS5Padding";
+		key = new byte[32];
 	}
 	
 	/**
@@ -55,11 +59,7 @@ public class Manager {
 	 */
 	public static Manager getInstance() {
 		if(instance==null) {
-			
-			synchronized (Manager.class) {
-				instance = new Manager();
-			}
-			
+			instance = new Manager();
 		}
 		return instance;
 	}
@@ -99,7 +99,12 @@ public class Manager {
 					String userPW = readPW();
 					if(pw.equals(userPW)) {
 						currentUser = users.get(i);
-						key = hash;
+						byte[] hashed = hash.getBytes();
+						for(int j = 0; i < 32; i++) {
+							key[j] = hashed[j];
+						}
+						
+						UserDataIO.readUserData(currentUser, key, transformation);
 						return true;
 					}
 				} 
@@ -122,29 +127,23 @@ public class Manager {
 		currentUser = user;
 	}
 	
-	public void readCurrentUser() {
-		UserDataIO.readUserData(currentUser, key, transformation);
-	}
-	
 	/**
 	 * Creates a new user account and adds it to the current user list. User password is also hashed here 
 	 * for secure password storage.
 	 * @param user A user object that will be stored in the system
 	 */
 	public void createNewUser(User user) {
-		key = hashPW(user.getPassword());
-		User hashedUser = new User(user.getFirstName(), user.getLastName(), 
-				user.getId(), hashPW(user.getPassword()), 0, 0, user.getEmail(), user.getPhone(), user.getLastSignedIn());
-		
-		for(User u: users) {
-			if(u.getId().equals(user.getId())){
-				throw new IllegalArgumentException("User Already Exist");
-			}
+		byte[] hashBytes = hashPW(user.getPassword()).getBytes();
+		for(int i = 0; i < 32; i++) {
+			key[i] = hashBytes[i];
 		}
+		
+		User hashedUser = new User(user.getFirstName(), user.getLastName(), user.getId(), hashPW(user.getPassword()));
 		
 		users.add(hashedUser);
 		setCurrentUser(hashedUser);
 		writeUsers();
+		
 	}
 	
 	/**
@@ -153,7 +152,7 @@ public class Manager {
 	 */
 	public ArrayList<User> readUsers() {
 		try {
-			return UserIO.readUsersFromFile(hashPW(ENCRYPTION_KEY), transformation);
+			return UserIO.readUsersFromFile();
 		} catch (IOException e) {
 			return null;
 		}
@@ -163,7 +162,7 @@ public class Manager {
 	 * Writes Users to the user file when a new user is added to the system
 	 */
 	public void writeUsers() {
-		UserIO.writeUsersToFile(users, hashPW(ENCRYPTION_KEY), transformation);
+		UserIO.writeUsersToFile(users);
 	}
 	
 	/**
@@ -203,9 +202,7 @@ public class Manager {
 	 */
 	public void logout() {
 		try {
-			currentUser.setLastSignedIn(Calendar.getInstance());
 			UserDataIO.writeUserData(this.currentUser, key, transformation);
-			writeUsers();
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException();
 		}

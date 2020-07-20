@@ -31,12 +31,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#longTermAssets" prefHeight="95.0" prefWidth="119.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" text="Long Term Assets" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#shortTermAssets" prefHeight="135.0" prefWidth="184.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" text="Short Term Assets" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" onAction="#longTermLiabilities" prefHeight="91.0" prefWidth="132.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" text="Long Term Liabilities" GridPane.columnIndex="3" />
-            <Button mnemonicParsing="false" onAction="#shortTermLiabilities" prefHeight="90.0" prefWidth="134.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" text="Short Term Liabilities" GridPane.columnIndex="4" />
-            <Button mnemonicParsing="false" onAction="#retirement" prefHeight="92.0" prefWidth="114.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" text="Retirement" GridPane.columnIndex="5" />
-            <Button mnemonicParsing="false" onAction="#logout" prefHeight="82.0" prefWidth="138.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" text="Logout" GridPane.columnIndex="8" />
+            <Button mnemonicParsing="false" onAction="#longTermAssets" prefHeight="95.0" prefWidth="119.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Long Term Assets" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#shortTermAssets" prefHeight="135.0" prefWidth="184.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Short Term Assets" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" onAction="#longTermLiabilities" prefHeight="91.0" prefWidth="132.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Long Term Liabilities" GridPane.columnIndex="3" />
+            <Button mnemonicParsing="false" onAction="#shortTermLiabilities" prefHeight="96.0" prefWidth="134.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Short Term Liabilities" GridPane.columnIndex="4" />
+            <Button mnemonicParsing="false" onAction="#retirement" prefHeight="92.0" prefWidth="114.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Retirement" GridPane.columnIndex="5" />
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="98.0" prefWidth="100.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Logout" GridPane.columnIndex="8" />
             <ImageView fx:id="logoMain" fitHeight="94.0" fitWidth="193.0" onMousePressed="#openMain">
                <image>
                   <Image url="file:@../../bin/linkedin_banner_image_1.png" />

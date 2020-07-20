@@ -43,7 +43,7 @@ public class EditAssetController extends BorderPane{
 		
 		this.asset = asset;
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddAsset.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditAsset.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -74,7 +74,15 @@ public class EditAssetController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
-			Asset newAsset = new Asset(name.getText(), Double.parseDouble(value.getText()));
+			
+			double valueDouble = 0;
+			try {
+				valueDouble = Double.parseDouble(value.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid value");
+			}
+			
+			Asset newAsset = new Asset(name.getText(), valueDouble);
 			
 			user.getLongTermAssets().returnAssets().remove(asset);
 			user.getLongTermAssets().addAsset(newAsset);
@@ -83,8 +91,7 @@ public class EditAssetController extends BorderPane{
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

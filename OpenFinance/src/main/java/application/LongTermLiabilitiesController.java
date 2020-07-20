@@ -9,12 +9,8 @@ import java.util.ArrayList;
 
 import application.manager.Manager;
 import application.popup.AddLongTermLiabilityController;
-import application.popup.AddShortTermAssetController;
 import application.popup.EditLongTermLiabilityController;
-import application.popup.EditShortTermAssetsController;
 import application.users.User;
-import data.assets.shortTerm.ShortTermAsset;
-import data.assets.shortTerm.ShortTermAsset.AccountType;
 import data.liabilities.Liability;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -130,7 +126,7 @@ public class LongTermLiabilitiesController extends BorderPane{
 		
 		longTermLiabilitiesTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
-		longTermLiabilitiesTable.setPrefHeight(700);
+		longTermLiabilitiesTable.setPrefHeight(675);
 		
 		TableColumn<Liability, String> name = new TableColumn<Liability, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -165,7 +161,7 @@ public class LongTermLiabilitiesController extends BorderPane{
 		name.prefWidthProperty().bind(longTermLiabilitiesTable.widthProperty().multiply(0.33));
 		name.setStyle("-fx-alignment: CENTER;");
         totalAmount.prefWidthProperty().bind(longTermLiabilitiesTable.widthProperty().multiply(0.33));
-        yearsToMaturity.prefWidthProperty().bind(longTermLiabilitiesTable.widthProperty().multiply(0.32));
+        yearsToMaturity.prefWidthProperty().bind(longTermLiabilitiesTable.widthProperty().multiply(0.336));
        
 
         name.setResizable(false);

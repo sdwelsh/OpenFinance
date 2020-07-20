@@ -81,7 +81,15 @@ private User user;
 	@FXML
 	public void submit() {
 		try {
-			Liability liability = new Liability(name.getText(), Double.parseDouble(totalAmount.getText()), 1);
+			
+			double total = 0;
+			try {
+				total = Double.parseDouble(totalAmount.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a Valid Total");
+			}
+			
+			Liability liability = new Liability(name.getText(), total, 1);
 			
 			user.returnLiabilities().deleteLiability(this.liability);
 			user.returnLiabilities().addLiability(liability);
@@ -90,8 +98,7 @@ private User user;
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

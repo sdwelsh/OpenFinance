@@ -11,10 +11,12 @@ import application.users.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 /**
  * @author Stephen Welsh
@@ -38,6 +40,10 @@ public class RetirementController extends BorderPane{
 	@FXML private Label error;
 	
 	private User user;
+	
+	@FXML private VBox vbox;
+	
+	@FXML private ScrollPane pane;
 
 	public RetirementController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Retirement.fxml"));
@@ -53,13 +59,37 @@ public class RetirementController extends BorderPane{
             
             user = Manager.getInstance().getCurrentUser();
             
+            pane.setFitToWidth(true);
+            pane.setFitToHeight(true);
+            
+            vbox.setPrefWidth(pane.getWidth());
+            vbox.setPrefHeight(pane.getHeight());
+            
             if(user.getAge() != 0) {
             	currentAge.setText(user.getAge() + "");
+            	if(user.getRetirementAge() != 0) {
+                	retirementAge.setText(user.getRetirementAge() + "");
+                	double totalAssets = Manager.getInstance().getCurrentUser().getLongTermAssetsTotal();
+                	DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    		        decimalFormat.setGroupingUsed(true);
+    		        decimalFormat.setGroupingSize(3);
+    		        
+    		        double difference = user.getRetirementAge() - user.getAge();
+    		        
+    		        double fivePercent = totalAssets * Math.pow(1.05, difference); 
+    		        fivePercentReturn.setText(" - $" + decimalFormat.format(fivePercent));
+    		        
+    		        double sevenPercent = totalAssets * Math.pow(1.07, difference); 
+    		        sevenPercentReturn.setText(" - $" + decimalFormat.format(sevenPercent));
+    		        
+    		        double tenPercent = totalAssets * Math.pow(1.1, difference); 
+    		        tenPercentReturn.setText(" - $" + decimalFormat.format(tenPercent));
+                }
             }
             
-            if(user.getRetirementAge() != 0) {
-            	retirementAge.setText(user.getRetirementAge() + "");
-            }
+            
+            
+            
             
             
         } catch (IOException exception) {
@@ -109,11 +139,21 @@ public class RetirementController extends BorderPane{
 		double totalAssets = Manager.getInstance().getCurrentUser().getLongTermAssetsTotal();
 		try {
 			
+			int age = 0;
+			try {
+				age = Integer.parseInt(currentAge.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter A Valid Age");
+			}
 			
+			int retirement = 0;
 			
-			int age = Integer.parseInt(currentAge.getText());
+			try {
+				retirement = Integer.parseInt(retirementAge.getText());
+			} catch(IllegalArgumentException e){
+				throw new IllegalArgumentException("Enter a Valid Retirment Age");
+			}
 			
-			int retirement = Integer.parseInt(retirementAge.getText());
 			
 			double difference = retirement - age;
 			
@@ -137,14 +177,14 @@ public class RetirementController extends BorderPane{
 		        
 		        error.setText("");
 			} else {
-				error.setText("Enter A Valid Age Range  ");
+				error.setText("Enter A Valid Age Range");
 			}
 			
 			
 	        
 			
 		} catch(Exception e) {
-			error.setText("Enter A Valid Age  ");
+			error.setText(e.getMessage());
 		}
 		
 		

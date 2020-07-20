@@ -8,9 +8,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import application.manager.Manager;
-import application.popup.AddLongTermLiabilityController;
 import application.popup.AddShortTermLiabilityController;
-import application.popup.EditLongTermLiabilityController;
 import application.popup.EditShortTermLiabilityController;
 import application.users.User;
 import data.liabilities.Liability;
@@ -128,7 +126,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		
 		shortTermLiabilitiesTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
-		shortTermLiabilitiesTable.setPrefHeight(700);
+		shortTermLiabilitiesTable.setPrefHeight(675);
 		
 		TableColumn<Liability, String> name = new TableColumn<Liability, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -163,7 +161,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		name.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.33));
 		name.setStyle("-fx-alignment: CENTER;");
         totalAmount.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.33));
-        yearsToMaturity.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.32));
+        yearsToMaturity.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.336));
        
 
         name.setResizable(false);

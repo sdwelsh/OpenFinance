@@ -1,12 +1,14 @@
 package data.io;
 
-
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.crypto.SecretKey;
+
 import application.users.User;
-import data.assets.longterm.Asset;
 import data.assets.longterm.ETF;
 import data.assets.longterm.ETF.CapType;
 import data.assets.longterm.ETF.CountryType;
@@ -22,7 +24,7 @@ import data.assets.longterm.LongTermAsset.Bank;
 public class UserDataIO {
 	
 	
-	public static void readUserData(User user, String key, String transformation) {
+	public static void readUserData(User user, byte[] key, String transformation) {
 		FileEncrypterDecrypter decrypt = new FileEncrypterDecrypter(key, transformation);
 		
 		Scanner s = new Scanner(decrypt.decrypt("test-files/" + user.getId() + ".enc"));
@@ -44,12 +46,9 @@ public class UserDataIO {
 					String initPrice = line.next();
 					String bank = line.next();
 					String account = line.next();
-					String accountName = line.next();
-					double dividends = Double.parseDouble(line.next());
-					boolean reinvest = line.nextBoolean();
 					
 					LongTermAsset asset = new LongTermAsset(ticker, Double.parseDouble(initPrice), 
-							Double.parseDouble(quantity), getBank(bank), getAccount(account), accountName, dividends, reinvest);
+							Double.parseDouble(quantity), getBank(bank), getAccount(account));
 					
 					user.addLongTermAsset(asset);
 				} else if(type.equals("ETF")) {
@@ -58,9 +57,6 @@ public class UserDataIO {
 					String initPrice = line.next();
 					String bank = line.next();
 					String account = line.next();
-					String accountName = line.next();
-					double dividends = Double.parseDouble(line.next());
-					boolean reinvest = line.nextBoolean();
 					String cap = line.next();
 					String invType = line.next();
 					String country = line.next();
@@ -68,7 +64,7 @@ public class UserDataIO {
 					
 					
 					LongTermAsset asset = new ETF(ticker, Double.parseDouble(initPrice), Double.parseDouble(quantity), 
-							getBank(bank), getAccount(account), accountName, dividends, reinvest, getCountry(country), getCap(cap), getInvestmentType(invType));
+							getBank(bank), getAccount(account), getCountry(country), getCap(cap), getInvestmentType(invType));
 					
 					user.addLongTermAsset(asset);
 				} else if(type.equals("Mutual Fund")){
@@ -77,9 +73,6 @@ public class UserDataIO {
 					String initPrice = line.next();
 					String bank = line.next();
 					String account = line.next();
-					String accountName = line.next();
-					double dividends = Double.parseDouble(line.next());
-					boolean reinvest = line.nextBoolean();
 					String cap = line.next();
 					String invType = line.next();
 					String country = line.next();
@@ -87,10 +80,10 @@ public class UserDataIO {
 					
 					
 					LongTermAsset asset = new MutualFunds(ticker, Double.parseDouble(initPrice), Double.parseDouble(quantity), 
-							getBank(bank), getAccount(account), accountName, dividends, reinvest, getCountry(country), getCap(cap), getInvestmentType(invType));
+							getBank(bank), getAccount(account), getCountry(country), getCap(cap), getInvestmentType(invType));
 					
 					user.addLongTermAsset(asset);
-				} else if(type.equals("short")) {
+				} else {
 					String bank = line.next();
 					String accountName = line.next();
 					String totalAmount = line.next();
@@ -98,12 +91,6 @@ public class UserDataIO {
 					
 					ShortTermAsset asset = new ShortTermAsset(bank, accountName, getAccountType(accountType), Double.parseDouble(totalAmount));
 					user.returnShortTermAssets().addShortTermAsset(asset);
-				} else {
-					String name = line.next();
-					double value = Double.parseDouble(line.next());
-					
-					Asset asset = new Asset(name, value);
-					user.getLongTermAssets().addAsset(asset);
 				}
 				
 			} else if(lineStart.equals("-")){
@@ -125,7 +112,7 @@ public class UserDataIO {
 
 	
 
-	public static void writeUserData(User user, String key, String transformation) throws FileNotFoundException {
+	public static void writeUserData(User user, byte[] key, String transformation) throws FileNotFoundException {
 		
 		String content = "";
 		
@@ -144,10 +131,7 @@ public class UserDataIO {
 					asset.getQuantity() + "," +
 					asset.getInitPrice() + "," +
 					asset.getBankString() + "," +
-					asset.getAccountString() + "," +
-					asset.getAccountNameString() + "," +
-					asset.getDividends() + "," +
-					asset.isReinvestDividends() 
+					asset.getAccountString()
 					+ " | ";		
 		}
 		
@@ -163,9 +147,6 @@ public class UserDataIO {
 					asset.getInitPrice() + "," +
 					asset.getBankString() + "," +
 					asset.getAccountString() + "," +
-					asset.getAccountNameString() + "," +
-					asset.getDividends() + "," +
-					asset.isReinvestDividends() + "," +
 					asset.getCapString() + "," +
 					asset.getInvestmentTypeString() + "," +
 					asset.getCountryString()
@@ -184,22 +165,10 @@ public class UserDataIO {
 					asset.getInitPrice() + "," +
 					asset.getBankString() + "," +
 					asset.getAccountString() + "," +
-					asset.getAccountNameString() + "," +
-					asset.getDividends() + "," +
-					asset.isReinvestDividends() + "," +
 					asset.getCapString() + "," +
 					asset.getInvestmentTypeString() + "," +
 					asset.getCountryString()
 					+ " | ";		
-		}
-		
-		ArrayList<Asset> assets = list.returnAssets();
-		
-		for(Asset asset : assets) {
-			content += "+," + "asset," +
-				asset.getName() + "," +
-				asset.getValue() +
-				" | ";
 		}
 		
 		ArrayList<ShortTermAsset> shortTermAssets = user.returnShortTermAssets().returnShortTermAssets();
@@ -287,8 +256,6 @@ public class UserDataIO {
 			return CapType.MID_CAP;
 		}  else if(cap.equals("Large_Cap")) {
 			return CapType.LARGE_CAP;
-		}  else if(cap.equals("NA")) {
-			return CapType.NA;
 		}  else {
 			return null;
 		}

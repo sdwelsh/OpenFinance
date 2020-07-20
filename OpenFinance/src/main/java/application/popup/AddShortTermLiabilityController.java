@@ -2,7 +2,6 @@ package application.popup;
 
 import java.io.IOException;
 
-import application.LongTermLiabilitiesController;
 import application.ShortTermLiabilitiesController;
 import application.manager.Manager;
 import application.users.User;
@@ -70,15 +69,22 @@ private User user;
 	@FXML
 	public void submit() {
 		try {
-			Liability liability = new Liability(name.getText(), Double.parseDouble(totalAmount.getText()), 1);
+			
+			double total = 0;
+			try {
+				total = Double.parseDouble(totalAmount.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a Valid Total");
+			}
+			
+			Liability liability = new Liability(name.getText(), total, 1);
 			
 			user.returnLiabilities().addLiability(liability);
-			ShortTermLiabilitiesController.addLiabilityToTable(liability);;
+			ShortTermLiabilitiesController.addLiabilityToTable(liability);
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

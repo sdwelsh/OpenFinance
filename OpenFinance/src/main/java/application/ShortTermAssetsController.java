@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import application.manager.Manager;
 import application.popup.AddShortTermAssetController;
 import application.popup.EditShortTermAssetsController;
-import application.popup.EditStockController;
 import application.users.User;
-import data.assets.longterm.LongTermAsset;
 import data.assets.shortTerm.ShortTermAsset;
 import data.assets.shortTerm.ShortTermAsset.AccountType;
 import javafx.collections.FXCollections;
@@ -150,7 +148,7 @@ public class ShortTermAssetsController extends BorderPane{
 		
 		shortTermAssetsTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
-		shortTermAssetsTable.setPrefHeight(700);
+		shortTermAssetsTable.setPrefHeight(675);
 		
 		TableColumn<ShortTermAsset, String> bank = new TableColumn<ShortTermAsset, String>("Bank");
         bank.setCellValueFactory(new PropertyValueFactory<>("bank"));
@@ -165,15 +163,10 @@ public class ShortTermAssetsController extends BorderPane{
         
         ArrayList<ShortTermAsset> array = user.returnShortTermAssets().returnShortTermAssets();
         
-        double total = 0;
-        
-        for(int i = 0; i < array.size(); i++) {
-        	ShortTermAsset asset = array.get(i);
-        	total += asset.getAmount();
-        	assetList.add(array.get(i));
-        	
+       
+        for(ShortTermAsset asset : array) {
+        	assetList.add(asset);
         }
-        
         
         shortTermAssetsTable.setItems(assetList);
         
@@ -190,7 +183,7 @@ public class ShortTermAssetsController extends BorderPane{
 		bank.setStyle("-fx-alignment: CENTER;");
         accountName.prefWidthProperty().bind(shortTermAssetsTable.widthProperty().multiply(0.25));
         accountType.prefWidthProperty().bind(shortTermAssetsTable.widthProperty().multiply(0.25));
-        totalAmount.prefWidthProperty().bind(shortTermAssetsTable.widthProperty().multiply(0.24));
+        totalAmount.prefWidthProperty().bind(shortTermAssetsTable.widthProperty().multiply(0.245));
 
         bank.setResizable(false);
         accountName.setResizable(false);

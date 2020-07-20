@@ -22,7 +22,13 @@ public class ShortTermAsset {
 	private double totalAmount;
 
 	public ShortTermAsset(String bank, String accountName, AccountType accountType, double totalAmount) {
+		if(bank.trim().equals("")) {
+			throw new IllegalArgumentException("Bank cannot be empty");
+		}
 		this.bank = bank;
+		if(accountName.trim().equals("")) {
+			throw new IllegalArgumentException("Account Name cannot be empty");
+		}
 		this.accountName = accountName;
 		this.accountType = accountType;
 		this.totalAmount = totalAmount;

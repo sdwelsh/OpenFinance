@@ -4,7 +4,6 @@
 package application.popup;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import application.LongTermAssetsController;
 import application.manager.Manager;
@@ -12,11 +11,10 @@ import application.users.User;
 import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.LongTermAsset.AccountType;
 import data.assets.longterm.LongTermAsset.Bank;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -54,6 +52,10 @@ public class AddStockController extends BorderPane{
 	@FXML
 	private Label error;
 	
+	@FXML private TextField accountName;
+	
+	@FXML private CheckBox reinvestDividends;
+	
 	
 	public AddStockController() {
 		
@@ -87,9 +89,11 @@ public class AddStockController extends BorderPane{
             investmentBank = new ChoiceBox<String>();
             accountType = new ChoiceBox<String>();
             
-            investmentBank.getItems().addAll("Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
+            investmentBank.getItems().addAll("Select an Investment Bank", "Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
+            accountType.getItems().addAll("Select an Account Type", "Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
             
-            accountType.getItems().addAll("Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
+            investmentBank.getSelectionModel().select(0);
+            accountType.getSelectionModel().select(0);
             
             grid.add(investmentBank, 1, 4);
             grid.add(accountType, 1, 5);
@@ -102,16 +106,37 @@ public class AddStockController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
-			LongTermAsset stock = new LongTermAsset(ticker.getText(), Double.parseDouble(initPrice.getText()), 
-					Double.parseDouble(number.getText()), getBank(), getAccount());
+			
+			if(investmentBank.getValue().equals("Select an Investment Bank")) {
+				throw new IllegalArgumentException("Please select an Investment Bank");
+			} else if(accountType.getValue().equals("Select an Account Type")) {
+				throw new IllegalArgumentException("Please select an Account Type");
+			}
+			
+			double price = 0;
+			double numberDouble = 0;
+			
+			try {
+				price = Double.parseDouble(initPrice.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid Initial Price");
+			}
+			
+			try {
+				numberDouble = Double.parseDouble(number.getText());
+			} catch(IllegalArgumentException e){
+				throw new IllegalArgumentException("Enter a valid Quanity of Stock");
+			}
+			
+			LongTermAsset stock = new LongTermAsset(ticker.getText(), price, 
+					numberDouble, getBank(), getAccount(), accountName.getText(), 0, reinvestDividends.isSelected());
 			
 			user.addLongTermAsset(stock);
 			LongTermAssetsController.addStockToTable(stock);;
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 

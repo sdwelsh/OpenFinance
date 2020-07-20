@@ -22,6 +22,9 @@ public class Liability {
 
 	public Liability(String name, double totalAmount, int yearsToMaturity, int creationYear) {
 		this.name = name;
+		if(name.trim().equals("")) {
+			throw new IllegalArgumentException("Name Cannot be Empty");
+		}
 		this.totalAmount = totalAmount;
 		this.creationYear = creationYear;
 		

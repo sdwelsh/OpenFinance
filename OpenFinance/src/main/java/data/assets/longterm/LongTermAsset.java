@@ -46,6 +46,14 @@ public class LongTermAsset {
 	/** This is the stocks Account type */
 	private AccountType type;
 	
+	private String name;
+	
+	private double dividends;
+	
+	private boolean reinvestDividends;
+	
+	private String accountName;
+	
 	private List<Double> historicalPrices;
 	
 	SimpleStringProperty tickerString;
@@ -55,7 +63,37 @@ public class LongTermAsset {
 	SimpleStringProperty bankString;
 	SimpleStringProperty accountString;
 
+//	/**
+//	 * Constructs the stock class using all the fields needed to make a stock
+//	 * @param ticker the ticker of the stock 
+//	 * @param price the current price of the stock
+//	 * @param quantity the quantity of stocks 
+//	 * @param years the years till maturity
+//	 * @param bank the bank the stock is at
+//	 * @param type the type of account the stock is in
+//	 */
+//	public LongTermAsset(String ticker, double quantity, Bank bank, AccountType type) {
+//		this.ticker = ticker;
+//		this.initPrice = 0;
+//		this.price = refreshPrice();
+//		this.quantity = quantity;
+//		this.bank = bank;
+//		this.type = type;
+//		
+//		tickerString = new SimpleStringProperty(ticker);
+//		totalPriceString = new SimpleStringProperty("$" + (price * quantity));
+//		quantityString = new SimpleStringProperty(""+ quantity);
+//		pricePerShareString = new SimpleStringProperty("$" + price);
+//		bankString = new SimpleStringProperty(getBankName());
+//		accountString = new SimpleStringProperty(getAccountName());
+//		historicalPrices = new ArrayList<Double>();
+//		setHistoricalPerformance();
+//	}
+	
+	
+
 	/**
+	 * Overrides the original constructor adding initial price of the stock.
 	 * Constructs the stock class using all the fields needed to make a stock
 	 * @param ticker the ticker of the stock 
 	 * @param price the current price of the stock
@@ -64,14 +102,26 @@ public class LongTermAsset {
 	 * @param bank the bank the stock is at
 	 * @param type the type of account the stock is in
 	 */
-	public LongTermAsset(String ticker, double quantity, Bank bank, AccountType type) {
+	public LongTermAsset(String ticker, double initPrice, double quantity, Bank bank, AccountType type, 
+			String accountName, double dividends, boolean reinvestDividends) {
 		this.ticker = ticker;
-		this.initPrice = 0;
-		System.out.println("price before");
+		this.initPrice = initPrice;
 		this.price = refreshPrice();
+		if(this.price == 0) {
+			throw new IllegalArgumentException("Enter a valid ticker");
+		}
 		this.quantity = quantity;
+		if(quantity == 0) {
+			throw new IllegalArgumentException("Quantity cannot be 0");
+		}
 		this.bank = bank;
 		this.type = type;
+		if(accountName.trim().equals("")) {
+			throw new IllegalArgumentException("Account Name cannot be blank");
+		}
+		this.accountName = accountName;
+		this.dividends = dividends;
+		this.reinvestDividends = reinvestDividends;
 		
 		tickerString = new SimpleStringProperty(ticker);
 		totalPriceString = new SimpleStringProperty("$" + (price * quantity));
@@ -86,6 +136,7 @@ public class LongTermAsset {
 	private void setHistoricalPerformance() {
 		try {
 			Stock stock = YahooFinance.get(ticker);
+			name = stock.getName();
 			
 			List<HistoricalQuote> list = stock.getHistory(Interval.MONTHLY);
 			
@@ -104,34 +155,6 @@ public class LongTermAsset {
 	
 	public List<Double> getHistoricalPrices(){
 		return historicalPrices;
-	}
-
-	/**
-	 * Overrides the original constructor adding initial price of the stock.
-	 * Constructs the stock class using all the fields needed to make a stock
-	 * @param ticker the ticker of the stock 
-	 * @param price the current price of the stock
-	 * @param quantity the quantity of stocks 
-	 * @param years the years till maturity
-	 * @param bank the bank the stock is at
-	 * @param type the type of account the stock is in
-	 */
-	public LongTermAsset(String ticker, double initPrice, double quantity, Bank bank, AccountType type) {
-		this.ticker = ticker;
-		this.initPrice = initPrice;
-		this.price = refreshPrice();
-		this.quantity = quantity;
-		this.bank = bank;
-		this.type = type;
-		
-		tickerString = new SimpleStringProperty(ticker);
-		totalPriceString = new SimpleStringProperty("$" + (price * quantity));
-		quantityString = new SimpleStringProperty(""+ quantity);
-		pricePerShareString = new SimpleStringProperty("$" + price);
-		bankString = new SimpleStringProperty(getBankName());
-		accountString = new SimpleStringProperty(getAccountName());
-		historicalPrices = new ArrayList<Double>();
-		setHistoricalPerformance();
 	}
 
 	/**
@@ -174,6 +197,10 @@ public class LongTermAsset {
 	 */
 	public AccountType getType() {
 		return type;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -224,6 +251,16 @@ public class LongTermAsset {
 	 */
 	public void setType(AccountType type) {
 		this.type = type;
+	}
+	
+	
+
+	public double getDividends() {
+		return dividends;
+	}
+
+	public void setDividends(double dividends) {
+		this.dividends = dividends;
 	}
 
 	/**
@@ -388,6 +425,22 @@ public class LongTermAsset {
 	
 	public String getAssetType() {
 		return "Stock";
+	}
+	
+	public String getAccountNameString() {
+		return accountName;
+	}
+
+	public boolean isReinvestDividends() {
+		return reinvestDividends;
+	}
+
+	public void setReinvestDividends(boolean reinvestDividends) {
+		this.reinvestDividends = reinvestDividends;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
 	}
 
 	@Override

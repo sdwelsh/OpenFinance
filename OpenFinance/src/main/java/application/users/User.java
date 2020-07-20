@@ -3,8 +3,11 @@
  */
 package application.users;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Calendar;
+import java.util.Date;
 
 import data.assets.longterm.LongTermAsset;
 import data.assets.longterm.LongTermAssetsList;
@@ -43,6 +46,12 @@ public class User {
 	private ShortTermAssetsList shortTermAssets;
 	
 	private LiabilitiesList liabilities;
+	
+	private String email;
+	
+	private String phone;
+	
+	private Calendar lastSignedIn;
 
 	/**
 	 * Constructs the User class giving the user a name, unique id, and password.
@@ -51,16 +60,19 @@ public class User {
 	 * @param id
 	 * @param password
 	 */
-	public User(String firstName, String lastName, String id, String password, int age, int retirementAge) {
+	public User(String firstName, String lastName, String id, String password, int age, int retirementAge, String email, String phone, Calendar lastSignedIn) {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setId(id);
 		setPassword(password);
 		this.age = age;
 		this.retirementAge = retirementAge;
+		this.email = email;
+		this.phone = phone;
 		longTermAssets = new LongTermAssetsList();
 		shortTermAssets = new ShortTermAssetsList();
 		liabilities = new LiabilitiesList();
+		this.lastSignedIn = lastSignedIn;
 	}
 
 	public String getFirstName() {
@@ -122,6 +134,24 @@ public class User {
 	public void setRetirementAge(int retirementAge) {
 		this.retirementAge = retirementAge;
 	}
+	
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public void addLongTermAsset(LongTermAsset asset) {
 		longTermAssets.addAsset(asset);
@@ -135,9 +165,20 @@ public class User {
 		return longTermAssets.getLongTermAssetsTotal();
 	}
 
+	public Calendar getLastSignedIn() {
+		return lastSignedIn;
+	}
+
+	public void setLastSignedIn(Calendar lastSignedIn) {
+		this.lastSignedIn = lastSignedIn;
+	}
+
 	@Override
 	public String toString() {
-		return  firstName + " | " + lastName + " | " + id + " | " + password + " | " + age + " | " + retirementAge;
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+		
+		return  firstName + " | " + lastName + " | " + id + " | " + password + " | " + age + " | " + retirementAge + " | " + email + " | " + phone + " | " + df.format(today);
 	}
 
 	@Override

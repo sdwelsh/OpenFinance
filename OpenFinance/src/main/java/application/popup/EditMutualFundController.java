@@ -19,6 +19,7 @@ import data.assets.longterm.MutualFunds;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -64,6 +65,10 @@ public class EditMutualFundController extends BorderPane{
 	
 	private MutualFunds asset;
 	
+	@FXML private TextField accountName;
+	
+	@FXML private CheckBox reinvestDividends;
+	
 	
 	public EditMutualFundController(MutualFunds asset) {
 		
@@ -105,7 +110,7 @@ public class EditMutualFundController extends BorderPane{
             investmentBank.getItems().addAll("Schwab", "Merril_Lynch", "Vanguard", "TD_Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
             accountType.getItems().addAll("Brokerage", "Roth_401K", "Roth_IRA", "IRA", "401K", "Taxable_Account");
             countryType.getItems().addAll("Domestic", "Foreign");
-            capType.getItems().addAll("Small_Cap", "Mid_Cap", "Large_Cap");
+            capType.getItems().addAll("Small_Cap", "Mid_Cap", "Large_Cap", "NA");
             investmentType.getItems().addAll("NA", "Value", "Growth");
             investmentBank.getSelectionModel().select(asset.getBankString());
             accountType.getSelectionModel().select(asset.getAccountString());
@@ -120,6 +125,10 @@ public class EditMutualFundController extends BorderPane{
             grid.add(investmentType, 1, 7);
             grid.add(countryType, 1, 8);
             
+            accountName.setText(asset.getAccountNameString());
+            
+            reinvestDividends.setSelected(asset.isReinvestDividends());
+            
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -128,8 +137,25 @@ public class EditMutualFundController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
-			LongTermAsset stock = new ETF(ticker.getText(), Double.parseDouble(initPrice.getText()), 
-					Double.parseDouble(number.getText()), getBank(), getAccount(), getCounty(), getCap(), getInvType());
+			
+			double numberDouble = 0;
+			double price = 0;
+			
+			try {
+				numberDouble = Double.parseDouble(number.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid quantity");
+			}
+			
+			try {
+				price = Double.parseDouble(initPrice.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid Initial Price");
+			}
+			
+			LongTermAsset stock = new MutualFunds(ticker.getText(), price, 
+					numberDouble, getBank(), getAccount(), accountName.getText(), 0, reinvestDividends.isSelected(),
+					getCounty(), getCap(), getInvType());
 			
 			user.deleteLongTermAsset(asset);
 			
@@ -138,8 +164,7 @@ public class EditMutualFundController extends BorderPane{
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 
@@ -172,7 +197,9 @@ public class EditMutualFundController extends BorderPane{
 			return CapType.MID_CAP;
 		}  else if(capType.getValue().equals("Large_Cap")) {
 			return CapType.LARGE_CAP;
-		}  else {
+		}  else if(capType.getValue().equals("NA")) {
+			return CapType.NA;
+		} else {
 			return null;
 		}
 	}

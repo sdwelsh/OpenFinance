@@ -37,8 +37,9 @@ public class MutualFunds extends LongTermAsset {
 	 * @param type Cap Type of the stock
 	 */
 	public MutualFunds(String ticker, double initPrice, double quantity, Bank bank,
-			AccountType type, CountryType country, CapType cap, InvestmentType invType) {
-		super(ticker, initPrice, quantity, bank, type);
+			AccountType type, String accountName, double dividends, boolean reinvestDividends, 
+			CountryType country, CapType cap, InvestmentType invType) {
+		super(ticker, initPrice, quantity, bank, type, accountName, dividends, reinvestDividends);
 		this.cap = cap;
 		this.country = country;
 		this.invType = invType;
@@ -118,6 +119,8 @@ public class MutualFunds extends LongTermAsset {
 			return "Mid_Cap";
 		} else if (cap == CapType.SMALL_CAP) {
 			return "Small_Cap";
+		} else if (cap == CapType.NA) {
+			return "NA";
 		} else {
 			return null;
 		}

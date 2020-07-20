@@ -6,8 +6,7 @@ package application;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 import application.manager.Manager;
 import application.popup.AddAssetController;
@@ -30,8 +29,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -41,10 +38,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * @author Stephen Welsh
@@ -121,7 +118,17 @@ public class LongTermAssetsController extends BorderPane {
             pane.setFitToWidth(true);
             size.getChildren().add(pane);
             vbox = new VBox();
+            vbox.setStyle("-fx-background-color: white");
             pane.setContent(vbox);
+            vbox.setOnScroll(new EventHandler<ScrollEvent>() {
+                @Override
+                public void handle(ScrollEvent event) {
+                    double deltaY = event.getDeltaY()*6; // *6 to make the scrolling a bit faster
+                    double width = pane.getContent().getBoundsInLocal().getWidth();
+                    double vvalue = pane.getVvalue();
+                    pane.setVvalue(vvalue + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+                }
+            });
             addStocksTable();
             addMutualFundsTable();
             addETFTable();
@@ -179,6 +186,8 @@ public class LongTermAssetsController extends BorderPane {
 
         TableColumn<LongTermAsset, String> ticker = new TableColumn<LongTermAsset, String>("Ticker");
         ticker.setCellValueFactory(new PropertyValueFactory<>("tickerString"));
+        TableColumn<LongTermAsset, String> name = new TableColumn<LongTermAsset, String>("Name");
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
 		TableColumn<LongTermAsset,String> price = new TableColumn<LongTermAsset,String>("Price");
 		price.setCellValueFactory(new PropertyValueFactory<>("totalPriceString"));
 		TableColumn<LongTermAsset,String> quantity = new TableColumn<LongTermAsset,String>("Quantity");
@@ -209,24 +218,27 @@ public class LongTermAssetsController extends BorderPane {
 		stockTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 		stockTable.getColumns().add(ticker);
+		stockTable.getColumns().add(name);
 		stockTable.getColumns().add(price);
 		stockTable.getColumns().add(quantity);
 		stockTable.getColumns().add(pricePerShare);
 		stockTable.getColumns().add(bank);
 		stockTable.getColumns().add(accountType);
 		
-		stockTable.setPrefHeight(array.size() * 50 + 50);
+		stockTable.setPrefHeight(array.size() * 50 + 26);
 		stockTable.setPrefWidth(pane.getWidth());
 		
 		ticker.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.05));
 		ticker.setStyle("-fx-alignment: CENTER;");
+		name.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.2));
         price.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.2));
         quantity.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.1));
         pricePerShare.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.1));
-        bank.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.1));
+        bank.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.147));
         accountType.prefWidthProperty().bind(stockTable.widthProperty().multiply(0.2));
 
         ticker.setResizable(false);
+        name.setResizable(false);
         price.setResizable(false);
         quantity.setResizable(false);
         pricePerShare.setResizable(false);
@@ -320,6 +332,12 @@ public class LongTermAssetsController extends BorderPane {
         	
         }
         
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+        
+        stockTotal.setText("$" + decimalFormat.format(total));
+        
         stockTable.getItems().addAll(assetList);
 	}
 
@@ -329,6 +347,8 @@ public class LongTermAssetsController extends BorderPane {
 
         TableColumn<LongTermAsset, String> ticker = new TableColumn<LongTermAsset, String>("Ticker");
         ticker.setCellValueFactory(new PropertyValueFactory<>("tickerString"));
+        TableColumn<LongTermAsset, String> name = new TableColumn<LongTermAsset, String>("Name");
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
 		TableColumn<LongTermAsset,String> price = new TableColumn<LongTermAsset,String>("Price");
 		price.setCellValueFactory(new PropertyValueFactory<>("totalPriceString"));
 		TableColumn<LongTermAsset,String> quantity = new TableColumn<LongTermAsset,String>("Quantity");
@@ -364,6 +384,7 @@ public class LongTermAssetsController extends BorderPane {
 		mutualFundTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 		mutualFundTable.getColumns().add(ticker);
+		mutualFundTable.getColumns().add(name);
 		mutualFundTable.getColumns().add(price);
 		mutualFundTable.getColumns().add(quantity);
 		mutualFundTable.getColumns().add(pricePerShare);
@@ -373,21 +394,23 @@ public class LongTermAssetsController extends BorderPane {
 		mutualFundTable.getColumns().add(investmentType);
 		mutualFundTable.getColumns().add(countryType);
 		
-		mutualFundTable.setPrefHeight(array.size() * 50 + 50);
+		mutualFundTable.setPrefHeight(array.size() * 50 + 26);
 		mutualFundTable.setPrefWidth(pane.getWidth());
 		
 		ticker.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.05));
 		ticker.setStyle("-fx-alignment: CENTER;");
-        price.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.2));
+		name.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.2));
+        price.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
         quantity.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
         pricePerShare.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
         bank.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
         accountType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
-        capType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
-        investmentType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
+        capType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.05));
+        investmentType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.094));
         countryType.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.1));
 
         ticker.setResizable(false);
+        name.setResizable(false);
         price.setResizable(false);
         quantity.setResizable(false);
         pricePerShare.setResizable(false);
@@ -470,6 +493,8 @@ public class LongTermAssetsController extends BorderPane {
 
         TableColumn<LongTermAsset, String> ticker = new TableColumn<LongTermAsset, String>("Ticker");
         ticker.setCellValueFactory(new PropertyValueFactory<>("tickerString"));
+        TableColumn<LongTermAsset, String> name = new TableColumn<LongTermAsset, String>("Name");
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
 		TableColumn<LongTermAsset,String> price = new TableColumn<LongTermAsset,String>("Price");
 		price.setCellValueFactory(new PropertyValueFactory<>("totalPriceString"));
 		TableColumn<LongTermAsset,String> quantity = new TableColumn<LongTermAsset,String>("Quantity");
@@ -505,6 +530,7 @@ public class LongTermAssetsController extends BorderPane {
 		etfTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 		etfTable.getColumns().add(ticker);
+		etfTable.getColumns().add(name);
 		etfTable.getColumns().add(price);
 		etfTable.getColumns().add(quantity);
 		etfTable.getColumns().add(pricePerShare);
@@ -514,21 +540,23 @@ public class LongTermAssetsController extends BorderPane {
 		etfTable.getColumns().add(investmentType);
 		etfTable.getColumns().add(countryType);
 		
-		etfTable.setPrefHeight(array.size() * 50 + 50);
+		etfTable.setPrefHeight(array.size() * 50 + 26);
 		etfTable.setPrefWidth(pane.getWidth());
 		
 		ticker.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.05));
 		ticker.setStyle("-fx-alignment: CENTER;");
-        price.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.2));
+		name.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.2));
+        price.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
         quantity.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
         pricePerShare.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
         bank.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
         accountType.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
-        capType.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
-        investmentType.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
+        capType.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.05));
+        investmentType.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.094));
         countryType.prefWidthProperty().bind(etfTable.widthProperty().multiply(0.1));
 
         ticker.setResizable(false);
+        name.setResizable(false);
         price.setResizable(false);
         quantity.setResizable(false);
         pricePerShare.setResizable(false);
@@ -626,6 +654,12 @@ public class LongTermAssetsController extends BorderPane {
         	
         }
         
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+        
+        etfTotal.setText("$" + decimalFormat.format(total));
+        
         etfTable.getItems().addAll(assetList);
 	}
 	
@@ -659,7 +693,7 @@ public class LongTermAssetsController extends BorderPane {
 		assetsTable.getColumns().add(price);
 		
 		
-		assetsTable.setPrefHeight(array.size() * 50 + 50);
+		assetsTable.setPrefHeight(array.size() * 50 + 26);
 		assetsTable.setPrefWidth(pane.getWidth());
 		
 		name.prefWidthProperty().bind(mutualFundTable.widthProperty().multiply(0.5));

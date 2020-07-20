@@ -969,14 +969,8 @@ chart-pie{
    -fx-effect: null;
 }
 
-.default-color0.chart-pie { -fx-pie-color: #FFA500; }
-.default-color1.chart-pie { -fx-pie-color: #FFBB40; }
-.default-color2.chart-pie { -fx-pie-color: #FFD280; }
-.default-color3.chart-pie { -fx-pie-color: #DF9000; }
-.default-color4.chart-pie { -fx-pie-color: #9F6700; }
-.default-color5.chart-pie { -fx-pie-color: #E66932; }
-.default-color6.chart-pie { -fx-pie-color: #805300; }
 
-.default-color1.chart-series-area-fill { -fx-fill: #ff5c13   ; -fx-opacity: 0.7;}
+.default-color0.chart-series-area-fill { -fx-fill: #355bef   ; -fx-opacity: 0.7;}
+.default-color1.chart-series-area-fill { -fx-fill: #ef6c35   ; -fx-opacity: 1;}
 
 

@@ -16,6 +16,9 @@ public class Asset {
 	private double value;
 	
 	public Asset(String name, double value) {
+		if(name.trim().equals("")) {
+			throw new IllegalArgumentException("Name cannot be empty");
+		}
 		this.name = name;
 		this.value = value;
 	}

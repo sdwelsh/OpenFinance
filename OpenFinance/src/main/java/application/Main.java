@@ -2,8 +2,6 @@ package application;
 	
 
 
-import java.util.ArrayList;
-import java.util.List;
 
 import application.manager.Manager;
 import javafx.application.Application;
@@ -12,12 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 
 
@@ -26,11 +21,6 @@ public class Main extends Application{
 	/** Creates a static root to change views*/
 	private static BorderPane root;
 	
-	/** the name of the view we are currently in */
-	private String view;
-	
-	/** list of screens */
-	private static List<VBox> screens = new ArrayList<VBox>();
 	
 	private static Stage primaryStage;
 	
@@ -67,12 +57,17 @@ public class Main extends Application{
 	}
 	
 	public static void setView(BorderPane view) {
-		
-		
+		boolean bool = primaryStage.isFullScreen();
 		primaryStage.getScene().setRoot(view);
-		primaryStage.setFullScreen(true);
+		primaryStage.setFullScreen(bool);
 		primaryStage.show();
 		
+	}
+	
+	public static void setMain(BorderPane view) {
+		primaryStage.setScene(new Scene(view));
+		primaryStage.setFullScreen(true);
+		primaryStage.show();
 	}
 	
 	public static void login(BorderPane view) {

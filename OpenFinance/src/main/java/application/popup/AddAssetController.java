@@ -3,11 +3,9 @@ package application.popup;
 import java.io.IOException;
 
 import application.LongTermAssetsController;
-import application.ShortTermLiabilitiesController;
 import application.manager.Manager;
 import application.users.User;
 import data.assets.longterm.Asset;
-import data.liabilities.Liability;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -72,15 +70,21 @@ public class AddAssetController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
-			Asset asset = new Asset(name.getText(), Double.parseDouble(value.getText()));
+			double valueDouble = 0;
+			try {
+				valueDouble = Double.parseDouble(value.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid value");
+			}
+			
+			Asset asset = new Asset(name.getText(), valueDouble);
 			
 			user.getLongTermAssets().addAsset(asset);
 			LongTermAssetsController.addAssetToTable(asset);;
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

@@ -3,8 +3,6 @@
  */
 package data.assets.longterm;
 
-import data.assets.longterm.ETF.CapType;
-import data.assets.longterm.ETF.CountryType;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -17,7 +15,7 @@ public class ETF extends LongTermAsset{
 	public enum CountryType {DOMESTIC, FOREIGN};
 	
 	/** The capacity of the ETF */
-	public enum CapType {SMALL_CAP, MID_CAP, LARGE_CAP };
+	public enum CapType {SMALL_CAP, MID_CAP, LARGE_CAP, NA};
 	
 	public enum InvestmentType {NA, GROWTH, VALUE};
 	
@@ -44,8 +42,9 @@ public class ETF extends LongTermAsset{
 	 * @param type
 	 */
 	public ETF(String ticker, double initPrice, double quantity, 
-			Bank bank, AccountType type, CountryType country, CapType cap, InvestmentType investmentType) {
-		super(ticker, initPrice, quantity, bank, type);
+			Bank bank, AccountType type, String accountName, double dividends, boolean reinvestDividends, 
+			CountryType country, CapType cap, InvestmentType investmentType) {
+		super(ticker, initPrice, quantity, bank, type, accountName, dividends, reinvestDividends);
 		this.country = country;
 		this.cap = cap;
 		this.investmentType = investmentType;
@@ -134,7 +133,9 @@ public class ETF extends LongTermAsset{
 			return "Mid_Cap";
 		} else if (cap == CapType.SMALL_CAP) {
 			return "Small_Cap";
-		} else {
+		} else if (cap == CapType.NA) {
+			return "NA";
+		} {
 			return null;
 		}
 	}

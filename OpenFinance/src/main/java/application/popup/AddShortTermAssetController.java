@@ -5,11 +5,9 @@ package application.popup;
 
 import java.io.IOException;
 
-import application.LongTermAssetsController;
 import application.ShortTermAssetsController;
 import application.manager.Manager;
 import application.users.User;
-import data.assets.longterm.LongTermAsset;
 import data.assets.shortTerm.ShortTermAsset;
 import data.assets.shortTerm.ShortTermAsset.AccountType;
 import javafx.fxml.FXML;
@@ -85,9 +83,10 @@ public class AddShortTermAssetController extends BorderPane{
             accountType.getItems().addAll(AccountType.Cash, AccountType.Cds, AccountType.Checking, AccountType.High_Yield_Savings, 
             		AccountType.Money_Market, AccountType.Savings);
             
+            Label label = new Label("Select an Account Type");
             
-            
-            grid.add(accountType, 1, 4);
+            grid.add(label, 1, 5);
+            grid.add(accountType, 1, 6);
             
             
         } catch (IOException exception) {
@@ -98,16 +97,27 @@ public class AddShortTermAssetController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
+			
+			if(accountType.getValue() == null) {
+				throw new IllegalArgumentException("Enter an Account Type");
+			}
+			
+			double total = 0;
+			try {
+				total =  Double.parseDouble(totalAmount.getText());
+			}catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid total");
+			}
+			
 			ShortTermAsset asset = new ShortTermAsset(bank.getText(), 
-					accountName.getText(), accountType.getValue(), Double.parseDouble(totalAmount.getText()));
+					accountName.getText(), accountType.getValue(),total);
 			
 			user.returnShortTermAssets().addShortTermAsset(asset);
 			ShortTermAssetsController.addAssetToTable(asset);
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

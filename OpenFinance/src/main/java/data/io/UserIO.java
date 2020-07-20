@@ -3,17 +3,9 @@
  */
 package data.io;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import application.users.User;
@@ -24,6 +16,8 @@ import application.users.User;
  *
  */
 public class UserIO {
+	
+	private static final String FILENAME = "test-files/users.txt";
 		
 	/**
 	 * Reads user data from the user file and creates an ArrayList of user
@@ -31,63 +25,74 @@ public class UserIO {
 	 * @return an array list of user objects form previous users
 	 * @throws IOException if the file is unreadable
 	 */
-	public static ArrayList<User> readUsersFromFile() throws IOException{
-		try {
-			BufferedReader scan = new BufferedReader(new FileReader("test-files/users.txt"));
+	public static ArrayList<User> readUsersFromFile(String key, String transformation) throws IOException{
+		FileEncrypterDecrypter security = new FileEncrypterDecrypter(key, transformation);
+		
+		Scanner scan = new Scanner(security.decrypt(FILENAME));
+		
+		ArrayList<User> users = new ArrayList<User>();
+		
+		String firstName = "";
+		String lastName = "";
+		String username = "";
+		String password = "";
+		int age = 0;
+		int retirementAge = 0;
+		String email = "";
+		String phone = "";
+		String date = "";
+		
+		scan.useDelimiter(" , ");
+		
+		while(scan.hasNext()) {
+			String line = scan.next();
+			String[] split = line.split(" \\| ");
 			
-			ArrayList<User> users = new ArrayList<User>();
-			
-			String firstName = "";
-			String lastName = "";
-			String username = "";
-			String password = "";
-			int age = 0;
-			int retirementAge = 0;
-			
-			String line = "";
-			
-			while((line = scan.readLine()) != null) {
-				
-				String[] split = line.split(" \\| ");
-				
-				firstName = split[0];
-				lastName = split[1];
-				username = split[2];
-				password = split[3];
-				age = Integer.parseInt(split[4]);
-				retirementAge = Integer.parseInt(split[5]);
-				
-				
-				users.add(new User(firstName, lastName, username, password, age, retirementAge));
-			}
+			firstName = split[0];
+			lastName = split[1];
+			username = split[2];
+			password = split[3];
+			age = Integer.parseInt(split[4]);
+			retirementAge = Integer.parseInt(split[5]);
+			email = split[6];
+			phone = split[7];
+			date = split[8];
+			int month = Integer.parseInt(date.substring(0, 2));
+			int day = Integer.parseInt(date.substring(3, 5));
+			int year = Integer.parseInt(date.substring(6, 10));
+			int hourOfDay = Integer.parseInt(date.substring(11, 13));
+			int minute = Integer.parseInt(date.substring(14, 16));
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(year, month, day, hourOfDay, minute);
 			
 			
-			
-			scan.close();
-			
-			return users;
-			
-		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException();
+			users.add(new User(firstName, lastName, username, password, age, retirementAge, email, phone, calendar));
 		}
+		
+		
+		
+		scan.close();
+		
+		return users;
 	}
 	
 	/**
 	 * Writes the Users to the current user file.
 	 * @param users an Array List of user objects passed to the user
 	 */
-	public static void writeUsersToFile(ArrayList<User> users){
+	public static void writeUsersToFile(ArrayList<User> users, String key, String transformation){
 		try {
-			OutputStreamWriter p = new OutputStreamWriter(new FileOutputStream(new File("test-files/users.txt")));
+			FileEncrypterDecrypter security = new FileEncrypterDecrypter(key, transformation);
 			
-			for(int i = 0; i < users.size(); i++) {
-				p.write(users.get(i) + "\n");
+			String content = "";
+			
+			for(User user : users) {
+				content += user.toString() + " , ";
 			}
 			
-			p.close();
-			
-			
+			security.encrypt(content, FILENAME);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new IllegalArgumentException("Unable to save users.");
 		}
 	}

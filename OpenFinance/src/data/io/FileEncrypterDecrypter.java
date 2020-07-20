@@ -4,7 +4,6 @@
 package data.io;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,7 +13,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.NoSuchElementException;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -34,14 +32,16 @@ public class FileEncrypterDecrypter {
 	Key secretKey;
 	
 	
-	FileEncrypterDecrypter(String secretKey, String transformation) {
-	    this.secretKey = new SecretKeySpec(secretKey.getBytes(), "AES");
+	FileEncrypterDecrypter(byte[] secretKey, String transformation) {
+	    this.secretKey = new SecretKeySpec(secretKey, "AES");
 	    try {
 			this.cipher = Cipher.getInstance(transformation);
 		} catch (NoSuchAlgorithmException e) {
-			throw new NoSuchElementException();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
-			throw new NoSuchElementException();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -50,7 +50,8 @@ public class FileEncrypterDecrypter {
 	    try {
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 		} catch (InvalidKeyException e1) {
-			throw new NoSuchElementException();
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	    byte[] iv = cipher.getIV();
 	 
@@ -59,14 +60,11 @@ public class FileEncrypterDecrypter {
 	        fileOut.write(iv);
 	        cipherOut.write(content.getBytes());
 	    } catch (FileNotFoundException e) {
-	    	File file = new File(fileName);
-	    	try {
-				file.createNewFile();
-			} catch (IOException e1) {
-				throw new NoSuchElementException();
-			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
-			throw new NoSuchElementException();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -99,9 +97,11 @@ public class FileEncrypterDecrypter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e1) {
-			throw new NoSuchElementException();
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		} catch (IOException e1) {
-			throw new NoSuchElementException();
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	    return content;
 	}

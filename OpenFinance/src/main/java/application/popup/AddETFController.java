@@ -18,6 +18,7 @@ import data.assets.longterm.LongTermAsset.Bank;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -61,6 +62,10 @@ public class AddETFController extends BorderPane{
 	@FXML
 	private Label error;
 	
+	@FXML private TextField accountName;
+	
+	@FXML private CheckBox reinvestDividends;
+	
 	
 	public AddETFController() {
 		
@@ -97,11 +102,17 @@ public class AddETFController extends BorderPane{
             capType = new ChoiceBox<String>();
             investmentType = new ChoiceBox<String>();
             
-            investmentBank.getItems().addAll("Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
-            accountType.getItems().addAll("Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
-            countryType.getItems().addAll("Domestic", "Foreign");
-            capType.getItems().addAll("Small Cap", "Mid Cap", "Large Cap");
-            investmentType.getItems().addAll("NA", "Value", "Growth");
+            investmentBank.getItems().addAll("Select an Investment Bank", "Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
+            accountType.getItems().addAll("Select an Account Type", "Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
+            countryType.getItems().addAll("Select a Country Type", "Domestic", "Foreign");
+            capType.getItems().addAll("Select a Cap Type", "Small Cap", "Mid Cap", "Large Cap", "NA");
+            investmentType.getItems().addAll("Select an Investment Type", "NA", "Value", "Growth");
+            
+            investmentBank.getSelectionModel().select("Select an Investment Bank");
+            accountType.getSelectionModel().select("Select an Account Type");
+            countryType.getSelectionModel().select("Select a Country Type");
+            capType.getSelectionModel().select("Select a Cap Type");
+            investmentType.getSelectionModel().select("Select an Investment Type");
             
             
             grid.add(investmentBank, 1, 4);
@@ -118,16 +129,44 @@ public class AddETFController extends BorderPane{
 	@FXML
 	public void submit() {
 		try {
-			LongTermAsset stock = new ETF(ticker.getText(), Double.parseDouble(initPrice.getText()), 
-					Double.parseDouble(number.getText()), getBank(), getAccount(), getCounty(), getCap(), getInvType());
+			
+			if(investmentBank.getValue().equals("Select an Investment Bank")) {
+				throw new IllegalArgumentException("Please select an Investment Bank");
+			} else if(accountType.getValue().equals("Select an Account Type")) {
+				throw new IllegalArgumentException("Please select an Account Type");
+			} else if(countryType.getValue().equals("Select a Country Type")) {
+				throw new IllegalArgumentException("Please select a Country Type");
+			} else if(capType.getValue().equals("Select a Cap Type")) {
+				throw new IllegalArgumentException("Please select a Cap Type");
+			} else if(investmentType.getValue().equals("Select an Investment Type")) {
+				throw new IllegalArgumentException("please select an Investment Type");
+			}
+			
+			double numberDouble = 0;
+			double price = 0;
+			
+			try {
+				numberDouble = Double.parseDouble(number.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid quantity");
+			}
+			
+			try {
+				price = Double.parseDouble(initPrice.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid Initial Price");
+			}
+			
+			LongTermAsset stock = new ETF(ticker.getText(), price, 
+					numberDouble, getBank(), getAccount(), accountName.getText(), 0,
+					reinvestDividends.isSelected(), getCounty(), getCap(), getInvType());
 			
 			user.addLongTermAsset(stock);
 			LongTermAssetsController.addETFToTable(stock);;
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 
@@ -160,7 +199,9 @@ public class AddETFController extends BorderPane{
 			return CapType.MID_CAP;
 		}  else if(capType.getValue().equals("Large Cap")) {
 			return CapType.LARGE_CAP;
-		}  else {
+		}  else if(capType.getValue().equals("NA")) {
+			return CapType.NA;
+		} else {
 			return null;
 		}
 	}

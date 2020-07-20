@@ -6,6 +6,7 @@ package application;
 import java.io.IOException;
 
 import application.manager.Manager;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -59,12 +60,27 @@ public class LoginController extends BorderPane {
     public void login() {
     	Manager manager = Manager.getInstance();
     	
+    	Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+            	manager.readCurrentUser();
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+        	BorderPane view = new MainController();
+    	    Main.setView(view);
+        });
+    	
     	if(manager.login(username.getText(), password.getText())) {
     		BorderPane view = new MainController();
-    	    Main.setView(view);
+    	    Main.setMain(view);
+    	    new Thread(task).run();
     	} else {
     		error.setText("Username or Password doesn't match");
     	}
+
     
     }
     

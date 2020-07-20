@@ -6,16 +6,12 @@ package application.popup;
 import java.io.IOException;
 
 import application.LongTermLiabilitiesController;
-import application.ShortTermAssetsController;
 import application.manager.Manager;
 import application.users.User;
-import data.assets.shortTerm.ShortTermAsset;
-import data.assets.shortTerm.ShortTermAsset.AccountType;
 import data.liabilities.Liability;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -83,16 +79,34 @@ private User user;
 	@FXML
 	public void submit() {
 		try {
-			Liability liability = new Liability(name.getText(), Double.parseDouble(totalAmount.getText()), 
-					Integer.parseInt(yearsToMaturity.getText()));
+			
+			double total = 0;
+			try {
+				total = Double.parseDouble(totalAmount.getText());
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a Valid Total");
+			}
+			
+			int years;
+			
+			try {
+				years = Integer.parseInt(yearsToMaturity.getText());
+			} catch(IllegalArgumentException e) {
+				throw new IllegalArgumentException("Enter a valid amount of years");
+			}
+			
+			if(years <= 1) {
+				throw new IllegalArgumentException("Long Term Liabilities must be greater than 1 Year");
+			}
+			
+			Liability liability = new Liability(name.getText(), total, years);
 			
 			user.returnLiabilities().addLiability(liability);
 			LongTermLiabilitiesController.addLiabilityToTable(liability);;
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
-			System.out.print(e.getStackTrace());
-			error.setText("Exception Caught");
+			error.setText(e.getMessage());
 		}
 	}
 }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import data.assets.longterm.LongTermAsset;
-import data.assets.longterm.LongTermAssetsList;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 

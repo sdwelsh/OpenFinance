@@ -14,6 +14,7 @@ import data.assets.longterm.LongTermAsset.Bank;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -51,6 +52,10 @@ public class EditStockController extends BorderPane{
 	private Label error;
 	
 	private LongTermAsset editedAsset;
+	
+	@FXML private TextField accountName;
+	
+	@FXML private CheckBox reinvestDividends;
 	
 	
 	public EditStockController(LongTermAsset asset) {
@@ -98,6 +103,12 @@ public class EditStockController extends BorderPane{
             grid.add(investmentBank, 1, 4);
             grid.add(accountType, 1, 5);
             
+            accountName.setText(asset.getAccountNameString());
+            
+            if(asset.isReinvestDividends()) {
+            	reinvestDividends.setSelected(true);
+            }
+            
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -108,7 +119,7 @@ public class EditStockController extends BorderPane{
 		try {
 
 			LongTermAsset stock = new LongTermAsset(ticker.getText(), Double.parseDouble(initPrice.getText()), 
-					Double.parseDouble(number.getText()), getBank(), getAccount());
+					Double.parseDouble(number.getText()), getBank(), getAccount(), accountName.getText(), 0, reinvestDividends.isSelected());
 			
 			user.deleteLongTermAsset(editedAsset);
 			LongTermAssetsController.removeStockFromTable(editedAsset, stock);
