@@ -62,7 +62,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
 
 
 	public ShortTermLiabilitiesController() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShortTermLiabilities.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ShortTermLiabilities.fxml"));
 		fxmlLoader.setRoot(this);
 	    fxmlLoader.setController(this);
 	    
@@ -76,7 +76,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
 	        createTable();
 	        createPieChart();
 	        
-	        Image thumb = new Image("/application/resources/linkedin_banner_image_1.png");
+	        Image thumb = new Image("/linkedin_banner_image_1.png");
 	        logoMain.setImage(thumb);
 	        
 	        
@@ -113,7 +113,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		PieChart pieChart = new PieChart(pieChartData);
 		
 		pieChart.setPadding(new Insets(30, 0, 0, 0));
-		pieChart.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		pieChart.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
 		grid.add(pieChart, 1, 1);
 		
@@ -124,7 +124,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		
 		shortTermLiabilitiesTable = new TableView<Liability>();
 		
-		shortTermLiabilitiesTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		shortTermLiabilitiesTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
 		shortTermLiabilitiesTable.setPrefHeight(675);
 		
@@ -205,7 +205,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
         
         buttons.setPadding(new Insets(0, 0, 0, 20));
         
-        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         vbox.getChildren().add(shortTermLiabilitiesTable);
         VBox.setMargin(shortTermLiabilitiesTable, new Insets(0,0,0,20));

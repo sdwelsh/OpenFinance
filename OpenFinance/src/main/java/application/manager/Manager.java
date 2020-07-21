@@ -124,6 +124,7 @@ public class Manager {
 	
 	public void readCurrentUser() {
 		UserDataIO.readUserData(currentUser, key, transformation);
+		currentUser.getLongTermAssets().update();
 	}
 	
 	/**
@@ -135,12 +136,14 @@ public class Manager {
 		key = hashPW(user.getPassword());
 		User hashedUser = new User(user.getFirstName(), user.getLastName(), 
 				user.getId(), hashPW(user.getPassword()), 0, 0, user.getEmail(), user.getPhone(), user.getLastSignedIn());
-		
-		for(User u: users) {
-			if(u.getId().equals(user.getId())){
-				throw new IllegalArgumentException("User Already Exist");
+		if(users != null) {
+			for(User u: users) {
+				if(u.getId().equals(user.getId())){
+					throw new IllegalArgumentException("User Already Exist");
+				}
 			}
 		}
+		
 		
 		users.add(hashedUser);
 		setCurrentUser(hashedUser);
@@ -155,6 +158,7 @@ public class Manager {
 		try {
 			return UserIO.readUsersFromFile(hashPW(ENCRYPTION_KEY), transformation);
 		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -163,6 +167,7 @@ public class Manager {
 	 * Writes Users to the user file when a new user is added to the system
 	 */
 	public void writeUsers() {
+		
 		UserIO.writeUsersToFile(users, hashPW(ENCRYPTION_KEY), transformation);
 	}
 	
@@ -172,7 +177,7 @@ public class Manager {
 	 */
 	private void writePW(String pw) {
 		try {
-			PrintStream p = new PrintStream(new File("test-files/password.txt"));
+			PrintStream p = new PrintStream(new File(System.getProperty("user.home") + "/OpenFinance/ProgramFiles/passwords.txt"));
 			p.print(pw);
 			p.close();
 		} catch (FileNotFoundException e) {
@@ -187,7 +192,7 @@ public class Manager {
 	 */
 	private String readPW() {
 		try {
-			File password = new File("test-files/password.txt");
+			File password = new File(System.getProperty("user.home") + "/OpenFinance/ProgramFiles/passwords.txt");
 			Scanner scan = new Scanner(password);
 			String pw = scan.next();
 			scan.close();

@@ -1,7 +1,9 @@
 package data.io;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,10 +24,25 @@ import data.assets.longterm.LongTermAsset.Bank;
 public class UserDataIO {
 	
 	
+	private static final String FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/Users/";
+	
 	public static void readUserData(User user, String key, String transformation) {
+		File file = new File(FILENAME + user.getId() + ".enc");
+		System.out.println(file.getAbsolutePath());
+		
+		if(!file.exists()) {
+			file.getParentFile().mkdirs();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		FileEncrypterDecrypter decrypt = new FileEncrypterDecrypter(key, transformation);
 		
-		Scanner s = new Scanner(decrypt.decrypt("test-files/" + user.getId() + ".enc"));
+		Scanner s = new Scanner(decrypt.decrypt(FILENAME + user.getId() + ".enc"));
 		
 		s.useDelimiter(" \\| ");
 		
@@ -226,7 +243,13 @@ public class UserDataIO {
 					" | ";
 		}
 		
-		fileEncrypt.encrypt(content, "test-files/" + user.getId() + ".enc");
+		File file = new File(FILENAME + user.getId() + ".enc");
+		
+		if(!file.exists()) {
+			file.mkdir();
+		}
+		
+		fileEncrypt.encrypt(content, FILENAME + user.getId() + ".enc");
 		
 	}
 	

@@ -53,7 +53,7 @@ public class AddShortTermAssetController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddShortTermAsset.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddShortTermAsset.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -72,7 +72,6 @@ public class AddShortTermAssetController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		
     		

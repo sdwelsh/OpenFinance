@@ -72,7 +72,7 @@ public class AddETFController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddETF.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddETF.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -90,8 +90,7 @@ public class AddETFController extends BorderPane{
     		primaryStage.setScene(scene);
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
-    		
-    		primaryStage.setFullScreen(false);
+    	
     		
     		
     		
@@ -160,7 +159,7 @@ public class AddETFController extends BorderPane{
 			LongTermAsset stock = new ETF(ticker.getText(), price, 
 					numberDouble, getBank(), getAccount(), accountName.getText(), 0,
 					reinvestDividends.isSelected(), getCounty(), getCap(), getInvType());
-			
+			stock.initStock();
 			user.addLongTermAsset(stock);
 			LongTermAssetsController.addETFToTable(stock);;
 			

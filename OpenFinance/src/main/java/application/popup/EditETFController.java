@@ -74,7 +74,7 @@ public class EditETFController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditETF.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditETF.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -93,7 +93,6 @@ public class EditETFController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		ticker.setText(asset.getTicker());
     		initPrice.setText(asset.getInitPrice() + "");

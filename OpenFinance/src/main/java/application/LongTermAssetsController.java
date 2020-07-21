@@ -100,7 +100,7 @@ public class LongTermAssetsController extends BorderPane {
 	
 	
 	public LongTermAssetsController() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LongTermAssets.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/LongTermAssets.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -109,7 +109,7 @@ public class LongTermAssetsController extends BorderPane {
         try {
             fxmlLoader.load();
             
-            Image thumb = new Image("/application/resources/linkedin_banner_image_1.png");
+            Image thumb = new Image("/linkedin_banner_image_1.png");
             
             logoMain.setImage(thumb);
             
@@ -245,7 +245,7 @@ public class LongTermAssetsController extends BorderPane {
         bank.setResizable(false);
         accountType.setResizable(false);
         
-        stockTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        stockTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setGroupingUsed(true);
@@ -309,7 +309,7 @@ public class LongTermAssetsController extends BorderPane {
         buttons.add(stockRefresh, 6, 0);
         
         buttons.setPadding(new Insets(10));
-        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         vbox.getChildren().add(buttons);
 		
@@ -420,7 +420,7 @@ public class LongTermAssetsController extends BorderPane {
         investmentType.setResizable(false);
         countryType.setResizable(false);
         
-        mutualFundTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        mutualFundTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         Label label = new Label("Mutual Funds - ");
         
@@ -479,7 +479,7 @@ public class LongTermAssetsController extends BorderPane {
         
         
         buttons.setPadding(new Insets(10));
-        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         vbox.getChildren().add(buttons);
 		
@@ -566,7 +566,7 @@ public class LongTermAssetsController extends BorderPane {
         investmentType.setResizable(false);
         countryType.setResizable(false);
         
-        etfTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        etfTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         Label label = new Label("ETF's");
         
@@ -631,7 +631,7 @@ public class LongTermAssetsController extends BorderPane {
         buttons.add(etfRefresh, 6, 0);
         
         buttons.setPadding(new Insets(10));
-        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         vbox.getChildren().add(buttons);
 		
@@ -704,7 +704,7 @@ public class LongTermAssetsController extends BorderPane {
         price.setResizable(false);
         
         
-        assetsTable.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        assetsTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         Label label = new Label("Physical Assets and Other Assets - ");
         
@@ -763,7 +763,7 @@ public class LongTermAssetsController extends BorderPane {
         
         
         buttons.setPadding(new Insets(10));
-        buttons.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
         vbox.getChildren().add(buttons);
 		

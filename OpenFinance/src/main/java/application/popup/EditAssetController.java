@@ -43,7 +43,7 @@ public class EditAssetController extends BorderPane{
 		
 		this.asset = asset;
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditAsset.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditAsset.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         

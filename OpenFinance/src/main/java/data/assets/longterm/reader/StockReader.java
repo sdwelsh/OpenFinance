@@ -10,6 +10,7 @@ import java.util.Map;
 import data.assets.longterm.LongTermAsset;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.Interval;
 
 /**
  * Reads Stock data from the Yahoo API
@@ -33,11 +34,14 @@ public class StockReader {
 			stocks[i] = stockList.get(i).getTicker();
 		}
 		
-		Map<String, Stock> yahooStocks = YahooFinance.get(stocks); // single request
+		Map<String, Stock> yahooStocks = YahooFinance.get(stocks, true); // single request
 		
 		
 		for(int i = 0; i < yahooStocks.size(); i++) {
-			stockList.get(i).setPrice(yahooStocks.get(stockList.get(i).getTicker()).getQuote().getPrice().doubleValue());
+			LongTermAsset stock = stockList.get(i);
+			stock.setPrice(yahooStocks.get(stock.getTicker()).getQuote().getPrice().doubleValue());
+			stock.setHistoricalData(yahooStocks.get(stock.getTicker()).getHistory(Interval.MONTHLY));
+			stock.setName(yahooStocks.get(stock.getTicker()).getName());
 		}
 		
 		

@@ -65,7 +65,7 @@ public class EditStockController extends BorderPane{
 		editedAsset = asset;
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditStock.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditStock.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -84,7 +84,6 @@ public class EditStockController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		ticker.setText(asset.getTicker());
     		initPrice.setText(asset.getInitPrice() + "");

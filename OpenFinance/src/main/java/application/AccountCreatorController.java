@@ -32,7 +32,7 @@ public class AccountCreatorController extends BorderPane{
 	private TextField phoneText;
 	
 	public AccountCreatorController() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateAccount.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/CreateAccount.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 

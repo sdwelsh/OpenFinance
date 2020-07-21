@@ -36,7 +36,7 @@ public class LoginController extends BorderPane {
 	
 
     public LoginController() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Login.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -45,7 +45,7 @@ public class LoginController extends BorderPane {
         try {
             fxmlLoader.load();
             
-            Image thumb = new Image("application/resources/logo.png");
+            Image thumb = new Image("/logo.png");
             
             image.setImage(thumb);
             

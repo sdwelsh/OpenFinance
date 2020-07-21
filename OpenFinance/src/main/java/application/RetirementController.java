@@ -46,7 +46,7 @@ public class RetirementController extends BorderPane{
 	@FXML private ScrollPane pane;
 
 	public RetirementController() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Retirement.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Retirement.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -54,7 +54,7 @@ public class RetirementController extends BorderPane{
             fxmlLoader.load();
           
             
-            Image thumb = new Image("/application/resources/linkedin_banner_image_1.png");
+            Image thumb = new Image("/linkedin_banner_image_1.png");
             logoMain.setImage(thumb);
             
             user = Manager.getInstance().getCurrentUser();

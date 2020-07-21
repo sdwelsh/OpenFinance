@@ -35,7 +35,16 @@ public class FileEncrypterDecrypter {
 	
 	
 	FileEncrypterDecrypter(String secretKey, String transformation) {
-	    this.secretKey = new SecretKeySpec(secretKey.getBytes(), "AES");
+		
+		byte[] keyBytes = new byte[16];
+		
+		byte[] oldBytes = secretKey.getBytes();
+		
+		for(int i = 0; i < keyBytes.length; i++) {
+			keyBytes[i] = oldBytes[i];
+		}
+		
+	    this.secretKey = new SecretKeySpec(keyBytes, "AES");
 	    try {
 			this.cipher = Cipher.getInstance(transformation);
 		} catch (NoSuchAlgorithmException e) {
@@ -61,6 +70,7 @@ public class FileEncrypterDecrypter {
 	    } catch (FileNotFoundException e) {
 	    	File file = new File(fileName);
 	    	try {
+	    		file.getParentFile().mkdirs();
 				file.createNewFile();
 			} catch (IOException e1) {
 				throw new NoSuchElementException();

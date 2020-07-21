@@ -48,7 +48,7 @@ private User user;
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditShortTermLiability.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditShortTermLiability.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         

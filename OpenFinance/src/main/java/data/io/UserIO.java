@@ -3,6 +3,7 @@
  */
 package data.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +18,7 @@ import application.users.User;
  */
 public class UserIO {
 	
-	private static final String FILENAME = "test-files/users.txt";
+	private static final String FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/users.txt";
 		
 	/**
 	 * Reads user data from the user file and creates an ArrayList of user
@@ -26,6 +27,15 @@ public class UserIO {
 	 * @throws IOException if the file is unreadable
 	 */
 	public static ArrayList<User> readUsersFromFile(String key, String transformation) throws IOException{
+		
+		
+		File file = new File(FILENAME);
+		
+		if(!file.exists()) {
+			file.getParentFile().mkdirs();
+			file.createNewFile();
+		}
+		
 		FileEncrypterDecrypter security = new FileEncrypterDecrypter(key, transformation);
 		
 		Scanner scan = new Scanner(security.decrypt(FILENAME));

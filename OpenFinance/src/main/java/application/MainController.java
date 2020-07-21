@@ -57,7 +57,7 @@ public class MainController extends BorderPane{
 	private User user;
 	
 	public MainController() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Main.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -69,7 +69,7 @@ public class MainController extends BorderPane{
             fxmlLoader.load();
             name.setText(manager.getCurrentUser().getFirstName() + " " + manager.getCurrentUser().getLastName());
             
-            Image thumb = new Image("/application/resources/linkedin_banner_image_1.png");
+            Image thumb = new Image("/linkedin_banner_image_1.png");
             logoMain.setImage(thumb);
             
             
@@ -109,7 +109,7 @@ public class MainController extends BorderPane{
 		netWorthChart = new AreaChart<Number, Number>(xAxis, yAxis);
 		netWorthChart.setTitle("Long Term Assets Performance");
 		
-		netWorthChart.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		netWorthChart.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
 		int[] monthTotals = new int[12];
 		

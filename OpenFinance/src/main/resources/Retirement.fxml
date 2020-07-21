@@ -46,9 +46,9 @@
       </GridPane>
    </top>
    <center>
-      <ScrollPane fx:id="pane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="pane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <content>
-            <VBox fx:id="vbox" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="vbox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;">
                <children>
                   <GridPane prefHeight="580.0" prefWidth="1299.0">
                     <columnConstraints>

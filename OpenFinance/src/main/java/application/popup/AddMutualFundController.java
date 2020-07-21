@@ -72,7 +72,7 @@ public class AddMutualFundController extends BorderPane {
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddMutualFund.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddMutualFund.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -91,7 +91,6 @@ public class AddMutualFundController extends BorderPane {
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		
     		
@@ -161,7 +160,7 @@ public class AddMutualFundController extends BorderPane {
 					numberDouble, getBank(), getAccount(), accountName.getText(), 0, 
 					reinvestDividends.isSelected(),
 					getCounty(), getCap(), getInvType());
-			
+			stock.initStock();
 			user.addLongTermAsset(stock);
 			LongTermAssetsController.addMutualFundToTable(stock);
 			

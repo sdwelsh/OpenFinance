@@ -973,4 +973,14 @@ chart-pie{
 .default-color0.chart-series-area-fill { -fx-fill: #355bef   ; -fx-opacity: 0.7;}
 .default-color1.chart-series-area-fill { -fx-fill: #ef6c35   ; -fx-opacity: 1;}
 
+.table-view .scroll-bar {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
 

@@ -52,7 +52,7 @@ public class EditLongTermLiabilityController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditLongTermLiability.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditLongTermLiability.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -70,7 +70,6 @@ public class EditLongTermLiabilityController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
             
     		name.setText(liability.getName());
     		totalAmount.setText(liability.getTotalAmount() + "");

@@ -40,7 +40,7 @@ public class AddAssetController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddAsset.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddAsset.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         

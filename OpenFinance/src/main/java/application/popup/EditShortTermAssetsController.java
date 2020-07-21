@@ -56,7 +56,7 @@ public class EditShortTermAssetsController extends BorderPane{
 		
 		this.asset = asset;
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditShortTermAssets.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditShortTermAssets.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -75,7 +75,6 @@ public class EditShortTermAssetsController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		bank.setText(asset.getBank());
     		accountName.setText(asset.getAccountName());

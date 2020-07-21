@@ -49,7 +49,7 @@ private User user;
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddLongTermLiability.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddLongTermLiability.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -68,7 +68,6 @@ private User user;
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
             
             
         } catch (IOException exception) {

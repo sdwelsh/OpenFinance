@@ -75,7 +75,7 @@ public class EditMutualFundController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditMutualFund.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EditMutualFund.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -94,7 +94,6 @@ public class EditMutualFundController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		ticker.setText(asset.getTicker());
     		initPrice.setText(asset.getInitPrice() + "");

@@ -62,7 +62,7 @@ public class AddStockController extends BorderPane{
 		primaryStage = new Stage();
 		
 		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddStock.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddStock.fxml"));
 		fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         
@@ -81,7 +81,6 @@ public class AddStockController extends BorderPane{
     		primaryStage.initModality(Modality.WINDOW_MODAL);
     		primaryStage.show();
     		
-    		primaryStage.setFullScreen(false);
     		
     		
     		
@@ -130,7 +129,7 @@ public class AddStockController extends BorderPane{
 			
 			LongTermAsset stock = new LongTermAsset(ticker.getText(), price, 
 					numberDouble, getBank(), getAccount(), accountName.getText(), 0, reinvestDividends.isSelected());
-			
+			stock.initStock();
 			user.addLongTermAsset(stock);
 			LongTermAssetsController.addStockToTable(stock);;
 			

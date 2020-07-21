@@ -106,10 +106,7 @@ public class LongTermAsset {
 			String accountName, double dividends, boolean reinvestDividends) {
 		this.ticker = ticker;
 		this.initPrice = initPrice;
-		this.price = refreshPrice();
-		if(this.price == 0) {
-			throw new IllegalArgumentException("Enter a valid ticker");
-		}
+		
 		this.quantity = quantity;
 		if(quantity == 0) {
 			throw new IllegalArgumentException("Quantity cannot be 0");
@@ -130,13 +127,17 @@ public class LongTermAsset {
 		bankString = new SimpleStringProperty(getBankName());
 		accountString = new SimpleStringProperty(getAccountName());
 		historicalPrices = new ArrayList<Double>();
-		setHistoricalPerformance();
+		//setHistoricalPerformance();
 	}
 	
-	private void setHistoricalPerformance() {
+	public void initStock() {
 		try {
 			Stock stock = YahooFinance.get(ticker);
 			name = stock.getName();
+			price =stock.getQuote().getPrice().doubleValue();
+			if(price == 0) {
+				throw new IllegalArgumentException("Enter a valid price");
+			}
 			
 			List<HistoricalQuote> list = stock.getHistory(Interval.MONTHLY);
 			
@@ -155,6 +156,15 @@ public class LongTermAsset {
 	
 	public List<Double> getHistoricalPrices(){
 		return historicalPrices;
+	}
+	
+	public void setHistoricalData(List<HistoricalQuote> list) {
+		for(HistoricalQuote quote : list) {
+			if(quote.getClose() != null) {
+				historicalPrices.add(quote.getClose().doubleValue());
+			}
+			
+		}
 	}
 
 	/**
@@ -261,6 +271,10 @@ public class LongTermAsset {
 
 	public void setDividends(double dividends) {
 		this.dividends = dividends;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
