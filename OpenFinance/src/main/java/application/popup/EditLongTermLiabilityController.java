@@ -110,7 +110,7 @@ public class EditLongTermLiabilityController extends BorderPane{
 			user.returnLiabilities().addLiability(liabilityNew);
 			LongTermLiabilitiesController.removeLiabilityFromTable(liability);
 			LongTermLiabilitiesController.addLiabilityToTable(liabilityNew);
-			
+			LongTermLiabilitiesController.refresh();
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
 			error.setText(e.getMessage());

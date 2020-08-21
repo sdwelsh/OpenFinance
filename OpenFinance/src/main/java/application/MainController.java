@@ -5,6 +5,7 @@ package application;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import application.manager.Manager;
@@ -13,9 +14,12 @@ import data.assets.longterm.Asset;
 import data.assets.longterm.LongTermAsset;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,7 +34,7 @@ public class MainController extends BorderPane{
 
 	
 	@FXML
-	public AreaChart <Number, Number> netWorthChart;
+	public AreaChart <String, Number> netWorthChart;
 	
 	@FXML
 	public Label name;
@@ -93,6 +97,10 @@ public class MainController extends BorderPane{
             longTermLiabilitiesString.setText("$" + decimalFormat.format(totalLongTermLiabilities));
             shortTermLiabilities.setText("$" + decimalFormat.format(totalShortTermLiabilities));
             totalLiabilities.setText("$" + decimalFormat.format(totalLiabilitiesDouble));
+            
+            if(total < 0) {
+            	netWorth.setStyle("-fx-text-fill: red");;
+            }
             netWorth.setText("$" + decimalFormat.format(total));
             
             setLongTermAssetsChart();
@@ -104,9 +112,12 @@ public class MainController extends BorderPane{
 	}
 	
 	private void setLongTermAssetsChart() {
-		final NumberAxis xAxis = new NumberAxis( 1, 12, 1);
-        final NumberAxis yAxis = new NumberAxis();
-		netWorthChart = new AreaChart<Number, Number>(xAxis, yAxis);
+		final NumberAxis yAxis = new NumberAxis();
+        final CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setGapStartAndEnd(false);
+        xAxis.setStartMargin(0);
+        xAxis.setEndMargin(0);
+		netWorthChart = new AreaChart<String, Number>(xAxis, yAxis);
 		netWorthChart.setTitle("Long Term Assets Performance");
 		
 		netWorthChart.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
@@ -117,35 +128,52 @@ public class MainController extends BorderPane{
 		
 		double physicalAssetTotal = 0;
 		
+		ArrayList<String> monthsFromToday = new ArrayList<String>();
+		LocalDate today = LocalDate.now();
+		for(int i = 11; i >= 0; i--) {
+			monthsFromToday.add(today.minusMonths(i).getMonth().toString());
+		}
+		
 		for(Asset asset : user.getLongTermAssets().returnAssets()) {
 			physicalAssetTotal += asset.getValue();
 		}
 		
-		for(int i = 0; i < monthTotals.length; i++) {
+		for(int i = 0; i < monthTotals.length - 1; i++) {
 			for(LongTermAsset asset : assets) {
 				monthTotals[i] += (int) Math.round(asset.getHistoricalPrices().get(i)) * asset.getQuantity();
-				monthTotals[i] += physicalAssetTotal;
 			}
+			monthTotals[i] += physicalAssetTotal;
 		}
 		
-		XYChart.Series seriesAssets= new XYChart.Series();
+		for(LongTermAsset asset : assets) {
+			monthTotals[11] += (int) asset.getTotalPrice();
+		}
+		monthTotals[11] += physicalAssetTotal;
+		
+		Series<String, Number> seriesAssets = new Series<String, Number>();
         seriesAssets.setName("Long Term Assets");
         
         for(int i = 0; i < monthTotals.length; i++) {
-        	seriesAssets.getData().add(new XYChart.Data(i + 1, monthTotals[i]));
+        	seriesAssets.getData().add(new XYChart.Data(monthsFromToday.get(i), monthTotals[i]));
         }
         
-        XYChart.Series seriesLiabilities = new XYChart.Series();
+        Series<String, Number> seriesLiabilities = new Series<String, Number>();
         seriesLiabilities.setName("Long Term Liabilities");
-        seriesLiabilities.getData().add(new XYChart.Data(1, user.getTotalLongTermLiabilities()));
-        seriesLiabilities.getData().add(new XYChart.Data(12, user.getTotalLongTermLiabilities()));
+        seriesLiabilities.getData().add(new XYChart.Data(monthsFromToday.get(0), user.getTotalLongTermLiabilities()));
+        seriesLiabilities.getData().add(new XYChart.Data(monthsFromToday.get(11), user.getTotalLongTermLiabilities()));
         
         
         netWorthChart.getData().add(seriesAssets);
         netWorthChart.getData().add(seriesLiabilities);
+        netWorthChart.setPadding(new Insets(0,20,0,0));
+        
+        netWorthChart.setCreateSymbols(false);
+        netWorthChart.setHorizontalGridLinesVisible(false);
+        netWorthChart.setVerticalGridLinesVisible(false);
         
         
-        grid.add(netWorthChart, 0, 0);
+        
+        grid.add(netWorthChart, 0, 1);
 		
 	}
 

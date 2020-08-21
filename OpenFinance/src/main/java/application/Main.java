@@ -26,6 +26,8 @@ public class Main extends Application{
 	
 	private static Scene scene;
 	
+	private static boolean loaded;
+	
 	
 	 /**
 	  * Starts the login screen allowing the user to enter their username and password.
@@ -35,20 +37,20 @@ public class Main extends Application{
 		try {
 			
 			primaryStage = new Stage();
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo16.png").toExternalForm()));
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo64.png").toExternalForm()));
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo32.png").toExternalForm()));
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo128.png").toExternalForm()));
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo256.png").toExternalForm()));
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo512.png").toExternalForm()));
-			primaryStage.getIcons().add(new Image(getClass().getResource("/logo1024.png").toExternalForm()));
-			primaryStage.setIconified(true);
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo16.png").toExternalForm()));
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo64.png").toExternalForm()));
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo32.png").toExternalForm()));
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo128.png").toExternalForm()));
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo256.png").toExternalForm()));
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo512.png").toExternalForm()));
+//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo1024.png").toExternalForm()));
+			//primaryStage.setIconified(true);
 			primaryStage.setTitle("OpenFinance");
-			primaryStage.initModality(Modality.APPLICATION_MODAL);
+			//primaryStage.initModality(Modality.APPLICATION_MODAL);
 			
 			root = new LoginController();
 			scene = new Scene(root);
-			
+			loaded = false;
 			
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			//primaryStage.initStyle(StageStyle.DECORATED);
@@ -72,6 +74,10 @@ public class Main extends Application{
 		
 	}
 	
+	public static void loaded() {
+		loaded = true;
+	}
+	
 	public static void setMain(BorderPane view) {
 		primaryStage.setScene(new Scene(view));
 		primaryStage.setFullScreen(true);
@@ -88,13 +94,13 @@ public class Main extends Application{
 	}
 	
 	@FXML
-	public void exitApplication(ActionEvent event) {
+	public static void exitApplication() {
 	   Platform.exit();
 	}
 	
 	@Override
 	public void stop(){
-	    if(Manager.getInstance().getCurrentUser() != null) {
+	    if(Manager.getInstance().getCurrentUser() != null && loaded) {
 	    	Manager.getInstance().logout();
 	    }
 	}

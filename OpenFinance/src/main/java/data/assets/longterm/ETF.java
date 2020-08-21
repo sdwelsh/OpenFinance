@@ -17,7 +17,7 @@ public class ETF extends LongTermAsset{
 	/** The capacity of the ETF */
 	public enum CapType {SMALL_CAP, MID_CAP, LARGE_CAP, NA};
 	
-	public enum InvestmentType {NA, GROWTH, VALUE};
+	public enum InvestmentType {Stock_Fund, Bond_Fund, Preferred_Stock_Fund, REIT_Fund, Select_An_Investment_Type, Other};
 	
 	/** The type of country market of the ETF*/
 	private CountryType country;
@@ -51,7 +51,7 @@ public class ETF extends LongTermAsset{
 		
 		countryString = new SimpleStringProperty(getCountryString());
 		capString = new SimpleStringProperty(getCapString());
-		investmentTypeString = new SimpleStringProperty(getInvestmentTypeString());
+		investmentTypeString = new SimpleStringProperty(investmentType.toString());
 	}
 
 	/**
@@ -140,18 +140,6 @@ public class ETF extends LongTermAsset{
 		}
 	}
 	
-	public String getInvestmentTypeString(){
-		if(investmentType == InvestmentType.NA) {
-			return "NA";
-		} else if(investmentType == InvestmentType.GROWTH) {
-			return "Growth";
-		} else if (investmentType == InvestmentType.VALUE) {
-			return "Value";
-		} else {
-			return null;
-		}
-	}
-	
 	@Override
 	public String getAssetType() {
 		return "ETF";
@@ -196,6 +184,8 @@ public class ETF extends LongTermAsset{
 			return false;
 		return true;
 	}
+
+	
 	
 	
 	

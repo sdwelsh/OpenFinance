@@ -23,7 +23,7 @@ public class UserDataIOTest {
 		Manager manager = Manager.getInstance();
 		
 		assertTrue(manager.login("swelsh", "smokey"));
-		
+		Manager.getInstance().readCurrentUser();
 		manager.logout();
 	}
 

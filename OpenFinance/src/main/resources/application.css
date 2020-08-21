@@ -827,6 +827,13 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-background-color: #2fb254;
 }
 
+.table-view {
+  -fx-table-cell-border-color: transparent;
+}
+.table-view .table-row-cell {
+  -fx-border-width: 1;
+}
+
 /*split pane*/
 .split-pane > .split-pane-divider {
 	-fx-background-color: white;
@@ -959,7 +966,7 @@ chart-pie{
 }
  
 .chart-pie-label {
-    -fx-fill: #8b4513;
+    -fx-fill: black;
     -fx-font-size: 1em;
     -fx-effect: null;
 } 
@@ -968,6 +975,12 @@ chart-pie{
    -fx-stroke: white;
    -fx-effect: null;
 }
+
+.default-color0.chart-area-symbol { -fx-background-color: #0039b5, white; }
+.default-color1.chart-area-symbol { -fx-background-color: #e38100, white; }
+
+.default-color0.chart-series-area-line { -fx-stroke: #0039b5; }
+.default-color1.chart-series-area-line { -fx-stroke: #e38100; }
 
 
 .default-color0.chart-series-area-fill { -fx-fill: #355bef   ; -fx-opacity: 0.7;}

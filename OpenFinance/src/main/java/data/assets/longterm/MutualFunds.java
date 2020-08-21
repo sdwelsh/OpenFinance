@@ -46,7 +46,7 @@ public class MutualFunds extends LongTermAsset {
 		
 		countryString = new SimpleStringProperty(getCountryString());
 		capString = new SimpleStringProperty(getCapString());
-		investmentTypeString = new SimpleStringProperty(getInvestmentTypeString());
+		investmentTypeString = new SimpleStringProperty(invType.toString());
 	}
 
 	/**
@@ -75,6 +75,16 @@ public class MutualFunds extends LongTermAsset {
 	 */
 	public void setCap(CapType cap) {
 		this.cap = cap;
+	}
+	
+	
+
+	public InvestmentType getInvType() {
+		return invType;
+	}
+
+	public void setInvType(InvestmentType invType) {
+		this.invType = invType;
 	}
 
 	/**
@@ -125,18 +135,6 @@ public class MutualFunds extends LongTermAsset {
 			return null;
 		}
 	}
-	
-	public String getInvestmentTypeString(){
-		if(invType == InvestmentType.NA) {
-			return "NA";
-		} else if(invType == InvestmentType.GROWTH) {
-			return "Growth";
-		} else if (invType == InvestmentType.VALUE) {
-			return "Value";
-		} else {
-			return null;
-		}
-	}
 
 	@Override
 	public String getAssetType() {
@@ -170,6 +168,8 @@ public class MutualFunds extends LongTermAsset {
 			return false;
 		return true;
 	}
+
+	
 	
 	
 	

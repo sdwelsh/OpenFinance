@@ -42,7 +42,7 @@ public class LongTermAssetsList{
 	 */
 	public void removeStocks(LongTermAsset stock) {
 		for(int i = 0; i < stocks.size(); i++) {
-			if(stock.getTicker().toUpperCase().equals(stocks.get(i).getTicker().toUpperCase())) {
+			if(stock.equals(stocks.get(i))) {
 				stocks.remove(i);
 			}
 		}
@@ -129,7 +129,7 @@ public class LongTermAssetsList{
 		try {
 			StockReader.getSockData(stocks);
 		} catch (IOException e) {
-			throw new RuntimeException();
+			System.out.println("No Stock Files");
 		}
 	}
 
@@ -142,6 +142,80 @@ public class LongTermAssetsList{
 			total += asset.getValue();
 		}
 		
+		return total;
+	}
+	
+	public double getStocksTotal() {
+		double total = 0;
+		for(LongTermAsset asset : stocks) {
+			if(asset.getAssetType().equals("Stock")) {
+				total += asset.getTotalPrice();
+			}
+			
+		}
+		
+		return total;
+	}
+	
+	public double getETFTotal() {
+		double total = 0;
+		for(LongTermAsset asset : stocks) {
+			if(asset.getAssetType().equals("ETF")) {
+				total += asset.getTotalPrice();
+			}
+			
+		}
+		
+		return total;
+	}
+	
+	public double getMutualTotal() {
+		double total = 0;
+		for(LongTermAsset asset : stocks) {
+			if(asset.getAssetType().equals("Mutual Fund")) {
+				total += asset.getTotalPrice();
+			}
+			
+		}
+		
+		return total;
+	}
+	
+	public double getAssetTotal() {
+		double total = 0;
+		for(Asset asset : assets) {
+			total += asset.getValue();
+		}
+		return total;
+	}
+	
+	public double getStockDayChange() {
+		double total = 0;
+		for(LongTermAsset asset : stocks) {
+			if(asset.getAssetType().contentEquals("Stock")) {
+				total += asset.getMovement() * asset.getQuantity();
+			}
+		}
+		return total;
+	}
+	
+	public double getETFDayChange() {
+		double total = 0;
+		for(LongTermAsset asset : stocks) {
+			if(asset.getAssetType().contentEquals("ETF")) {
+				total += asset.getMovement() * asset.getQuantity();
+			}
+		}
+		return total;
+	}
+	
+	public double getMutualFundDayChange() {
+		double total = 0;
+		for(LongTermAsset asset : stocks) {
+			if(asset.getAssetType().contentEquals("Mutual Fund")) {
+				total += asset.getMovement() * asset.getQuantity();
+			}
+		}
 		return total;
 	}
 }

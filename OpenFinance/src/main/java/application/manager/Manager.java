@@ -11,7 +11,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import com.crazzyghost.alphavantage.AlphaVantage;
+import com.crazzyghost.alphavantage.Config;
 
 import application.users.User;
 import data.io.UserDataIO;
@@ -39,6 +43,8 @@ public class Manager {
 	
 	private String key;
 	
+	private String userHash;
+	
 	private static final String transformation = "AES/CBC/PKCS5Padding";
 	
 	/**
@@ -47,6 +53,11 @@ public class Manager {
 	private Manager() {
 		users = readUsers();
 		currentUser = getCurrentUser();
+		Config cfg = Config.builder()
+			    .key("ID37R6X4DFFUM0ZA")
+			    .timeOut(10)
+			    .build();
+		AlphaVantage.api().init(cfg);
 	}
 	
 	/**
@@ -96,8 +107,8 @@ public class Manager {
 					writePW(hash);
 					String pw = readPW();
 					writePW(users.get(i).getPassword());
-					String userPW = readPW();
-					if(pw.equals(userPW)) {
+					userHash = readPW();
+					if(pw.equals(userHash)) {
 						currentUser = users.get(i);
 						key = hash;
 						return true;
@@ -123,8 +134,18 @@ public class Manager {
 	}
 	
 	public void readCurrentUser() {
-		UserDataIO.readUserData(currentUser, key, transformation);
-		currentUser.getLongTermAssets().update();
+		try {
+			UserDataIO.readUserData(currentUser, userHash, transformation);
+			currentUser.getLongTermAssets().update();
+		} catch(NoSuchElementException e) {
+			try {
+				UserDataIO.readUserData(currentUser, key, transformation);
+				currentUser.getLongTermAssets().update();
+			} catch(NoSuchElementException j) {
+				throw new IllegalArgumentException();
+			}
+		}
+		
 	}
 	
 	/**
@@ -134,6 +155,8 @@ public class Manager {
 	 */
 	public void createNewUser(User user) {
 		key = hashPW(user.getPassword());
+		writePW(key);
+		userHash = readPW();
 		User hashedUser = new User(user.getFirstName(), user.getLastName(), 
 				user.getId(), hashPW(user.getPassword()), 0, 0, user.getEmail(), user.getPhone(), user.getLastSignedIn());
 		if(users != null) {
@@ -209,7 +232,7 @@ public class Manager {
 	public void logout() {
 		try {
 			currentUser.setLastSignedIn(Calendar.getInstance());
-			UserDataIO.writeUserData(this.currentUser, key, transformation);
+			UserDataIO.writeUserData(this.currentUser, userHash, transformation);
 			writeUsers();
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException();

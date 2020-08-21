@@ -31,12 +31,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#longTermAssets" prefHeight="95.0" prefWidth="119.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Long Term Assets" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#shortTermAssets" prefHeight="135.0" prefWidth="184.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Short Term Assets" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" onAction="#longTermLiabilities" prefHeight="91.0" prefWidth="132.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Long Term Liabilities" GridPane.columnIndex="3" />
-            <Button mnemonicParsing="false" onAction="#shortTermLiabilities" prefHeight="96.0" prefWidth="134.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Short Term Liabilities" GridPane.columnIndex="4" />
-            <Button mnemonicParsing="false" onAction="#retirement" prefHeight="92.0" prefWidth="114.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Retirement" GridPane.columnIndex="5" />
-            <Button mnemonicParsing="false" onAction="#logout" prefHeight="98.0" prefWidth="100.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Logout" GridPane.columnIndex="8" />
+            <Button mnemonicParsing="false" onAction="#longTermAssets" prefHeight="95.0" prefWidth="119.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Long Term Assets" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#shortTermAssets" prefHeight="135.0" prefWidth="184.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Short Term Assets" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" onAction="#longTermLiabilities" prefHeight="91.0" prefWidth="132.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Long Term Liabilities" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" />
+            <Button mnemonicParsing="false" onAction="#shortTermLiabilities" prefHeight="96.0" prefWidth="134.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Short Term Liabilities" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" />
+            <Button mnemonicParsing="false" onAction="#retirement" prefHeight="92.0" prefWidth="114.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Retirement" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" />
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="98.0" prefWidth="100.0" style="-fx-background-color: #ec6c34; -fx-text-fill: white; -fx-background-insets: 0; -fx-border-color: #ec6c34;" stylesheets="@button.css" text="Logout" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="8" />
             <ImageView fx:id="logoMain" fitHeight="94.0" fitWidth="193.0" onMousePressed="#openMain">
                <image>
                   <Image url="file:@../../bin/linkedin_banner_image_1.png" />
@@ -80,9 +80,9 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="325.0" minHeight="0.0" prefHeight="162.0" vgrow="NEVER" />
-            <RowConstraints maxHeight="505.0" minHeight="10.0" prefHeight="269.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="376.0" minHeight="10.0" prefHeight="114.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="241.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="505.0" minHeight="10.0" prefHeight="363.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="376.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="241.0" valignment="TOP" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Account Breakdown" GridPane.columnIndex="1" GridPane.valignment="BOTTOM">
@@ -94,14 +94,6 @@
                <font>
                   <Font size="30.0" />
                </font>
-            </Label>
-            <Label fx:id="totalShortTermAssets" text="\$" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP">
-               <font>
-                  <Font size="30.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="40.0" />
-               </GridPane.margin>
             </Label>
          </children>
       </GridPane>

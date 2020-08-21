@@ -46,7 +46,7 @@ public class EditETFController extends BorderPane{
 	
 	private ChoiceBox<String> capType;
 	
-	private ChoiceBox<String> investmentType;
+	private ChoiceBox<InvestmentType> investmentType;
 	
 	private Stage primaryStage;
 	
@@ -103,18 +103,18 @@ public class EditETFController extends BorderPane{
             accountType = new ChoiceBox<String>();
             countryType = new ChoiceBox<String>();
             capType = new ChoiceBox<String>();
-            investmentType = new ChoiceBox<String>();
+            investmentType = new ChoiceBox<InvestmentType>();
             
             investmentBank.getItems().addAll("Schwab", "Merril_Lynch", "Vanguard", "TD_Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
             accountType.getItems().addAll("Brokerage", "Roth_401K", "Roth_IRA", "IRA", "401K", "Taxable_Account");
             countryType.getItems().addAll("Domestic", "Foreign");
             capType.getItems().addAll("Small_Cap", "Mid_Cap", "Large_Cap", "NA");
-            investmentType.getItems().addAll("NA", "Value", "Growth");
+            investmentType.getItems().addAll(InvestmentType.Stock_Fund, InvestmentType.Bond_Fund, InvestmentType.Preferred_Stock_Fund, InvestmentType.REIT_Fund, InvestmentType.Other);
             investmentBank.getSelectionModel().select(asset.getBankString());
             accountType.getSelectionModel().select(asset.getAccountString());
             countryType.getSelectionModel().select(asset.getCountryString());
             capType.getSelectionModel().select(asset.getCapString());
-            investmentType.getSelectionModel().select(asset.getInvestmentTypeString());
+            investmentType.getSelectionModel().select(asset.getInvestmentType());
             
             
             grid.add(investmentBank, 1, 4);
@@ -122,6 +122,7 @@ public class EditETFController extends BorderPane{
             grid.add(capType, 1, 6);
             grid.add(investmentType, 1, 7);
             grid.add(countryType, 1, 8);
+            grid.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
             
             accountName.setText(asset.getAccountNameString());
             
@@ -152,12 +153,12 @@ public class EditETFController extends BorderPane{
 				throw new IllegalArgumentException("Enter a valid Initial Price");
 			}
 			
-			LongTermAsset stock = new ETF(ticker.getText(), numberDouble, 
-					price, getBank(), getAccount(), accountName.getText(), 0, reinvestDividends.isSelected(),
-					getCounty(), getCap(), getInvType());
+			LongTermAsset stock = new ETF(ticker.getText(), price, 
+					numberDouble, getBank(), getAccount(), accountName.getText(), 0, reinvestDividends.isSelected(),
+					getCounty(), getCap(), investmentType.getValue());
 			
 			user.deleteLongTermAsset(asset);
-			
+			stock.initStock();
 			user.addLongTermAsset(stock);
 			LongTermAssetsController.removeETFfromTable(asset, stock);
 			
@@ -173,18 +174,6 @@ public class EditETFController extends BorderPane{
 		} else if(countryType.getValue().equals("Foreign")){
 			return CountryType.FOREIGN;
 		} else {
-			return null;
-		}
-	}
-
-	private InvestmentType getInvType() {
-		if(investmentType.getValue().equals("NA")) {
-			return InvestmentType.NA;
-		} else if(investmentType.getValue().equals("Growth")) {
-			return InvestmentType.GROWTH;
-		}  else if(investmentType.getValue().equals("Value")) {
-			return InvestmentType.GROWTH;
-		}  else {
 			return null;
 		}
 	}

@@ -101,6 +101,7 @@ public class EditStockController extends BorderPane{
             
             grid.add(investmentBank, 1, 4);
             grid.add(accountType, 1, 5);
+            grid.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
             
             accountName.setText(asset.getAccountNameString());
             
@@ -122,7 +123,7 @@ public class EditStockController extends BorderPane{
 			
 			user.deleteLongTermAsset(editedAsset);
 			LongTermAssetsController.removeStockFromTable(editedAsset, stock);
-			
+			stock.initStock();
 			user.addLongTermAsset(stock);
 			
 			

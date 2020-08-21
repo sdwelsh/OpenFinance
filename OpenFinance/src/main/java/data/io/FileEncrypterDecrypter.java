@@ -61,6 +61,7 @@ public class FileEncrypterDecrypter {
 		} catch (InvalidKeyException e1) {
 			throw new NoSuchElementException();
 		}
+	    
 	    byte[] iv = cipher.getIV();
 	 
 	    try (FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -68,13 +69,7 @@ public class FileEncrypterDecrypter {
 	        fileOut.write(iv);
 	        cipherOut.write(content.getBytes());
 	    } catch (FileNotFoundException e) {
-	    	File file = new File(fileName);
-	    	try {
-	    		file.getParentFile().mkdirs();
-				file.createNewFile();
-			} catch (IOException e1) {
-				throw new NoSuchElementException();
-			}
+	    	throw new NoSuchElementException();
 		} catch (IOException e) {
 			throw new NoSuchElementException();
 		}

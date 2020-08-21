@@ -10,6 +10,13 @@
 	<maven.compiler.target>12</maven.compiler.target>
   </properties>
   
+  <repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+ </repositories>
+  
   <dependencies>
   	<dependency>
     <groupId>org.openjfx</groupId>
@@ -32,15 +39,32 @@
       <version>4.8.1</version>
     </dependency>
     <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-archetype-fxml</artifactId>
-      <version>0.0.3</version>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-controls</artifactId>
+    <version>14</version>
   </dependency>
   <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-archetype-simple</artifactId>
       <version>0.0.3</version>
   </dependency>
+  <dependency>
+        <groupId>com.github.crazzyghost</groupId>
+        <artifactId>alphavantage-java</artifactId>
+        <version>1.4.1</version>
+   </dependency>
+   <dependency>
+    	<groupId>com.sample</groupId>
+    	<artifactId>sample</artifactId>
+    	<version>1.0</version>
+    	<scope>system</scope>
+    	<systemPath>/Users/stephenwelsh/Downloads/javafx-sdk-11.0.2/lib/javafx.swing.jar</systemPath>
+	</dependency>
+   <dependency>
+  		<groupId>org.apache.pdfbox</groupId>
+  		<artifactId>pdfbox</artifactId>
+  		<version>2.0.19</version>
+	</dependency>
   </dependencies>
   <build>
     <plugins>

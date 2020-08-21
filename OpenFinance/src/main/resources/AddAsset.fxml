@@ -28,9 +28,9 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="33.0" valignment="CENTER" vgrow="ALWAYS" />
-                      <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="46.0" valignment="CENTER" vgrow="NEVER" />
-                      <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="69.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints maxHeight="105.0" minHeight="10.0" prefHeight="67.0" valignment="CENTER" vgrow="NEVER" />
+                      <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="66.0" valignment="CENTER" vgrow="NEVER" />
+                      <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="55.0" valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints maxHeight="105.0" minHeight="10.0" prefHeight="61.0" valignment="CENTER" vgrow="NEVER" />
                         <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="47.0" valignment="CENTER" vgrow="NEVER" />
                         <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="47.0" valignment="CENTER" vgrow="NEVER" />
                       <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="NEVER" />
@@ -43,8 +43,8 @@
                               <Font name="Times New Roman" size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="name" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="value" promptText="Value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="name" promptText="Name" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="value" promptText="Value" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="error" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label text="\$" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                        

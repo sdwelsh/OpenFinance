@@ -37,11 +37,18 @@ public class StockReader {
 		Map<String, Stock> yahooStocks = YahooFinance.get(stocks, true); // single request
 		
 		
-		for(int i = 0; i < yahooStocks.size(); i++) {
+		for(int i = 0; i < stocks.length; i++) {
 			LongTermAsset stock = stockList.get(i);
-			stock.setPrice(yahooStocks.get(stock.getTicker()).getQuote().getPrice().doubleValue());
-			stock.setHistoricalData(yahooStocks.get(stock.getTicker()).getHistory(Interval.MONTHLY));
-			stock.setName(yahooStocks.get(stock.getTicker()).getName());
+			Stock yahooStock = yahooStocks.get(stock.getTicker());
+			stock.setPrice(yahooStock.getQuote().getPrice().doubleValue());
+			if(!stock.getAssetType().equals("Mutual Fund")) {
+				stock.setOpen(yahooStock.getQuote().getPreviousClose().doubleValue());
+			} else {
+				stock.setOpen(yahooStock.getQuote().getPreviousClose().doubleValue());
+			}
+			stock.setHistoricalData(yahooStock.getHistory(Interval.MONTHLY));
+			stock.setName(yahooStock.getName());
+			
 		}
 		
 		

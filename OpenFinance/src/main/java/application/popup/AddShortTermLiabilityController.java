@@ -81,7 +81,7 @@ private User user;
 			
 			user.returnLiabilities().addLiability(liability);
 			ShortTermLiabilitiesController.addLiabilityToTable(liability);
-			
+			ShortTermLiabilitiesController.refresh();
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
 			error.setText(e.getMessage());

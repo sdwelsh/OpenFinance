@@ -24,21 +24,12 @@ import data.assets.longterm.LongTermAsset.Bank;
 public class UserDataIO {
 	
 	
-	private static final String FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/Users/";
+	private static String FILENAME;
 	
 	public static void readUserData(User user, String key, String transformation) {
+		FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/Users/";
 		File file = new File(FILENAME + user.getId() + ".enc");
 		System.out.println(file.getAbsolutePath());
-		
-		if(!file.exists()) {
-			file.getParentFile().mkdirs();
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
 		FileEncrypterDecrypter decrypt = new FileEncrypterDecrypter(key, transformation);
 		
@@ -47,6 +38,7 @@ public class UserDataIO {
 		s.useDelimiter(" \\| ");
 		
 		while(s.hasNext()) {
+			
 			Scanner line = new Scanner(s.next());
 			
 			line.useDelimiter(",");
@@ -143,6 +135,17 @@ public class UserDataIO {
 	
 
 	public static void writeUserData(User user, String key, String transformation) throws FileNotFoundException {
+		FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/Users/";
+		File file = new File(FILENAME + user.getId() + ".enc");
+		if(!file.exists()) {
+			file.getParentFile().mkdirs();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		String content = "";
 		
@@ -184,7 +187,7 @@ public class UserDataIO {
 					asset.getDividends() + "," +
 					asset.isReinvestDividends() + "," +
 					asset.getCapString() + "," +
-					asset.getInvestmentTypeString() + "," +
+					asset.getInvestmentType() + "," +
 					asset.getCountryString()
 					+ " | ";		
 		}
@@ -205,7 +208,7 @@ public class UserDataIO {
 					asset.getDividends() + "," +
 					asset.isReinvestDividends() + "," +
 					asset.getCapString() + "," +
-					asset.getInvestmentTypeString() + "," +
+					asset.getInvType() + "," +
 					asset.getCountryString()
 					+ " | ";		
 		}
@@ -243,11 +246,7 @@ public class UserDataIO {
 					" | ";
 		}
 		
-		File file = new File(FILENAME + user.getId() + ".enc");
-		
-		if(!file.exists()) {
-			file.mkdir();
-		}
+		//File file = new File(FILENAME + user.getId() + ".enc");
 		
 		fileEncrypt.encrypt(content, FILENAME + user.getId() + ".enc");
 		
@@ -318,13 +317,17 @@ public class UserDataIO {
 	}
 	
 	private static InvestmentType getInvestmentType(String invType) {
-		if(invType.equals("NA")) {
-			return InvestmentType.NA;
-		} else if(invType.equals("Growth")) {
-			return InvestmentType.GROWTH;
-		}  else if(invType.equals("Value")) {
-			return InvestmentType.GROWTH;
-		}  else {
+		if(invType.equals("Stock_Fund")) {
+			return InvestmentType.Stock_Fund;
+		} else if(invType.equals("Preferred_Stock_Fund")) {
+			return InvestmentType.Preferred_Stock_Fund;
+		}  else if(invType.equals("Bond_Fund")) {
+			return InvestmentType.Bond_Fund;
+		} else if(invType.equals("REIT_Fund")) {
+			return InvestmentType.REIT_Fund;
+		} else if(invType.equals("Other")) {
+			return InvestmentType.Other;
+		} else {
 			return null;
 		}
 	}

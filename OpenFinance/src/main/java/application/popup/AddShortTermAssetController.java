@@ -86,6 +86,7 @@ public class AddShortTermAssetController extends BorderPane{
             
             grid.add(label, 1, 5);
             grid.add(accountType, 1, 6);
+            grid.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
             
             
         } catch (IOException exception) {
@@ -113,7 +114,7 @@ public class AddShortTermAssetController extends BorderPane{
 			
 			user.returnShortTermAssets().addShortTermAsset(asset);
 			ShortTermAssetsController.addAssetToTable(asset);
-			
+			ShortTermAssetsController.refresh();
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
 			error.setText(e.getMessage());

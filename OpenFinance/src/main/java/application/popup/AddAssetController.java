@@ -81,7 +81,7 @@ public class AddAssetController extends BorderPane{
 			
 			user.getLongTermAssets().addAsset(asset);
 			LongTermAssetsController.addAssetToTable(asset);;
-			
+		
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
 			error.setText(e.getMessage());

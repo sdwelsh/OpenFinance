@@ -49,12 +49,12 @@
                               <Font name="Times New Roman" size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="ticker" promptText="Ticker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="initPrice" promptText="Initial Purchase Price(If Unknown Leave Blank)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="number" promptText="Number of Shares" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="ticker" promptText="Ticker" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="initPrice" promptText="Initial Purchase Price(If Unknown Leave Blank)" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="number" promptText="Number of Shares" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="error" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                         <Label text="\$" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="accountName" promptText="Account Name" stylesheets="@../application.css" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="accountName" promptText="Account Name" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                         <CheckBox fx:id="reinvestDividends" mnemonicParsing="false" stylesheets="@../application.css" text="Reinvest Dividend" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                      </children>
                   </GridPane>

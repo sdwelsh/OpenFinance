@@ -45,10 +45,10 @@
             <TextField fx:id="username" promptText="Username" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <PasswordField fx:id="password" promptText="Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <PasswordField fx:id="rePassword" promptText="Re-Enter Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="emailText" promptText="Email" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="phoneText" promptText="Phone Number IE: xxx-xxx-xxxx" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Button mnemonicParsing="false" onAction="#createAccount" prefHeight="24.0" prefWidth="123.0" style="-fx-background-color: red;" text="Create Account" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Label fx:id="error" textFill="#bc0000" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <TextField fx:id="emailText" promptText="Email" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="phoneText" promptText="Phone Number IE: xxx-xxx-xxxx" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
    </center>

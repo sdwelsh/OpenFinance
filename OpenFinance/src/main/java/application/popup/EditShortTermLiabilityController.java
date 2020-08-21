@@ -94,8 +94,8 @@ private User user;
 			user.returnLiabilities().deleteLiability(this.liability);
 			user.returnLiabilities().addLiability(liability);
 			ShortTermLiabilitiesController.removeLiabilityFromTable(this.liability);
-			ShortTermLiabilitiesController.addLiabilityToTable(liability);;
-			
+			ShortTermLiabilitiesController.addLiabilityToTable(liability);
+			ShortTermLiabilitiesController.refresh();
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
 			error.setText(e.getMessage());

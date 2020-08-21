@@ -3,3 +3,8 @@
         -fx-background-color: #a45c12;
         -fx-scale-y: 1.05;
 }
+
+.choice-box {
+	-fx-background-color: white;
+	-fx-border-color: #d3d3d3;
+}

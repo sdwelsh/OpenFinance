@@ -20,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,10 +46,9 @@ public class ShortTermAssetsController extends BorderPane{
 	
 	private static TableView<ShortTermAsset> shortTermAssetsTable;
 	
-	@FXML
-	private Label totalShortTermAssets;
+	private static Label totalShortTermAssets;
 	
-	private User user;
+	private static User user;
 	
 	@FXML
 	private VBox vbox;
@@ -61,6 +61,8 @@ public class ShortTermAssetsController extends BorderPane{
 	
 	@FXML
 	private GridPane grid;
+	
+	private static PieChart pieChart;
 
 
 	public ShortTermAssetsController() {
@@ -88,7 +90,7 @@ public class ShortTermAssetsController extends BorderPane{
 	    }
 	}
 	
-	private void createPieChart() {
+	public void createPieChart() {
 		
 		ArrayList<ShortTermAsset> assets = user.returnShortTermAssets().returnShortTermAssets();
 		
@@ -121,7 +123,11 @@ public class ShortTermAssetsController extends BorderPane{
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setGroupingUsed(true);
         decimalFormat.setGroupingSize(3);
-		totalShortTermAssets.setText("$" + decimalFormat.format(total));
+		totalShortTermAssets = new Label("$" + decimalFormat.format(total));
+		totalShortTermAssets.setStyle("-fx-font-size: 30");
+		totalShortTermAssets.setAlignment(Pos.TOP_CENTER);
+		totalShortTermAssets.setPadding(new Insets(0,0,0,30));
+		grid.add(totalShortTermAssets, 1, 3);
 		
 		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList( 
 				   new PieChart.Data("Cash", cashTotal), 
@@ -132,13 +138,12 @@ public class ShortTermAssetsController extends BorderPane{
 				   new PieChart.Data("S"
 				   		+ "avings", savingsTotal)); 
 		
-		PieChart pieChart = new PieChart(pieChartData);
+		pieChart = new PieChart(pieChartData);
+		pieChart.setLegendVisible(false);
 		
 		pieChart.setPadding(new Insets(30, 0, 0, 0));
-		pieChart.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
 		grid.add(pieChart, 1, 1);
-		
 		
 	}
 
@@ -148,7 +153,7 @@ public class ShortTermAssetsController extends BorderPane{
 		
 		shortTermAssetsTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
-		shortTermAssetsTable.setPrefHeight(675);
+		shortTermAssetsTable.setPrefHeight(575);
 		
 		TableColumn<ShortTermAsset, String> bank = new TableColumn<ShortTermAsset, String>("Bank");
         bank.setCellValueFactory(new PropertyValueFactory<>("bank"));
@@ -195,6 +200,7 @@ public class ShortTermAssetsController extends BorderPane{
         addAsset.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                addAsset();
+               refresh();
             }
         });
         edit = new Button("Edit");
@@ -202,6 +208,7 @@ public class ShortTermAssetsController extends BorderPane{
             @Override public void handle(ActionEvent e) {
             	if(shortTermAssetsTable.getSelectionModel().getSelectedItem() != null) {
             		new EditShortTermAssetsController(shortTermAssetsTable.getSelectionModel().getSelectedItem());
+            		refresh();
             	}
             }
         });
@@ -212,6 +219,8 @@ public class ShortTermAssetsController extends BorderPane{
             		
             		user.returnShortTermAssets().removeShortTermAsset(shortTermAssetsTable.getSelectionModel().getSelectedItem());
             		shortTermAssetsTable.getItems().remove(shortTermAssetsTable.getSelectionModel().getSelectedItem());
+            		shortTermAssetsTable.getSelectionModel().clearSelection();
+            		refresh();
             	}
             }
         });
@@ -224,7 +233,7 @@ public class ShortTermAssetsController extends BorderPane{
         buttons.add(edit, 2, 0);
         buttons.add(delete, 4, 0);
         
-        buttons.setPadding(new Insets(0, 0, 0, 20));
+        buttons.setPadding(new Insets(20, 0, 0, 20));
         
         buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
@@ -282,5 +291,55 @@ public class ShortTermAssetsController extends BorderPane{
 
 	public static void removeAssetFromTable(ShortTermAsset asset) {
 		shortTermAssetsTable.getItems().remove(asset);
+	}
+	
+	public static void refresh() {
+		ArrayList<ShortTermAsset> assets = user.returnShortTermAssets().returnShortTermAssets();
+		
+		double cashTotal = 0;
+		double cdsTotal = 0;
+		double checkingTotal = 0;
+		double highYieldTotal = 0;
+		double moneyMarketTotal = 0;
+		double savingsTotal = 0;
+		
+		for(int i = 0; i < assets.size(); i++) {
+			ShortTermAsset asset = assets.get(i);
+			if(asset.getAccountType() == AccountType.Cash) {
+				cashTotal += asset.getAmount();
+			} else if(asset.getAccountType() == AccountType.Cds) {
+				cdsTotal += asset.getAmount();
+			} else if(asset.getAccountType() == AccountType.Checking) {
+				checkingTotal += asset.getAmount();
+			} else if(asset.getAccountType() == AccountType.High_Yield_Savings) {
+				highYieldTotal += asset.getAmount();
+			} else if(asset.getAccountType() == AccountType.Money_Market) {
+				moneyMarketTotal += asset.getAmount();
+			} else if(asset.getAccountType() == AccountType.Savings) {
+				savingsTotal += asset.getAmount();
+			}
+		}
+		
+		double total = cashTotal + cdsTotal + checkingTotal + highYieldTotal + moneyMarketTotal + savingsTotal; 
+		
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+		totalShortTermAssets.setText("$" + decimalFormat.format(total));
+		
+		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList( 
+				   new PieChart.Data("Cash", cashTotal), 
+				   new PieChart.Data("CD's", cdsTotal), 
+				   new PieChart.Data("Checking", checkingTotal), 
+				   new PieChart.Data("High Yield Savings", highYieldTotal),
+				   new PieChart.Data("Money Market", moneyMarketTotal),
+				   new PieChart.Data("S"
+				   		+ "avings", savingsTotal)); 
+		
+		pieChart.getData().clear();
+		pieChart.getData().addAll(pieChartData);
+		pieChart.setLegendVisible(false);
+		
+		pieChart.setPadding(new Insets(30, 0, 0, 0));
 	}
 }

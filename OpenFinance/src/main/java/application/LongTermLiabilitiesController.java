@@ -18,7 +18,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,10 +46,9 @@ public class LongTermLiabilitiesController extends BorderPane{
 	
 	private static TableView<Liability> longTermLiabilitiesTable;
 	
-	@FXML
-	private Label totalLongTermLiabilities;
+	private static Label totalLongTermLiabilities;
 	
-	private User user;
+	private static User user;
 	
 	@FXML
 	private VBox vbox;
@@ -59,6 +61,9 @@ public class LongTermLiabilitiesController extends BorderPane{
 	
 	@FXML
 	private GridPane grid;
+
+
+	private static PieChart pieChart;
 
 
 	public LongTermLiabilitiesController() {
@@ -108,9 +113,14 @@ public class LongTermLiabilitiesController extends BorderPane{
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setGroupingUsed(true);
         decimalFormat.setGroupingSize(3);
-		totalLongTermLiabilities.setText("$" + decimalFormat.format(total));
+		totalLongTermLiabilities = new Label("$" + decimalFormat.format(total));
+		totalLongTermLiabilities.setStyle("-fx-font-size: 30");
+		totalLongTermLiabilities.setAlignment(Pos.TOP_CENTER);
+		totalLongTermLiabilities.setPadding(new Insets(0,0,0,30));
+		grid.add(totalLongTermLiabilities, 1, 3);
 		
-		PieChart pieChart = new PieChart(pieChartData);
+		pieChart = new PieChart(pieChartData);
+		pieChart.setLegendVisible(false);
 		
 		pieChart.setPadding(new Insets(30, 0, 0, 0));
 		pieChart.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
@@ -126,7 +136,7 @@ public class LongTermLiabilitiesController extends BorderPane{
 		
 		longTermLiabilitiesTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
-		longTermLiabilitiesTable.setPrefHeight(675);
+		longTermLiabilitiesTable.setPrefHeight(575);
 		
 		TableColumn<Liability, String> name = new TableColumn<Liability, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -174,6 +184,7 @@ public class LongTermLiabilitiesController extends BorderPane{
         addLiability.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                addLiability();
+               refresh();
             }
         });
         edit = new Button("Edit");
@@ -189,8 +200,10 @@ public class LongTermLiabilitiesController extends BorderPane{
             @Override public void handle(ActionEvent e) {
             	if(longTermLiabilitiesTable.getSelectionModel().getSelectedItem() != null) {
             		
-            		user.returnLiabilities().deleteLiability(longTermLiabilitiesTable.getSelectionModel().getSelectedItem());;
+            		user.returnLiabilities().deleteLiability(longTermLiabilitiesTable.getSelectionModel().getSelectedItem());
             		longTermLiabilitiesTable.getItems().remove(longTermLiabilitiesTable.getSelectionModel().getSelectedItem());
+            		longTermLiabilitiesTable.getSelectionModel().clearSelection();
+            		refresh();
             	}
             }
         });
@@ -198,12 +211,11 @@ public class LongTermLiabilitiesController extends BorderPane{
         GridPane buttons = new GridPane();
         
         
-        
         buttons.add(addLiability, 0, 0);
         buttons.add(edit, 2, 0);
         buttons.add(delete, 4, 0);
         
-        buttons.setPadding(new Insets(0, 0, 0, 20));
+        buttons.setPadding(new Insets(20, 0, 0, 20));
         
         buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
@@ -258,5 +270,35 @@ public class LongTermLiabilitiesController extends BorderPane{
 
 	public static void removeLiabilityFromTable(Liability asset) {
 		longTermLiabilitiesTable.getItems().remove(asset);
+	}
+	
+	public static void refresh() {
+
+		ArrayList<Liability> liabilities = user.returnLiabilities().getLiabilities();
+		
+		
+		
+		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(); 
+		
+		double total = 0;
+		
+		for(Liability liability : liabilities) {
+			if(liability.getYearsToMaturity() > 1) {
+				pieChartData.add(new PieChart.Data(liability.getName(), liability.getTotalAmount()));
+				total += liability.getTotalAmount();
+			}
+		}
+		
+		
+		
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+		totalLongTermLiabilities.setText("$" + decimalFormat.format(total));
+		
+		pieChart.getData().clear();
+		pieChart.getData().addAll(pieChartData);
+		
+		
 	}
 }

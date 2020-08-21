@@ -45,8 +45,8 @@ public class AddETFController extends BorderPane{
 	private ChoiceBox<String> countryType;
 	
 	private ChoiceBox<String> capType;
-	
-	private ChoiceBox<String> investmentType;
+
+	private ChoiceBox<InvestmentType> investmentType;
 	
 	private Stage primaryStage;
 	
@@ -99,19 +99,19 @@ public class AddETFController extends BorderPane{
             accountType = new ChoiceBox<String>();
             countryType = new ChoiceBox<String>();
             capType = new ChoiceBox<String>();
-            investmentType = new ChoiceBox<String>();
+            investmentType = new ChoiceBox<InvestmentType>();
             
             investmentBank.getItems().addAll("Select an Investment Bank", "Schwab", "Merril Lynch", "Vanguard", "TD Ameritrade", "Fidelity", "Bank", "Robinhood", "E-Trade");
             accountType.getItems().addAll("Select an Account Type", "Brokerage", "Roth 401K", "Roth IRA", "IRA", "401K", "Taxable Account");
             countryType.getItems().addAll("Select a Country Type", "Domestic", "Foreign");
             capType.getItems().addAll("Select a Cap Type", "Small Cap", "Mid Cap", "Large Cap", "NA");
-            investmentType.getItems().addAll("Select an Investment Type", "NA", "Value", "Growth");
+            investmentType.getItems().addAll(InvestmentType.Select_An_Investment_Type, InvestmentType.Stock_Fund, InvestmentType.Bond_Fund, InvestmentType.Preferred_Stock_Fund, InvestmentType.REIT_Fund, InvestmentType.Other);
             
             investmentBank.getSelectionModel().select("Select an Investment Bank");
             accountType.getSelectionModel().select("Select an Account Type");
             countryType.getSelectionModel().select("Select a Country Type");
             capType.getSelectionModel().select("Select a Cap Type");
-            investmentType.getSelectionModel().select("Select an Investment Type");
+            investmentType.getSelectionModel().select(InvestmentType.Select_An_Investment_Type);
             
             
             grid.add(investmentBank, 1, 4);
@@ -119,7 +119,7 @@ public class AddETFController extends BorderPane{
             grid.add(capType, 1, 6);
             grid.add(investmentType, 1, 7);
             grid.add(countryType, 1, 8);
-            
+            grid.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -137,7 +137,7 @@ public class AddETFController extends BorderPane{
 				throw new IllegalArgumentException("Please select a Country Type");
 			} else if(capType.getValue().equals("Select a Cap Type")) {
 				throw new IllegalArgumentException("Please select a Cap Type");
-			} else if(investmentType.getValue().equals("Select an Investment Type")) {
+			} else if(investmentType.getValue().equals(InvestmentType.Select_An_Investment_Type)) {
 				throw new IllegalArgumentException("please select an Investment Type");
 			}
 			
@@ -158,10 +158,10 @@ public class AddETFController extends BorderPane{
 			
 			LongTermAsset stock = new ETF(ticker.getText(), price, 
 					numberDouble, getBank(), getAccount(), accountName.getText(), 0,
-					reinvestDividends.isSelected(), getCounty(), getCap(), getInvType());
+					reinvestDividends.isSelected(), getCounty(), getCap(), investmentType.getValue());
 			stock.initStock();
 			user.addLongTermAsset(stock);
-			LongTermAssetsController.addETFToTable(stock);;
+			LongTermAssetsController.addETFToTable(stock);
 			
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
@@ -175,18 +175,6 @@ public class AddETFController extends BorderPane{
 		} else if(countryType.getValue().equals("Foreign")){
 			return CountryType.FOREIGN;
 		} else {
-			return null;
-		}
-	}
-
-	private InvestmentType getInvType() {
-		if(investmentType.getValue().equals("NA")) {
-			return InvestmentType.NA;
-		} else if(investmentType.getValue().equals("Growth")) {
-			return InvestmentType.GROWTH;
-		}  else if(investmentType.getValue().equals("Value")) {
-			return InvestmentType.GROWTH;
-		}  else {
 			return null;
 		}
 	}

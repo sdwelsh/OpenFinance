@@ -56,6 +56,10 @@ public class LongTermAsset {
 	
 	private List<Double> historicalPrices;
 	
+	private double gain;
+	
+	private double open;
+	
 	SimpleStringProperty tickerString;
 	SimpleStringProperty totalPriceString;
 	SimpleStringProperty quantityString;
@@ -104,7 +108,7 @@ public class LongTermAsset {
 	 */
 	public LongTermAsset(String ticker, double initPrice, double quantity, Bank bank, AccountType type, 
 			String accountName, double dividends, boolean reinvestDividends) {
-		this.ticker = ticker;
+		this.ticker = ticker.toUpperCase();
 		this.initPrice = initPrice;
 		
 		this.quantity = quantity;
@@ -120,21 +124,25 @@ public class LongTermAsset {
 		this.dividends = dividends;
 		this.reinvestDividends = reinvestDividends;
 		
-		tickerString = new SimpleStringProperty(ticker);
+		tickerString = new SimpleStringProperty(this.ticker);
 		totalPriceString = new SimpleStringProperty("$" + (price * quantity));
 		quantityString = new SimpleStringProperty(""+ quantity);
 		pricePerShareString = new SimpleStringProperty("$" + price);
 		bankString = new SimpleStringProperty(getBankName());
 		accountString = new SimpleStringProperty(getAccountName());
 		historicalPrices = new ArrayList<Double>();
-		//setHistoricalPerformance();
+		gain = (price * quantity) - initPrice;
 	}
 	
 	public void initStock() {
 		try {
 			Stock stock = YahooFinance.get(ticker);
+			if(stock == null) {
+				throw new IllegalArgumentException("Invalid Stock");
+			}
 			name = stock.getName();
 			price =stock.getQuote().getPrice().doubleValue();
+			open = stock.getQuote().getPreviousClose().doubleValue();
 			if(price == 0) {
 				throw new IllegalArgumentException("Enter a valid price");
 			}
@@ -147,6 +155,8 @@ public class LongTermAsset {
 				}
 				
 			}
+			
+			gain = (price * quantity) - initPrice;
 			
 		} catch (IOException e) {
 			throw new IllegalArgumentException();
@@ -276,6 +286,19 @@ public class LongTermAsset {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public double getGain() {
+		return gain = (price * quantity) - initPrice;
+	}
+	
+	public String getGainString() {
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+        return "$" + decimalFormat.format(getGain());
+	}
+	
+	
 
 	/**
 	 * Returns a string array of the Long Term asset class
@@ -456,19 +479,45 @@ public class LongTermAsset {
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
+	
+	public double getOpen() {
+		return open;
+	}
+	
+	public void setOpen(double open) {
+		this.open = open;
+	}
+	
+	public double getMovement() {
+		return ((price - open)/open) * 100;
+	}
+	
+	public String getMovementString() {
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+		 
+		return decimalFormat.format((((price - open)/open) * 100)) + "%";
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((accountName == null) ? 0 : accountName.hashCode());
 		result = prime * result + ((bank == null) ? 0 : bank.hashCode());
 		long temp;
+		temp = Double.doubleToLongBits(dividends);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((historicalPrices == null) ? 0 : historicalPrices.hashCode());
 		temp = Double.doubleToLongBits(initPrice);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(quantity);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (reinvestDividends ? 1231 : 1237);
 		result = prime * result + ((ticker == null) ? 0 : ticker.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -483,13 +532,32 @@ public class LongTermAsset {
 		if (getClass() != obj.getClass())
 			return false;
 		LongTermAsset other = (LongTermAsset) obj;
+		if (accountName == null) {
+			if (other.accountName != null)
+				return false;
+		} else if (!accountName.equals(other.accountName))
+			return false;
 		if (bank != other.bank)
 			return false;
+		if (Double.doubleToLongBits(dividends) != Double.doubleToLongBits(other.dividends))
+			return false;
+		if (historicalPrices == null) {
+			if (other.historicalPrices != null)
+				return false;
+		} else if (!historicalPrices.equals(other.historicalPrices))
+			return false;
 		if (Double.doubleToLongBits(initPrice) != Double.doubleToLongBits(other.initPrice))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
 			return false;
 		if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
+			return false;
+		if (reinvestDividends != other.reinvestDividends)
 			return false;
 		if (ticker == null) {
 			if (other.ticker != null)
@@ -500,6 +568,8 @@ public class LongTermAsset {
 			return false;
 		return true;
 	}
+
+	
 	
 	
 	

@@ -32,8 +32,8 @@
          <children>
             <Button mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: orange; -fx-text-fill: white;" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Button mnemonicParsing="false" onAction="#openNewAccount" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Create An Account" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-            <TextField fx:id="username" promptText="Username" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-            <PasswordField fx:id="password" promptText="Password" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <TextField fx:id="username" promptText="Username" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <PasswordField fx:id="password" promptText="Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
             <Label text="Welcome to Open Finance" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
                <font>
                   <Font size="20.0" />

@@ -19,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,10 +44,9 @@ public class ShortTermLiabilitiesController extends BorderPane{
 	
 	private static TableView<Liability> shortTermLiabilitiesTable;
 	
-	@FXML
-	private Label totalShortTermLiabilities;
+	private static Label totalShortTermLiabilities;
 	
-	private User user;
+	private static User user;
 	
 	@FXML
 	private VBox vbox;
@@ -59,6 +59,9 @@ public class ShortTermLiabilitiesController extends BorderPane{
 	
 	@FXML
 	private GridPane grid;
+
+
+	private static PieChart pieChart;
 
 
 	public ShortTermLiabilitiesController() {
@@ -108,9 +111,14 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setGroupingUsed(true);
         decimalFormat.setGroupingSize(3);
-		totalShortTermLiabilities.setText("$" + decimalFormat.format(total));
+		totalShortTermLiabilities = new Label("$" + decimalFormat.format(total));
+		totalShortTermLiabilities.setStyle("-fx-font-size: 30");
+		totalShortTermLiabilities.setAlignment(Pos.TOP_CENTER);
+		totalShortTermLiabilities.setPadding(new Insets(0,0,0,30));
+		grid.add(totalShortTermLiabilities, 1, 3);
 		
-		PieChart pieChart = new PieChart(pieChartData);
+		pieChart = new PieChart(pieChartData);
+		pieChart.setLegendVisible(false);
 		
 		pieChart.setPadding(new Insets(30, 0, 0, 0));
 		pieChart.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
@@ -126,14 +134,12 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		
 		shortTermLiabilitiesTable.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		
-		shortTermLiabilitiesTable.setPrefHeight(675);
+		shortTermLiabilitiesTable.setPrefHeight(575);
 		
 		TableColumn<Liability, String> name = new TableColumn<Liability, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
 		TableColumn<Liability,String> totalAmount = new TableColumn<Liability,String>("Total Amount");
 		totalAmount.setCellValueFactory(new PropertyValueFactory<>("totalAmountString"));
-		TableColumn<Liability, Integer> yearsToMaturity = new TableColumn<Liability, Integer>("Years To Maturity");
-		yearsToMaturity.setCellValueFactory(new PropertyValueFactory<>("yearsToMaturity"));
 		
 		ObservableList<Liability> liabilityList = FXCollections.observableArrayList();
         
@@ -155,18 +161,18 @@ public class ShortTermLiabilitiesController extends BorderPane{
 		
 		shortTermLiabilitiesTable.getColumns().add(name);
 		shortTermLiabilitiesTable.getColumns().add(totalAmount);
-		shortTermLiabilitiesTable.getColumns().add(yearsToMaturity);
 		
 		
-		name.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.33));
+		
+		name.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.5));
 		name.setStyle("-fx-alignment: CENTER;");
-        totalAmount.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.33));
-        yearsToMaturity.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.336));
+        totalAmount.prefWidthProperty().bind(shortTermLiabilitiesTable.widthProperty().multiply(0.5));
+        
        
 
         name.setResizable(false);
         totalAmount.setResizable(false);
-        yearsToMaturity.setResizable(false);
+        
        
         
         
@@ -189,8 +195,10 @@ public class ShortTermLiabilitiesController extends BorderPane{
             @Override public void handle(ActionEvent e) {
             	if(shortTermLiabilitiesTable.getSelectionModel().getSelectedItem() != null) {
             		
-            		user.returnLiabilities().deleteLiability(shortTermLiabilitiesTable.getSelectionModel().getSelectedItem());;
+            		user.returnLiabilities().deleteLiability(shortTermLiabilitiesTable.getSelectionModel().getSelectedItem());
             		shortTermLiabilitiesTable.getItems().remove(shortTermLiabilitiesTable.getSelectionModel().getSelectedItem());
+            		shortTermLiabilitiesTable.getSelectionModel().clearSelection();
+            		refresh();
             	}
             }
         });
@@ -203,7 +211,7 @@ public class ShortTermLiabilitiesController extends BorderPane{
         buttons.add(edit, 2, 0);
         buttons.add(delete, 4, 0);
         
-        buttons.setPadding(new Insets(0, 0, 0, 20));
+        buttons.setPadding(new Insets(20, 0, 0, 20));
         
         buttons.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
         
@@ -260,5 +268,32 @@ public class ShortTermLiabilitiesController extends BorderPane{
 
 	public static void removeLiabilityFromTable(Liability asset) {
 		shortTermLiabilitiesTable.getItems().remove(asset);
+	}
+	
+	public static void refresh() {
+		ArrayList<Liability> liabilities = user.returnLiabilities().getLiabilities();
+		
+		
+		
+		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(); 
+		
+		double total = 0; 
+		
+		for(Liability liability : liabilities) {
+			if(liability.getYearsToMaturity() <= 1) {
+				pieChartData.add(new PieChart.Data(liability.getName(), liability.getTotalAmount()));
+				total += liability.getTotalAmount();
+			}
+		}
+		
+		
+		
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+		totalShortTermLiabilities.setText("$" + decimalFormat.format(total));
+		
+		pieChart.getData().clear();
+		pieChart.getData().addAll(pieChartData);
 	}
 }

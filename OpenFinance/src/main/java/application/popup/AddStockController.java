@@ -96,6 +96,7 @@ public class AddStockController extends BorderPane{
             
             grid.add(investmentBank, 1, 4);
             grid.add(accountType, 1, 5);
+            grid.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
             
         } catch (IOException exception) {
             throw new RuntimeException(exception);

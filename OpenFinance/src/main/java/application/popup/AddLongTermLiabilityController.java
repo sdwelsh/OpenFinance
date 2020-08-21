@@ -102,7 +102,7 @@ private User user;
 			
 			user.returnLiabilities().addLiability(liability);
 			LongTermLiabilitiesController.addLiabilityToTable(liability);;
-			
+			LongTermLiabilitiesController.refresh();
 			primaryStage.close();
 		} catch(IllegalArgumentException e) {
 			error.setText(e.getMessage());

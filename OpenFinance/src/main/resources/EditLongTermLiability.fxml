@@ -42,9 +42,9 @@
                               <Font name="Times New Roman" size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="name" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="totalAmount" promptText="Total Amount " GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="yearsToMaturity" promptText="Years to Maturity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="name" promptText="Name" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="totalAmount" promptText="Total Amount " style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="yearsToMaturity" promptText="Years to Maturity" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label text="\$" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                         <Label fx:id="error" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                        
