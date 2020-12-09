@@ -18,7 +18,7 @@ import application.users.User;
  */
 public class UserIO {
 	
-	private static final String FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/users.txt";
+	private static final String FILENAME = System.getProperty("user.home") + "\\OpenFinance\\ProgramFiles\\users.txt";
 		
 	/**
 	 * Reads user data from the user file and creates an ArrayList of user
@@ -28,6 +28,7 @@ public class UserIO {
 	 */
 	public static ArrayList<User> readUsersFromFile(String key, String transformation) throws IOException{
 		
+		System.out.println(FILENAME);
 		
 		File file = new File(FILENAME);
 		

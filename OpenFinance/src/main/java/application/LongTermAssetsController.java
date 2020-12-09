@@ -40,7 +40,6 @@ import data.assets.longterm.MutualFunds;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -348,37 +347,37 @@ public class LongTermAssetsController extends BorderPane {
             	} 
             }
         });
-        printStocks = new Button("Print");
-        printStocks.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	WritableImage nodeshot = stockTable.snapshot(new SnapshotParameters(), null);
-                File file = new File("chart.png");
-
-                try {
-                	ImageIO.write(SwingFXUtils.fromFXImage(nodeshot, null), "png", file);
-                } catch (IOException j) {
-
-                }
-
-                PDDocument doc = new PDDocument();
-                PDPage page = new PDPage();
-                PDImageXObject pdimage;
-                PDPageContentStream content;
-                try {
-                    pdimage = PDImageXObject.createFromFile("chart.png",doc);
-                    content = new PDPageContentStream(doc, page);
-                    content.drawImage(pdimage, 100, 100);
-                    content.close();
-                    doc.addPage(page);
-                    doc.save("pdf_file.pdf");
-                    doc.close();
-                    file.delete();
-                } catch (IOException ex) {
-                    throw new IllegalArgumentException();
-                }
-
-            }
-        });
+//        printStocks = new Button("Print");
+//        printStocks.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override public void handle(ActionEvent e) {
+//            	WritableImage nodeshot = stockTable.snapshot(new SnapshotParameters(), null);
+//                File file = new File("chart.png");
+//
+//                try {
+//                	ImageIO.write(SwingFXUtils.fromFXImage(nodeshot, null), "png", file);
+//                } catch (IOException j) {
+//
+//                }
+//
+//                PDDocument doc = new PDDocument();
+//                PDPage page = new PDPage();
+//                PDImageXObject pdimage;
+//                PDPageContentStream content;
+//                try {
+//                    pdimage = PDImageXObject.createFromFile("chart.png",doc);
+//                    content = new PDPageContentStream(doc, page);
+//                    content.drawImage(pdimage, 100, 100);
+//                    content.close();
+//                    doc.addPage(page);
+//                    doc.save("pdf_file.pdf");
+//                    doc.close();
+//                    file.delete();
+//                } catch (IOException ex) {
+//                    throw new IllegalArgumentException();
+//                }
+//
+//            }
+//        });
         stockTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent mouseEvent) {
@@ -418,7 +417,7 @@ public class LongTermAssetsController extends BorderPane {
         buttons.add(stockDelete, 4, 0);
         buttons.add(stockRefresh, 6, 0);
         buttons.add(viewStock, 7, 0);
-        buttons.add(printStocks, 8, 0);
+        //buttons.add(printStocks, 8, 0);
         
         buttons.setAlignment(Pos.CENTER_RIGHT);
         

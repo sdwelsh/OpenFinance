@@ -37,15 +37,15 @@ public class Main extends Application{
 		try {
 			
 			primaryStage = new Stage();
-//			primaryStage.getIcons().add(new Image(getClass().getResource("/logo16.png").toExternalForm()));
+			primaryStage.getIcons().add(new Image(getClass().getResource("/appIcon.png").toExternalForm()));
 //			primaryStage.getIcons().add(new Image(getClass().getResource("/logo64.png").toExternalForm()));
 //			primaryStage.getIcons().add(new Image(getClass().getResource("/logo32.png").toExternalForm()));
 //			primaryStage.getIcons().add(new Image(getClass().getResource("/logo128.png").toExternalForm()));
 //			primaryStage.getIcons().add(new Image(getClass().getResource("/logo256.png").toExternalForm()));
 //			primaryStage.getIcons().add(new Image(getClass().getResource("/logo512.png").toExternalForm()));
 //			primaryStage.getIcons().add(new Image(getClass().getResource("/logo1024.png").toExternalForm()));
-			//primaryStage.setIconified(true);
-			primaryStage.setTitle("OpenFinance");
+			primaryStage.setIconified(false);
+			primaryStage.setTitle("Open Finance Analytics");
 			//primaryStage.initModality(Modality.APPLICATION_MODAL);
 			
 			root = new LoginController();

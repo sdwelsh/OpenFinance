@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import application.manager.Manager;
 import application.popup.AddShortTermAssetController;
 import application.popup.EditShortTermAssetsController;
+import application.stock.StockViewController;
 import application.users.User;
 import data.assets.shortTerm.ShortTermAsset;
 import data.assets.shortTerm.ShortTermAsset.AccountType;
@@ -30,6 +31,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -224,7 +227,19 @@ public class ShortTermAssetsController extends BorderPane{
             	}
             }
         });
-        
+        shortTermAssetsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent mouseEvent) {
+		        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+		            if(mouseEvent.getClickCount() == 2){
+		            	if(shortTermAssetsTable.getSelectionModel().getSelectedItem() != null) {
+		            		new EditShortTermAssetsController(shortTermAssetsTable.getSelectionModel().getSelectedItem());
+		            		refresh();
+		            	} 
+		            }
+		        }
+		    }
+		});
         GridPane buttons = new GridPane();
         
         

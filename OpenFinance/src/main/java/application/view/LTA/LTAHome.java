@@ -159,7 +159,13 @@ public class LTAHome extends VBox{
 		
 		for(int i = 0; i < monthTotals.length - 1; i++) {
 			for(LongTermAsset asset : assets) {
-				monthTotals[i] += (int) Math.round(asset.getHistoricalPrices().get(i)) * asset.getQuantity();
+				double getQuote = 0;
+				try {
+					getQuote = asset.getHistoricalPrices().get(i);
+				} catch(Exception e) {
+					//Do Nothing
+				}
+				monthTotals[i] += (int) Math.round(getQuote * asset.getQuantity());
 			}
 		}
 		

@@ -48,9 +48,9 @@
    <left>
       <VBox fx:id="vbox" prefHeight="806.0" prefWidth="623.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="125.0" prefWidth="623.0">
+            <HBox prefHeight="125.0" prefWidth="655.0">
                <children>
-                  <Label prefHeight="130.0" prefWidth="430.0" text="Short Term Liabilities" wrapText="true">
+                  <Label prefHeight="125.0" prefWidth="486.0" text="Short Term Liabilities" wrapText="true">
                      <font>
                         <Font size="44.0" />
                      </font>
@@ -58,7 +58,7 @@
                         <Insets left="40.0" />
                      </padding>
                   </Label>
-                  <Label prefHeight="70.0" prefWidth="183.0" text="(Less than 1 Year)" wrapText="true">
+                  <Label prefHeight="70.0" prefWidth="190.0" text="(Less than 1 Year)" wrapText="true">
                      <font>
                         <Font size="20.0" />
                      </font>

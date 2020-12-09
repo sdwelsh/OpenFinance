@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import application.manager.Manager;
 import application.popup.AddAssetController;
 import application.popup.EditAssetController;
+import application.stock.StockViewController;
 import application.users.User;
 import data.assets.longterm.Asset;
 import data.assets.longterm.ETF;
@@ -29,6 +30,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -283,6 +285,19 @@ public class LTAAnalysisController extends VBox{
             	createTopGainers(user.getLongTermAssets().returnMutualFunds());
             }
         });
+        
+        topGainersTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent mouseEvent) {
+		        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+		            if(mouseEvent.getClickCount() == 2){
+		            	if(topGainersTable.getSelectionModel().getSelectedItem() != null) {
+		            		new StockViewController(topGainersTable.getSelectionModel().getSelectedItem());
+		            	} 
+		            }
+		        }
+		    }
+		});
         
         GridPane buttons = new GridPane();
         ColumnConstraints stocks = new ColumnConstraints();
@@ -597,6 +612,19 @@ public class LTAAnalysisController extends VBox{
 		
 		biggestDailyMovers.getColumns().add(name);
 		biggestDailyMovers.getColumns().add(totalAmount);
+		
+		 biggestDailyMovers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			    @Override
+			    public void handle(MouseEvent mouseEvent) {
+			        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+			            if(mouseEvent.getClickCount() == 2){
+			            	if(biggestDailyMovers.getSelectionModel().getSelectedItem() != null) {
+			            		new StockViewController(biggestDailyMovers.getSelectionModel().getSelectedItem());
+			            	} 
+			            }
+			        }
+			    }
+			});
 		
 		
 		

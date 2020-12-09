@@ -31,20 +31,12 @@ public class FileEncrypterDecrypter {
 	
 	private Cipher cipher;
 	
-	Key secretKey;
+	Key secretKey; 
 	
 	
 	FileEncrypterDecrypter(String secretKey, String transformation) {
 		
-		byte[] keyBytes = new byte[16];
-		
-		byte[] oldBytes = secretKey.getBytes();
-		
-		for(int i = 0; i < keyBytes.length; i++) {
-			keyBytes[i] = oldBytes[i];
-		}
-		
-	    this.secretKey = new SecretKeySpec(keyBytes, "AES");
+	    this.secretKey = new SecretKeySpec(secretKey.getBytes(), "AES");
 	    try {
 			this.cipher = Cipher.getInstance(transformation);
 		} catch (NoSuchAlgorithmException e) {

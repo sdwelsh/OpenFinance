@@ -27,7 +27,7 @@ public class UserDataIO {
 	private static String FILENAME;
 	
 	public static void readUserData(User user, String key, String transformation) {
-		FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/Users/";
+		FILENAME = System.getProperty("user.home") + "\\OpenFinance\\ProgramFiles\\Users\\";
 		File file = new File(FILENAME + user.getId() + ".enc");
 		System.out.println(file.getAbsolutePath());
 		
@@ -135,7 +135,7 @@ public class UserDataIO {
 	
 
 	public static void writeUserData(User user, String key, String transformation) throws FileNotFoundException {
-		FILENAME = System.getProperty("user.home") + "/OpenFinance/ProgramFiles/Users/";
+		FILENAME = System.getProperty("user.home") + "\\OpenFinance\\ProgramFiles\\Users\\";
 		File file = new File(FILENAME + user.getId() + ".enc");
 		if(!file.exists()) {
 			file.getParentFile().mkdirs();

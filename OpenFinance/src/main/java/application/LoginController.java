@@ -15,6 +15,8 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -22,6 +24,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -56,6 +60,18 @@ public class LoginController extends BorderPane {
             Image thumb = new Image("/logo.png");
             
             image.setImage(thumb);
+            
+            password.setOnKeyReleased(new EventHandler<KeyEvent>()
+            {
+                @Override
+                public void handle(KeyEvent ke)
+                {
+                    if (ke.getCode().equals(KeyCode.ENTER))
+                    {
+                        login();
+                    }
+                }
+            });
             
             
         } catch (IOException exception) {

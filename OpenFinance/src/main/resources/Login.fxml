@@ -34,7 +34,7 @@
             <Button mnemonicParsing="false" onAction="#openNewAccount" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Create An Account" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
             <TextField fx:id="username" promptText="Username" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
             <PasswordField fx:id="password" promptText="Password" style="-fx-background-insets: 0;" stylesheets="@application.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-            <Label text="Welcome to Open Finance" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
+            <Label prefHeight="61.0" prefWidth="328.0" text="Welcome to Open Finance Analytics" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font></Label>

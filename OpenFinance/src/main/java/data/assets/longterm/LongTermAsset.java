@@ -149,11 +149,12 @@ public class LongTermAsset {
 			
 			List<HistoricalQuote> list = stock.getHistory(Interval.MONTHLY);
 			
-			for(HistoricalQuote quote : list) {
-				if(quote.getClose() != null) {
-					historicalPrices.add(quote.getClose().doubleValue());
+			for(int i = 0; i < 12; i++) {
+				if(list.get(i).getClose() != null) {
+					historicalPrices.add(list.get(i).getClose().doubleValue());
+				} else {
+					historicalPrices.add(0.0);
 				}
-				
 			}
 			
 			gain = (price * quantity) - initPrice;
